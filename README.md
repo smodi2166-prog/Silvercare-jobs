@@ -15,13 +15,13 @@ Option C — any static host / your own server: upload the 5 files.
 
 In Netlify/Vercel: Site settings → Domains → add `jobs.yorohealth.com`. In your DNS (where yorohealth.com is managed): add CNAME `jobs` → the host they show. HTTPS is automatic.
 
-## 3. Switch on phone OTP login (Supabase dashboard, 5 min)
+## 3. Candidate login = phone + 4-digit PIN (no SMS, no cost)
 
-supabase.com/dashboard → project yoro-jobs → Authentication → Providers → **Phone** → Enable.
-- SMS provider: Supabase supports Twilio, MessageBird, Textlocal, Vonage. For India, Twilio (fastest to start; needs DLT registration for the sender) or Textlocal (Indian, DLT-ready). Paste the account keys.
-- **Test without SMS**: in the same Phone settings, "Test phone numbers / OTPs" → add your own numbers with a fixed OTP (e.g. `+919999999999 = 123456`). Those numbers log in without any SMS being sent — use this to onboard your first batch by hand while DLT approval is pending.
-- Authentication → Rate limits: keep defaults (prevents OTP abuse).
-- Authentication → URL configuration → Site URL = `https://jobs.yorohealth.com`.
+Nothing to switch on. A candidate registers with their number and chooses a PIN; they log in with number + PIN. Under the hood each candidate is a Supabase email/password user (`<phone>@candidates.yorojobs.local`) created by the `candidate-auth` edge function, so the default email provider is all that's needed.
+- Forgot PIN: admin opens the candidate → **Reset login PIN** → tell them the new PIN on the phone.
+- Walk-in candidates: admin → Candidates → Add candidate → set their PIN there.
+- Authentication → URL configuration → Site URL = `https://yorojobs.netlify.app` (later `https://jobs.yorohealth.com`).
+- To add real OTP later: enable the Phone provider + an SMS vendor, and switch `index.html` back to `signInWithOtp` (the old code is in git history).
 
 ## 4. Create staff logins (2 min each)
 
@@ -33,7 +33,7 @@ insert into public.admins (email, name, role) values ('pallavi@yorohealth.com', 
 
 ## 5. First-day checks
 
-1. Open the site on your phone → Register → OTP → name/role/area → Home.
+1. Open the site on your phone → Register → number → name, PIN, role, area → Home.
 2. Add photo (camera opens) → admin → Candidates → open → tick ID + BGV → Generate ID card → download PNG (print at 86×54 mm, CR80 card).
 3. Admin → Jobs → Post a job within 10 km of the test candidate → candidate sees it under Jobs → Interested → admin → job → Assign.
 

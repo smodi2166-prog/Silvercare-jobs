@@ -36,19 +36,19 @@
   <div class="pad">
     <a class="back" href="#landing" aria-label="Back">‹</a>
     <h1 style="margin-top:24px" data-t="phoneTitle">Your mobile number</h1>
-    <p class="sub" data-t="phoneSub">We send a 6-digit code by SMS. This number is your login.</p>
+    <p class="sub" data-t="phoneSub">This number is your login. No SMS, no OTP — just a 4-digit PIN you choose.</p>
     <label class="lbl" for="phone">Mobile number</label>
     <div class="row"><div class="inp" style="width:70px;display:flex;align-items:center;font-weight:600">+91</div><input class="inp grow" id="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit number" autocomplete="tel-national"></div>
-    <div id="otpBox" style="display:none;margin-top:22px;background:#F1F5F4;border-radius:14px;padding:16px">
-      <b style="font-size:14px">Enter the 6-digit code</b>
-      <input class="inp" id="otp" inputmode="numeric" maxlength="6" placeholder="••••••" autocomplete="one-time-code" style="margin-top:10px;letter-spacing:6px;font-size:22px;text-align:center">
-      <div class="note" style="margin-top:8px">Sent to +91 <span id="otpTo"></span> · <a href="#" id="resend">Resend</a> · <a href="#" id="changeNo">Change number</a></div>
+    <div id="pinBox" style="display:none;margin-top:22px;background:#F1F5F4;border-radius:14px;padding:16px">
+      <b style="font-size:14px" id="pinTitle">Enter your 4-digit PIN</b>
+      <input class="inp" id="pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="current-password" style="margin-top:10px;letter-spacing:8px;font-size:22px;text-align:center">
+      <div class="note" style="margin-top:8px" id="pinNote">Forgot your PIN? Call YORO on <b>+91 XXXXX XXXXX</b> and we will reset it. · <a href="#" id="changeNo">Change number</a></div>
     </div>
     <div id="otpErr" class="err"></div>
   </div>
   <div class="pad" style="margin-top:auto">
-    <button class="btn" id="sendOtp">Send code</button>
-    <button class="btn" id="verifyOtp" style="display:none">Verify &amp; continue</button>
+    <button class="btn" id="sendOtp">Continue</button>
+    <button class="btn" id="verifyOtp" style="display:none">Log in</button>
     <div class="note" style="text-align:center;margin-top:8px">By continuing you agree to the Yoro Jobs terms and privacy policy.</div>
   </div>
 </section>
@@ -60,6 +60,8 @@
     <p class="sub">That's all we need to start. Everything else is optional.</p>
     <label class="lbl" for="name">Full name (as on Aadhaar)</label>
     <input class="inp" id="name" placeholder="Your name" autocomplete="name">
+    <label class="lbl" for="pin1">Choose a 4-digit PIN (you will use it to log in)</label>
+    <div class="row"><input class="inp" id="pin1" type="password" inputmode="numeric" maxlength="4" placeholder="PIN" autocomplete="new-password" style="letter-spacing:6px;text-align:center"><input class="inp" id="pin2" type="password" inputmode="numeric" maxlength="4" placeholder="Again" autocomplete="new-password" style="letter-spacing:6px;text-align:center"></div>
     <span class="lbl">I am a</span>
     <div class="chips" id="roleChips"><button class="chip" data-v="Caregiver">Caregiver</button><button class="chip" data-v="Nurse">Nurse</button><button class="chip" data-v="Physio">Physio</button></div>
     <label class="lbl" for="area">Where do you live? (area in Pune)</label>
@@ -114,13 +116,13 @@
 
 <script type="module">
 import { sb, $, esc, toast, openSheet, closeSheet, initModal, chipRow, chipVal, fmtDate, initials, strength, areas, uploadDoc, signedUrl, drawIdCard, pay } from './shared.js';
-import { SKILLS, COUNTRY_CODE, DEFAULT_CITY } from './config.js';
+import { SKILLS, DEFAULT_CITY } from './config.js';
 initModal();
 
 const T = {
-  en: { hero: 'Nursing & care jobs near your home', heroSub: 'Register in 1 minute. Our team calls you within 24 hours. Jobs come to you on WhatsApp.', register: 'Register in 1 minute', login: 'Already registered? Log in', phoneTitle: 'Your mobile number', phoneSub: 'We send a 6-digit code by SMS. This number is your login.' },
-  hi: { hero: 'आपके घर के पास नर्सिंग और केयर की नौकरियाँ', heroSub: '1 मिनट में रजिस्टर करें। हमारी टीम 24 घंटे में कॉल करेगी। नौकरियाँ WhatsApp पर मिलेंगी।', register: '1 मिनट में रजिस्टर करें', login: 'पहले से रजिस्टर हैं? लॉग इन', phoneTitle: 'आपका मोबाइल नंबर', phoneSub: 'हम SMS से 6 अंकों का कोड भेजेंगे। यही नंबर आपका लॉगिन है।' },
-  mr: { hero: 'तुमच्या घराजवळ नर्सिंग आणि केअरच्या नोकऱ्या', heroSub: '1 मिनिटात नोंदणी करा. आमची टीम 24 तासांत कॉल करेल. नोकऱ्या WhatsApp वर मिळतील.', register: '1 मिनिटात नोंदणी करा', login: 'आधीच नोंदणी केली आहे? लॉग इन', phoneTitle: 'तुमचा मोबाइल नंबर', phoneSub: 'आम्ही SMS ने 6 अंकी कोड पाठवू. हाच नंबर तुमचा लॉगिन आहे.' } };
+  en: { hero: 'Nursing & care jobs near your home', heroSub: 'Register in 1 minute. Our team calls you within 24 hours. Jobs come to you on WhatsApp.', register: 'Register in 1 minute', login: 'Already registered? Log in', phoneTitle: 'Your mobile number', phoneSub: 'This number is your login. No SMS, no OTP — just a 4-digit PIN you choose.' },
+  hi: { hero: 'आपके घर के पास नर्सिंग और केयर की नौकरियाँ', heroSub: '1 मिनट में रजिस्टर करें। हमारी टीम 24 घंटे में कॉल करेगी। नौकरियाँ WhatsApp पर मिलेंगी।', register: '1 मिनट में रजिस्टर करें', login: 'पहले से रजिस्टर हैं? लॉग इन', phoneTitle: 'आपका मोबाइल नंबर', phoneSub: 'यही नंबर आपका लॉगिन है। कोई SMS/OTP नहीं — बस 4 अंकों का PIN चुनें।' },
+  mr: { hero: 'तुमच्या घराजवळ नर्सिंग आणि केअरच्या नोकऱ्या', heroSub: '1 मिनिटात नोंदणी करा. आमची टीम 24 तासांत कॉल करेल. नोकऱ्या WhatsApp वर मिळतील.', register: '1 मिनिटात नोंदणी करा', login: 'आधीच नोंदणी केली आहे? लॉग इन', phoneTitle: 'तुमचा मोबाइल नंबर', phoneSub: 'हाच नंबर तुमचा लॉगिन आहे. SMS/OTP नाही — फक्त 4 अंकी PIN निवडा.' } };
 $('langChips').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; document.querySelectorAll('#langChips .chip').forEach((c) => c.classList.toggle('on', c === b)); const t = T[b.dataset.l]; document.querySelectorAll('[data-t]').forEach((el) => { if (t[el.dataset.t]) el.textContent = t[el.dataset.t]; }); };
 
 // ---------- state ----------
@@ -132,6 +134,7 @@ async function route() {
   if (!me && ['home', 'jobs', 'job'].includes(h)) h = 'landing';
   if (me && ['landing', 'otp', 'register'].includes(h)) h = 'home';
   if (user && !me && h !== 'register') h = 'register';
+  if (!user && h === 'register' && !pendingPhone) h = 'otp';
   show(h);
   if (h === 'home') renderHome(); if (h === 'jobs') renderJobs(); if (h === 'job') renderJob();
 }
@@ -141,30 +144,31 @@ window.addEventListener('hashchange', route);
 sb.auth.onAuthStateChange(async (ev, session) => { user = session?.user || null; if (ev === 'SIGNED_OUT') { me = null; location.hash = '#landing'; } });
 (async () => { const { data: { session } } = await sb.auth.getSession(); user = session?.user || null; await loadMe(); AREAS = await areas(); route(); })();
 
-const fullPhone = (p) => COUNTRY_CODE + p;
+const emailFor = (p) => `${p}@candidates.yorojobs.local`, pwFor = (pin, p) => `yj-${pin}-${p}`;
+let knownUser = false;
 $('sendOtp').onclick = async () => {
   const p = $('phone').value.replace(/\D/g, ''); const err = $('otpErr'); err.textContent = '';
   if (p.length !== 10) return (err.textContent = 'Enter a 10-digit mobile number.');
   $('sendOtp').innerHTML = '<span class="spinner"></span>'; $('sendOtp').disabled = true;
-  const { error } = await sb.auth.signInWithOtp({ phone: fullPhone(p), options: { channel: 'sms' } });
-  $('sendOtp').textContent = 'Send code'; $('sendOtp').disabled = false;
-  if (error) return (err.textContent = friendlyAuthError(error));
-  pendingPhone = p; $('otpTo').textContent = p; $('otpBox').style.display = 'block'; $('sendOtp').style.display = 'none'; $('verifyOtp').style.display = 'flex'; $('otp').focus();
+  const { data, error } = await sb.functions.invoke('candidate-auth', { body: { action: 'exists', phone: p } });
+  $('sendOtp').textContent = 'Continue'; $('sendOtp').disabled = false;
+  if (error || data?.error) return (err.textContent = data?.error || 'Could not connect. Check your internet and try again.');
+  pendingPhone = p; knownUser = !!data.exists;
+  if (knownUser) { $('pinTitle').textContent = `Welcome back${data.name ? ', ' + data.name : ''} — enter your 4-digit PIN`; $('pinBox').style.display = 'block'; $('sendOtp').style.display = 'none'; $('verifyOtp').style.display = 'flex'; $('pin').value = ''; $('pin').focus(); }
+  else { location.hash = '#register'; show('register'); }
 };
-$('resend').onclick = (e) => { e.preventDefault(); $('sendOtp').click(); };
-$('changeNo').onclick = (e) => { e.preventDefault(); $('otpBox').style.display = 'none'; $('sendOtp').style.display = 'flex'; $('verifyOtp').style.display = 'none'; };
+$('changeNo').onclick = (e) => { e.preventDefault(); $('pinBox').style.display = 'none'; $('sendOtp').style.display = 'flex'; $('verifyOtp').style.display = 'none'; };
 $('verifyOtp').onclick = async () => {
-  const err = $('otpErr'); err.textContent = ''; const token = $('otp').value.trim();
-  if (token.length < 4) return (err.textContent = 'Enter the code from the SMS.');
+  const err = $('otpErr'); err.textContent = ''; const pin = $('pin').value.replace(/\D/g, '');
+  if (pin.length !== 4) return (err.textContent = 'Enter your 4-digit PIN.');
   $('verifyOtp').innerHTML = '<span class="spinner"></span>'; $('verifyOtp').disabled = true;
-  const { data, error } = await sb.auth.verifyOtp({ phone: fullPhone(pendingPhone), token, type: 'sms' });
-  $('verifyOtp').textContent = 'Verify & continue'; $('verifyOtp').disabled = false;
-  if (error) return (err.textContent = friendlyAuthError(error));
+  const { data, error } = await sb.auth.signInWithPassword({ email: emailFor(pendingPhone), password: pwFor(pin, pendingPhone) });
+  $('verifyOtp').textContent = 'Log in'; $('verifyOtp').disabled = false;
+  if (error) return (err.textContent = /invalid/i.test(error.message) ? 'Wrong PIN. Try again, or call YORO to reset it.' : error.message);
   user = data.user; await loadMe();
   if (me) { toast('Welcome back, ' + me.name.split(' ')[0]); location.hash = '#home'; } else location.hash = '#register';
   route();
 };
-function friendlyAuthError(e) { const m = (e.message || '').toLowerCase(); if (m.includes('unsupported phone provider') || m.includes('phone provider')) return 'SMS login is not switched on yet. YORO team: enable Phone auth in Supabase → Authentication → Providers.'; if (m.includes('rate')) return 'Too many attempts. Please wait a minute and try again.'; if (m.includes('expired') || m.includes('invalid')) return 'Wrong or expired code. Tap Resend to get a new one.'; return e.message; }
 
 // ---------- register ----------
 $('roleChips').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; selRole = b.dataset.v; document.querySelectorAll('#roleChips .chip').forEach((c) => c.classList.toggle('on', c === b)); };
@@ -178,15 +182,19 @@ $('gpsBtn').onclick = () => {
 };
 $('registerBtn').onclick = async () => {
   const name = $('name').value.trim(); const err = $('regErr'); err.textContent = '';
+  const pin1 = $('pin1').value.replace(/\D/g, ''), pin2 = $('pin2').value.replace(/\D/g, '');
   if (!name) return (err.textContent = 'Please enter your name.');
+  if (pin1.length !== 4) return (err.textContent = 'Choose a 4-digit PIN.');
+  if (pin1 !== pin2) return (err.textContent = 'The two PINs do not match.');
   if (!selRole) return (err.textContent = 'Please choose Caregiver, Nurse or Physio.');
   if (!selArea) return (err.textContent = 'Please pick your area from the list or use your location.');
-  $('registerBtn').disabled = true;
-  const phone = (user.phone || '').replace(/^\+?91/, '');
-  const { error } = await sb.from('candidates').insert({ id: user.id, phone, name, role: selRole, area: selArea.name, city: selArea.city || DEFAULT_CITY, lat: selArea.lat, lng: selArea.lng });
-  $('registerBtn').disabled = false;
-  if (error) return (err.textContent = error.message);
-  await loadMe(); toast('Registered! Our team will call you within 24 h.'); location.hash = '#home'; route();
+  $('registerBtn').disabled = true; $('registerBtn').innerHTML = '<span class="spinner"></span>';
+  const { data, error } = await sb.functions.invoke('candidate-auth', { body: { action: 'register', phone: pendingPhone, pin: pin1, name, role: selRole, area: selArea.name, city: selArea.city || DEFAULT_CITY, lat: selArea.lat, lng: selArea.lng } });
+  if (error || data?.error) { $('registerBtn').disabled = false; $('registerBtn').textContent = 'Register'; return (err.textContent = data?.error || 'Could not register. Check your internet and try again.'); }
+  const { data: s2, error: e2 } = await sb.auth.signInWithPassword({ email: emailFor(pendingPhone), password: pwFor(pin1, pendingPhone) });
+  $('registerBtn').disabled = false; $('registerBtn').textContent = 'Register';
+  if (e2) return (err.textContent = e2.message);
+  user = s2.user; await loadMe(); toast('Registered! Our team will call you within 24 h.'); location.hash = '#home'; route();
 };
 
 // ---------- home ----------
