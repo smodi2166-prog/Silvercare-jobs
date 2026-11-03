@@ -3,7 +3,14 @@ import { SUPABASE_URL, SUPABASE_KEY, BUCKET, BRAND } from './config.js';
 
 // Separate sessions for the candidate app and the staff console so logging into one never affects the other.
 export const IS_ADMIN_PAGE = /admin\.html$/.test(location.pathname);
-export const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storageKey: IS_ADMIN_PAGE ? 'yj-staff-auth' : 'yj-candidate-auth' } });
+export const STAFF_KEY = 'yj-staff-auth', CAND_KEY = 'yj-candidate-auth';
+export const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storageKey: IS_ADMIN_PAGE ? STAFF_KEY : CAND_KEY } });
+// Staff session is readable from the candidate app too (same site), so staff get an Admin switch inside the one app.
+let staffClient = null;
+export function staffSb() { if (IS_ADMIN_PAGE) return sb; if (!staffClient) staffClient = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storageKey: STAFF_KEY, autoRefreshToken: false, detectSessionInUrl: false } }); return staffClient; }
+export async function isStaffOnDevice() { try { const c = staffSb(); const { data: { session } } = await c.auth.getSession(); if (!session) return false; const { data } = await c.rpc('is_admin'); return data === true; } catch (e) { return false; } }
+export function setMode(m) { try { localStorage.setItem('yj-mode', m); } catch (e) { } }
+export function getMode() { try { return localStorage.getItem('yj-mode') || 'candidate'; } catch (e) { return 'candidate'; } }
 
 // ---------- tiny UI helpers ----------
 export const $ = (id) => document.getElementById(id);
@@ -24,6 +31,10 @@ export const pay = (j) => j.pay_min && j.pay_max && j.pay_min !== j.pay_max ? `â
 export function strength(c, docs = {}) { let s = 30; if (c.prefs) s += 15; if (c.exp) s += 15; if (c.personal) s += 10; if (docs.photo) s += 10; if (docs.id) s += 15; if (docs.cert) s += 5; return Math.min(100, s); }
 
 // ---------- areas ----------
+let cityCache = null;
+export async function cities() { if (cityCache) return cityCache; const { data } = await sb.from('cities').select('name,name_hi,sort_order,lat,lng').eq('active', true).order('sort_order'); cityCache = data || []; return cityCache; }
+// Areas to pick from in a city; a city with no listed areas gets one "whole city" entry at its centre.
+export function areasIn(city, AREAS, CITIES) { const list = AREAS.filter((a) => a.city === city); if (list.length) return list; const c = CITIES.find((x) => x.name === city); return c ? [{ name: c.name, city: c.name, lat: c.lat, lng: c.lng }] : []; }
 let areaCache = null;
 export async function areas() { if (areaCache) return areaCache; const { data } = await sb.from('areas').select('name,city,lat,lng').eq('active', true).order('name'); areaCache = data || []; return areaCache; }
 

@@ -6,14 +6,14 @@ export const T = {
     // landing
     hero: 'आपके घर के पास नर्सिंग और केयर की नौकरियाँ', heroSub: '1 मिनट में रजिस्टर करें। हमारी टीम 24 घंटे में कॉल करेगी। नौकरियाँ WhatsApp पर मिलेंगी।',
     role1: 'केयरगिवर (Caregiver)', role1d: 'बुज़ुर्गों की देखभाल, ऑपरेशन के बाद, बिस्तर पर मरीज़', role2: 'नर्स (GNM / ANM / BSc)', role2d: 'होम ICU, इंजेक्शन, घाव की ड्रेसिंग', role3: 'फिज़ियोथेरेपिस्ट (Physio)', role3d: 'घर पर विज़िट, रिहैब, चलने-फिरने में मदद',
-    register: '1 मिनट में रजिस्टर करें', login: 'पहले से रजिस्टर हैं? लॉग इन करें', footer: 'YORO Health की सेवा · पुणे', staff: 'स्टाफ लॉगिन',
+    register: '1 मिनट में रजिस्टर करें', login: 'पहले से रजिस्टर हैं? लॉग इन करें', footer: 'YORO Health की सेवा', staff: 'स्टाफ लॉगिन',
     // phone / pin
     phoneTitle: 'आपका मोबाइल नंबर', phoneSub: 'यही नंबर आपका लॉगिन है। कोई SMS/OTP नहीं — बस 4 अंकों का PIN चुनें।', phoneLbl: 'मोबाइल नंबर', phonePh: '10 अंकों का नंबर',
     pinEnter: 'अपना 4 अंकों का PIN डालें', pinForgot: 'PIN भूल गए? YORO को WhatsApp/कॉल करें', changeNo: 'नंबर बदलें', continueBtn: 'आगे बढ़ें', loginBtn: 'लॉग इन', terms: 'आगे बढ़ने पर आप Yoro Jobs की शर्तों और प्राइवेसी नीति से सहमत हैं।',
     welcomeBack: 'वापसी पर स्वागत', err10: '10 अंकों का मोबाइल नंबर डालें।', errPin: 'अपना 4 अंकों का PIN डालें।', errWrongPin: 'PIN गलत है। फिर से कोशिश करें या YORO को कॉल करके रीसेट करवाएँ।', errNet: 'कनेक्ट नहीं हो पाया। इंटरनेट जाँचें और फिर कोशिश करें।',
     // register
     step2: 'चरण 2 / 2', regTitle: 'बस 3 बातें', regSub: 'शुरू करने के लिए इतना ही चाहिए। बाकी सब वैकल्पिक है।', nameLbl: 'पूरा नाम (आधार के अनुसार)', namePh: 'आपका नाम', pinLbl: '4 अंकों का PIN चुनें (लॉगिन के लिए)', pinPh: 'PIN', pinAgain: 'फिर से',
-    iAm: 'मैं हूँ', areaLbl: 'आप कहाँ रहते हैं? (पुणे का इलाका)', gps: '📍 मेरी लोकेशन लें', areaPh: 'इलाका लिखें, जैसे Hadapsar', registerBtn: 'रजिस्टर करें',
+    iAm: 'मैं हूँ', cityLbl: 'आपका शहर', areaLbl: 'आपका इलाका', useTyped: 'यही इलाका चुनें', areaLbl0: '', gps: '📍 मेरी लोकेशन लें', areaPh: 'अपना इलाका लिखें', registerBtn: 'रजिस्टर करें',
     errName: 'कृपया अपना नाम लिखें।', errPin4: '4 अंकों का PIN चुनें।', errPinMatch: 'दोनों PIN मेल नहीं खाते।', errRole: 'Caregiver, Nurse या Physio चुनें।', errArea: 'सूची से अपना इलाका चुनें या लोकेशन लें।', errReg: 'रजिस्टर नहीं हो पाया। इंटरनेट जाँचें और फिर कोशिश करें।',
     pinned: 'लोकेशन सेट:', pinnedGps: 'आपकी लोकेशन सेट हो गई, सबसे पास का इलाका:', wrongArea: 'गलत है? ऊपर अपना इलाका लिखें।', gpsFinding: 'लोकेशन ढूँढ रहे हैं…', gpsFail: 'लोकेशन नहीं मिली — इलाका लिखें', registered: 'रजिस्टर हो गया! हमारी टीम 24 घंटे में कॉल करेगी।',
     // home
@@ -41,12 +41,12 @@ export const T = {
   mr: {
     hero: 'तुमच्या घराजवळ नर्सिंग आणि केअरच्या नोकऱ्या', heroSub: '1 मिनिटात नोंदणी करा. आमची टीम 24 तासांत कॉल करेल. नोकऱ्या WhatsApp वर मिळतील.',
     role1: 'केअरगिव्हर (Caregiver)', role1d: 'वृद्धांची काळजी, ऑपरेशननंतर, अंथरुणावरचे रुग्ण', role2: 'नर्स (GNM / ANM / BSc)', role2d: 'होम ICU, इंजेक्शन, जखमेची ड्रेसिंग', role3: 'फिजिओथेरपिस्ट (Physio)', role3d: 'घरी भेट, रिहॅब, हालचालीत मदत',
-    register: '1 मिनिटात नोंदणी करा', login: 'आधीच नोंदणी केली आहे? लॉग इन करा', footer: 'YORO Health ची सेवा · पुणे', staff: 'स्टाफ लॉगिन',
+    register: '1 मिनिटात नोंदणी करा', login: 'आधीच नोंदणी केली आहे? लॉग इन करा', footer: 'YORO Health ची सेवा', staff: 'स्टाफ लॉगिन',
     phoneTitle: 'तुमचा मोबाइल नंबर', phoneSub: 'हाच नंबर तुमचा लॉगिन आहे. SMS/OTP नाही — फक्त 4 अंकी PIN निवडा.', phoneLbl: 'मोबाइल नंबर', phonePh: '10 अंकी नंबर',
     pinEnter: 'तुमचा 4 अंकी PIN टाका', pinForgot: 'PIN विसरलात? YORO ला WhatsApp/कॉल करा', changeNo: 'नंबर बदला', continueBtn: 'पुढे जा', loginBtn: 'लॉग इन', terms: 'पुढे गेल्यास तुम्ही Yoro Jobs च्या अटी आणि गोपनीयता धोरणाशी सहमत आहात.',
     welcomeBack: 'पुन्हा स्वागत', err10: '10 अंकी मोबाइल नंबर टाका.', errPin: 'तुमचा 4 अंकी PIN टाका.', errWrongPin: 'PIN चुकीचा आहे. पुन्हा प्रयत्न करा किंवा YORO ला कॉल करून रीसेट करा.', errNet: 'कनेक्ट होऊ शकले नाही. इंटरनेट तपासा आणि पुन्हा प्रयत्न करा.',
     step2: 'पायरी 2 / 2', regTitle: 'फक्त 3 गोष्टी', regSub: 'सुरुवातीला एवढंच पुरे. बाकी सर्व ऐच्छिक.', nameLbl: 'पूर्ण नाव (आधारप्रमाणे)', namePh: 'तुमचे नाव', pinLbl: '4 अंकी PIN निवडा (लॉगिनसाठी)', pinPh: 'PIN', pinAgain: 'पुन्हा',
-    iAm: 'मी आहे', areaLbl: 'तुम्ही कुठे राहता? (पुण्यातील भाग)', gps: '📍 माझे लोकेशन घ्या', areaPh: 'भाग लिहा, उदा. Hadapsar', registerBtn: 'नोंदणी करा',
+    iAm: 'मी आहे', cityLbl: 'तुमचे शहर', areaLbl: 'तुमचा भाग', useTyped: 'हाच भाग निवडा', areaLbl0: '', gps: '📍 माझे लोकेशन घ्या', areaPh: 'तुमचा भाग लिहा', registerBtn: 'नोंदणी करा',
     errName: 'कृपया तुमचे नाव लिहा.', errPin4: '4 अंकी PIN निवडा.', errPinMatch: 'दोन्ही PIN जुळत नाहीत.', errRole: 'Caregiver, Nurse किंवा Physio निवडा.', errArea: 'यादीतून तुमचा भाग निवडा किंवा लोकेशन घ्या.', errReg: 'नोंदणी होऊ शकली नाही. इंटरनेट तपासा आणि पुन्हा प्रयत्न करा.',
     pinned: 'लोकेशन सेट:', pinnedGps: 'तुमचे लोकेशन सेट झाले, जवळचा भाग:', wrongArea: 'चुकीचे? वर तुमचा भाग लिहा.', gpsFinding: 'लोकेशन शोधत आहे…', gpsFail: 'लोकेशन मिळाले नाही — भाग लिहा', registered: 'नोंदणी झाली! आमची टीम 24 तासांत कॉल करेल.',
     namaste: 'नमस्कार,', verified: 'YORO व्हेरिफाइड', notVerified: 'अजून व्हेरिफाइड नाही', inVerification: 'व्हेरिफिकेशन सुरू आहे', availTitle: 'कामासाठी उपलब्ध', availOn: 'रिक्रूटर तुम्हाला पाहू शकतात', availOff: 'जॉब अलर्टपासून लपवलेले',
@@ -71,12 +71,12 @@ export const T = {
   en: {
     hero: 'Nursing & care jobs near your home', heroSub: 'Register in 1 minute. Our team calls you within 24 hours. Jobs come to you on WhatsApp.',
     role1: 'Caregiver', role1d: 'Elder care, post-op, bedridden patients', role2: 'Nurse (GNM / ANM / BSc)', role2d: 'Home ICU, injections, wound care', role3: 'Physiotherapist', role3d: 'Home visits, rehab, mobility',
-    register: 'Register in 1 minute', login: 'Already registered? Log in', footer: 'A YORO Health service · Pune', staff: 'Staff login',
+    register: 'Register in 1 minute', login: 'Already registered? Log in', footer: 'A YORO Health service', staff: 'Staff login',
     phoneTitle: 'Your mobile number', phoneSub: 'This number is your login. No SMS, no OTP — just a 4-digit PIN you choose.', phoneLbl: 'Mobile number', phonePh: '10-digit number',
     pinEnter: 'Enter your 4-digit PIN', pinForgot: 'Forgot your PIN? WhatsApp or call YORO on', changeNo: 'Change number', continueBtn: 'Continue', loginBtn: 'Log in', terms: 'By continuing you agree to the Yoro Jobs terms and privacy policy.',
     welcomeBack: 'Welcome back', err10: 'Enter a 10-digit mobile number.', errPin: 'Enter your 4-digit PIN.', errWrongPin: 'Wrong PIN. Try again, or call YORO to reset it.', errNet: 'Could not connect. Check your internet and try again.',
     step2: 'Step 2 of 2', regTitle: 'Just 3 things', regSub: "That's all we need to start. Everything else is optional.", nameLbl: 'Full name (as on Aadhaar)', namePh: 'Your name', pinLbl: 'Choose a 4-digit PIN (you will use it to log in)', pinPh: 'PIN', pinAgain: 'Again',
-    iAm: 'I am a', areaLbl: 'Where do you live? (area in Pune)', gps: '📍 Use my current location', areaPh: 'Type your area, e.g. Hadapsar', registerBtn: 'Register',
+    iAm: 'I am a', cityLbl: 'Your city', areaLbl: 'Your area', useTyped: 'Use this area', areaLbl0: '', gps: '📍 Use my current location', areaPh: 'Type your area', registerBtn: 'Register',
     errName: 'Please enter your name.', errPin4: 'Choose a 4-digit PIN.', errPinMatch: 'The two PINs do not match.', errRole: 'Please choose Caregiver, Nurse or Physio.', errArea: 'Please pick your area from the list or use your location.', errReg: 'Could not register. Check your internet and try again.',
     pinned: 'Pinned:', pinnedGps: 'Pinned at your location, nearest area:', wrongArea: 'Wrong? Type your area above.', gpsFinding: 'Finding you…', gpsFail: 'Could not get location — type your area', registered: 'Registered! Our team will call you within 24 h.',
     namaste: 'Namaste,', verified: 'YORO Verified', notVerified: 'not yet verified', inVerification: 'verification in progress', availTitle: 'Available for work', availOn: 'Recruiters can see you', availOff: 'Hidden from job alerts',

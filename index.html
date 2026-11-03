@@ -73,9 +73,11 @@
     <div class="row"><input class="inp" id="pin1" type="password" inputmode="numeric" maxlength="4" data-tp="pinPh" placeholder="PIN" autocomplete="new-password" style="letter-spacing:6px;text-align:center"><input class="inp" id="pin2" type="password" inputmode="numeric" maxlength="4" data-tp="pinAgain" placeholder="Again" autocomplete="new-password" style="letter-spacing:6px;text-align:center"></div>
     <span class="lbl" data-t="iAm">I am a</span>
     <div class="chips" id="roleChips"><button class="chip" data-v="Caregiver">Caregiver</button><button class="chip" data-v="Nurse">Nurse</button><button class="chip" data-v="Physio">Physio</button></div>
-    <label class="lbl" for="area" data-t="areaLbl">Where do you live? (area in Pune)</label>
+    <label class="lbl" for="citySel" data-t="cityLbl">Your city</label>
+    <select class="inp" id="citySel"></select>
+    <label class="lbl" for="area" data-t="areaLbl">Your area</label>
     <button class="btn sec" id="gpsBtn" style="height:46px;font-size:14px;border-style:dashed;margin-bottom:8px" data-t="gps">📍 Use my current location</button>
-    <input class="inp" id="area" data-tp="areaPh" placeholder="Type your area, e.g. Hadapsar" autocomplete="off">
+    <input class="inp" id="area" data-tp="areaPh" placeholder="Type your area" autocomplete="off">
     <div class="ac" id="areaAc"></div>
     <div id="areaPick" class="note" style="margin-top:8px"></div>
     <div id="regErr" class="err"></div>
@@ -157,13 +159,23 @@
 </div>
 </div>
 <div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<a href="./admin.html" class="staff-pill" id="staffPill" style="display:none" aria-label="Admin console">🛠 Admin</a>
 <div class="toast" id="toast"></div>
 
 <script type="module">
-import { sb, $, esc, toast, openSheet, closeSheet, initModal, chipRow, chipVal, fmtDate, initials, strength, areas, uploadDoc, signedUrl, drawIdCard, pay } from './shared.js';
+import { isStaffOnDevice, setMode, getMode, cities, areasIn, sb, $, esc, toast, openSheet, closeSheet, initModal, chipRow, chipVal, fmtDate, initials, strength, areas, uploadDoc, signedUrl, drawIdCard, pay } from './shared.js';
 import { SKILLS, DEFAULT_CITY, SUPPORT } from './config.js';
 import { t, setLang, getLang, applyStatic } from './i18n.js';
 initModal(); applyStatic();
+// ---------- staff switch (visible only on devices where a YORO staff member is logged in) ----------
+const lastMode = getMode(); setMode('candidate');
+isStaffOnDevice().then((staff) => {
+  if (!staff) return;
+  const launchedFromApp = new URLSearchParams(location.search).get('source') === 'app';
+  if (launchedFromApp && lastMode === 'admin') { setMode('admin'); location.replace('./admin.html'); return; }
+  $('staffPill').style.display = 'flex';
+});
+$('staffPill').onclick = () => setMode('admin');
 // ---------- install as app (PWA) ----------
 if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
 const isStandalone = () => window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
@@ -179,10 +191,10 @@ document.addEventListener('click', async (e) => {
   else if (isIOS) { openSheet(`<h2>${t('installTitle')}</h2><p class="sub">${t('iosHint')}</p><button class="btn" id="closeSheet">OK</button>`); $('closeSheet').onclick = closeSheet; }
   else toast(t('installMenu'), 5000);
 });
-document.addEventListener('click', (e) => { const b = e.target.closest('[data-lang]'); if (!b) return; setLang(b.dataset.lang); if (me) { const h = (location.hash || '#home').slice(1); if (h === 'home') renderHome(); if (h === 'profile') renderProfile(); if (h === 'jobs') renderJobs(); if (h === 'job') renderJob(); } });
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-lang]'); if (!b) return; setLang(b.dataset.lang); if (CITIES.length) fillCities(); if (me) { const h = (location.hash || '#home').slice(1); if (h === 'home') renderHome(); if (h === 'profile') renderProfile(); if (h === 'jobs') renderJobs(); if (h === 'job') renderJob(); } });
 
 // ---------- state ----------
-let user = null, me = null, docs = {}, jobs = [], curJob = null, jobFilter = 'all', selRole = null, selArea = null, pendingPhone = null, AREAS = [];
+let user = null, me = null, docs = {}, jobs = [], curJob = null, jobFilter = 'all', selRole = null, selArea = null, pendingPhone = null, AREAS = [], CITIES = [];
 const show = (id) => { document.querySelectorAll('.screen').forEach((s) => s.classList.remove('on')); $('s-' + id).classList.add('on'); $('nav').style.display = (me && !['landing', 'otp', 'register', 'job', 'loading'].includes(id)) ? 'flex' : 'none'; document.querySelectorAll('#nav a').forEach((a) => a.classList.toggle('on', a.dataset.n === id)); window.scrollTo(0, 0); };
 const isCandidateUser = (u) => !!u && /@candidates\.yorojobs\.local$/.test(u.email || '');
 async function loadMe() { if (!user) { me = null; return; } if (!isCandidateUser(user)) { await sb.auth.signOut({ scope: 'local' }); user = null; me = null; return; } const { data } = await sb.from('candidates').select('*').eq('id', user.id).maybeSingle(); me = data; if (me) { const { data: d } = await sb.from('documents').select('*').eq('candidate_id', user.id); docs = {}; (d || []).forEach((x) => (docs[x.slot] = x)); } }
@@ -199,7 +211,9 @@ window.addEventListener('hashchange', route);
 
 // ---------- auth ----------
 sb.auth.onAuthStateChange(async (ev, session) => { user = session?.user || null; if (ev === 'SIGNED_OUT') { me = null; location.hash = '#landing'; } });
-(async () => { const { data: { session } } = await sb.auth.getSession(); user = session?.user || null; await loadMe(); AREAS = await areas(); route(); })();
+(async () => { const { data: { session } } = await sb.auth.getSession(); user = session?.user || null; await loadMe(); [AREAS, CITIES] = await Promise.all([areas(), cities()]); fillCities(); route(); })();
+function fillCities() { const sel = $('citySel'); const cur = sel.value || 'Pune'; sel.innerHTML = CITIES.map((c) => `<option value="${esc(c.name)}" ${c.name === cur ? 'selected' : ''}>${getLang() === 'en' ? esc(c.name) : esc(c.name_hi) + ' · ' + esc(c.name)}</option>`).join(''); }
+$('citySel').onchange = () => { selArea = null; $('area').value = ''; $('areaPick').textContent = ''; $('areaAc').style.display = 'none'; };
 
 const emailFor = (p) => `${p}@candidates.yorojobs.local`, pwFor = (pin, p) => `yj-${pin}-${p}`;
 let knownUser = false;
@@ -230,12 +244,24 @@ $('verifyOtp').onclick = async () => {
 // ---------- register ----------
 $('roleChips').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; selRole = b.dataset.v; document.querySelectorAll('#roleChips .chip').forEach((c) => c.classList.toggle('on', c === b)); };
 const areaIn = $('area'), ac = $('areaAc');
-areaIn.oninput = () => { selArea = null; $('areaPick').textContent = ''; const q = areaIn.value.trim().toLowerCase(); const m = q ? AREAS.filter((a) => a.name.toLowerCase().includes(q)).slice(0, 6) : []; ac.innerHTML = m.map((a) => `<div data-a="${esc(a.name)}"><b>${esc(a.name)}</b>, ${esc(a.city)}</div>`).join(''); ac.style.display = m.length ? 'block' : 'none'; };
-ac.onclick = (e) => { const d = e.target.closest('[data-a]'); if (!d) return; const a = AREAS.find((x) => x.name === d.dataset.a); selArea = { name: a.name, city: a.city, lat: a.lat, lng: a.lng }; areaIn.value = a.name; ac.style.display = 'none'; $('areaPick').innerHTML = `📍 ${t('pinned')} <b>${esc(a.name)}, ${esc(a.city)}</b>`; };
+areaIn.oninput = () => {
+  selArea = null; $('areaPick').textContent = ''; const city = $('citySel').value; const q = areaIn.value.trim();
+  const listed = AREAS.filter((a) => a.city === city); const m = q ? listed.filter((a) => a.name.toLowerCase().includes(q.toLowerCase())).slice(0, 6) : [];
+  ac.innerHTML = m.map((a) => `<div data-a="${esc(a.name)}"><b>${esc(a.name)}</b>, ${esc(a.city)}</div>`).join('') + (q.length >= 2 && !m.some((a) => a.name.toLowerCase() === q.toLowerCase()) ? `<div data-free="1">📍 <b>${esc(q)}</b>, ${esc(city)} <span class="note">· ${t('useTyped')}</span></div>` : '');
+  ac.style.display = ac.innerHTML ? 'block' : 'none';
+};
+ac.onclick = (e) => {
+  const city = $('citySel').value;
+  const d = e.target.closest('[data-a]');
+  if (d) { const a = AREAS.find((x) => x.name === d.dataset.a); selArea = { name: a.name, city: a.city, lat: a.lat, lng: a.lng }; }
+  else if (e.target.closest('[data-free]')) { const near = AREAS.filter((a) => a.city === city); const c = CITIES.find((x) => x.name === city); const q = areaIn.value.trim(); const hit = near.find((a) => a.name.toLowerCase().includes(q.toLowerCase())); const base = hit || c; selArea = { name: q, city, lat: base.lat, lng: base.lng }; }
+  else return;
+  areaIn.value = selArea.name; ac.style.display = 'none'; $('areaPick').innerHTML = `📍 ${t('pinned')} <b>${esc(selArea.name)}, ${esc(selArea.city)}</b>`;
+};
 $('gpsBtn').onclick = () => {
   if (!navigator.geolocation) return toast(t('gpsFail'));
   $('gpsBtn').textContent = t('gpsFinding');
-  navigator.geolocation.getCurrentPosition((pos) => { const { latitude: la, longitude: lo } = pos.coords; const d = (a) => (a.lat - la) ** 2 + (a.lng - lo) ** 2; const near = [...AREAS].sort((a, b) => d(a) - d(b))[0]; selArea = { name: near.name, city: near.city, lat: la, lng: lo }; areaIn.value = near.name; $('areaPick').innerHTML = `📍 ${t('pinnedGps')} <b>${esc(near.name)}</b>. ${t('wrongArea')}`; $('gpsBtn').textContent = t('gps'); }, () => { toast(t('gpsFail')); $('gpsBtn').textContent = t('gps'); }, { enableHighAccuracy: true, timeout: 8000 });
+  navigator.geolocation.getCurrentPosition((pos) => { const { latitude: la, longitude: lo } = pos.coords; const d = (a) => (a.lat - la) ** 2 + (a.lng - lo) ** 2; const city = [...CITIES].sort((a, b) => d(a) - d(b))[0]; $('citySel').value = city.name; const inCity = AREAS.filter((a) => a.city === city.name).sort((a, b) => d(a) - d(b)); const near = inCity[0] && d(inCity[0]) < 0.0025 ? inCity[0] : { name: city.name }; selArea = { name: near.name, city: city.name, lat: la, lng: lo }; areaIn.value = near.name; $('areaPick').innerHTML = `📍 ${t('pinnedGps')} <b>${esc(near.name)}</b>. ${t('wrongArea')}`; $('gpsBtn').textContent = t('gps'); }, () => { toast(t('gpsFail')); $('gpsBtn').textContent = t('gps'); }, { enableHighAccuracy: true, timeout: 8000 });
 };
 $('registerBtn').onclick = async () => {
   const name = $('name').value.trim(); const err = $('regErr'); err.textContent = '';
@@ -317,7 +343,7 @@ $('jobList').onclick = (e) => { const a = e.target.closest('[data-j]'); if (a) c
 $('jobFilters').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; jobFilter = b.dataset.f; document.querySelectorAll('#jobFilters .chip').forEach((c) => c.classList.toggle('on', c === b)); renderJobs(); };
 function renderJob() {
   const j = jobs.find((x) => x.id === curJob); if (!j) { location.hash = '#jobs'; return; }
-  $('jobDetail').innerHTML = `<span class="tag ${j.my_status ? 't-warn' : 't-new'}">${j.my_status ? esc(t('status.' + j.my_status)) : t('new')}</span><h1 style="margin-top:8px">${esc(t('roles.' + j.role))} · ${esc(t('shifts.' + j.shift))} ${t('shiftWord')}</h1><div class="sub">📍 ${esc(j.area)}, Pune · <b style="color:#0F766E">${t('kmFromYou', { d: j.distance_km })}</b></div><div class="note">${t('addrLater')}</div>${j.gender_pref && j.gender_pref !== 'Any' ? `<div style="margin-top:8px"><span class="tag t-warn" style="font-size:13px;padding:5px 10px">${esc(t('genderOnly.' + j.gender_pref))}</span></div>` : ''}<div class="grid2" style="margin:16px 0"><div class="kv"><b>${t('pay')}</b><span>${pay(j)} ${esc(t('perUnit.' + j.pay_unit))}</span></div><div class="kv"><b>${t('shift')}</b><span>${esc(j.timing || t('shifts.' + j.shift))}</span></div><div class="kv"><b>${t('duration')}</b><span>${esc(j.duration || '—')}</span></div><div class="kv"><b>${t('startsOn')}</b><span>${fmtDate(j.start_date)}</span></div></div><b>${t('about')}</b><p class="sub" style="margin:4px 0 14px">${esc(j.brief || '—')}</p><b>${t('skills')}</b><div class="chips" style="margin-top:6px">${(j.skills || []).map((s) => `<span class="tag t-mute" style="font-size:13px;padding:6px 10px">${esc(s)}</span>`).join('') || '<span class="note">—</span>'}</div>${j.verified_only && !me.verified ? `<div class="card" style="margin-top:14px;background:#FFF4E5;border-color:#FCD9A8;font-size:13px">${t('verifiedOnly')}</div>` : ''}`;
+  $('jobDetail').innerHTML = `<span class="tag ${j.my_status ? 't-warn' : 't-new'}">${j.my_status ? esc(t('status.' + j.my_status)) : t('new')}</span><h1 style="margin-top:8px">${esc(t('roles.' + j.role))} · ${esc(t('shifts.' + j.shift))} ${t('shiftWord')}</h1><div class="sub">📍 ${esc(j.area)} · <b style="color:#0F766E">${t('kmFromYou', { d: j.distance_km })}</b></div><div class="note">${t('addrLater')}</div>${j.gender_pref && j.gender_pref !== 'Any' ? `<div style="margin-top:8px"><span class="tag t-warn" style="font-size:13px;padding:5px 10px">${esc(t('genderOnly.' + j.gender_pref))}</span></div>` : ''}<div class="grid2" style="margin:16px 0"><div class="kv"><b>${t('pay')}</b><span>${pay(j)} ${esc(t('perUnit.' + j.pay_unit))}</span></div><div class="kv"><b>${t('shift')}</b><span>${esc(j.timing || t('shifts.' + j.shift))}</span></div><div class="kv"><b>${t('duration')}</b><span>${esc(j.duration || '—')}</span></div><div class="kv"><b>${t('startsOn')}</b><span>${fmtDate(j.start_date)}</span></div></div><b>${t('about')}</b><p class="sub" style="margin:4px 0 14px">${esc(j.brief || '—')}</p><b>${t('skills')}</b><div class="chips" style="margin-top:6px">${(j.skills || []).map((s) => `<span class="tag t-mute" style="font-size:13px;padding:6px 10px">${esc(s)}</span>`).join('') || '<span class="note">—</span>'}</div>${j.verified_only && !me.verified ? `<div class="card" style="margin-top:14px;background:#FFF4E5;border-color:#FCD9A8;font-size:13px">${t('verifiedOnly')}</div>` : ''}`;
   const b = $('interestBtn'); b.disabled = !!j.my_status; b.textContent = j.my_status ? t('youAre', { s: t('status.' + j.my_status) }) : t('interested');
 }
 $('interestBtn').onclick = async () => { const { error } = await sb.from('job_interests').insert({ job_id: curJob, candidate_id: me.id }); if (error) return toast('Could not send: ' + error.message); toast(t('interestSent')); const { data } = await sb.rpc('jobs_near_me_v2'); jobs = data || []; renderJob(); };
