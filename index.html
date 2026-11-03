@@ -24,7 +24,7 @@
 
 <section class="screen" id="s-landing">
   <div class="pad" style="padding-top:40px">
-    <div class="row" style="margin-bottom:40px;justify-content:space-between"><div class="row"><div style="width:34px;height:34px;border-radius:9px;background:#0F766E;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">Y</div><b style="font-size:18px">Yoro Jobs</b></div><div class="chips lang-chips"><button class="chip" data-lang="hi" style="padding:5px 10px;font-size:12px">हिंदी</button><button class="chip" data-lang="mr" style="padding:5px 10px;font-size:12px">मराठी</button><button class="chip" data-lang="en" style="padding:5px 10px;font-size:12px">EN</button></div></div>
+    <div class="row" style="margin-bottom:14px"><div style="width:34px;height:34px;border-radius:9px;background:#0F766E;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">Y</div><b style="font-size:18px;white-space:nowrap">Yoro Jobs</b></div><div class="chips lang-chips" style="margin-bottom:30px;gap:6px"><button class="chip" data-lang="hi" style="padding:5px 10px;font-size:12px">हिंदी</button><button class="chip" data-lang="hn" style="padding:5px 10px;font-size:12px">Hinglish</button><button class="chip" data-lang="mr" style="padding:5px 10px;font-size:12px">मराठी</button><button class="chip" data-lang="en" style="padding:5px 10px;font-size:12px">EN</button></div>
     <h1 style="font-size:32px;line-height:1.15" data-t="hero">Nursing &amp; care jobs near your home</h1>
     <p class="sub" data-t="heroSub">Register in 1 minute. Our team calls you within 24 hours. Jobs come to you on WhatsApp.</p>
     <div style="margin-top:20px"><div class="card row install-card" style="display:none;border:2px dashed #0F766E;background:#F2FAF8"><img src="./assets/icons/icon-192.png" alt="" style="width:44px;height:44px;border-radius:10px"><div class="grow"><b data-t="installTitle">Install the Yoro Jobs app</b><div class="note" data-t="installSub">Icon on your home screen — open in one tap</div></div><button class="btn sm install-btn" data-t="installBtn">Install</button></div></div>
@@ -91,7 +91,7 @@
     <div class="hero-shade"></div>
     <div class="hero-top row" style="justify-content:space-between">
       <div class="row" style="gap:8px"><div style="width:30px;height:30px;border-radius:8px;background:#fff;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">Y</div><b style="color:#fff;font-size:15px">Yoro Jobs</b></div>
-      <div class="row" style="gap:6px"><div class="chips lang-chips" style="gap:4px"><button class="chip hc" data-lang="hi">हिं</button><button class="chip hc" data-lang="mr">मर</button><button class="chip hc" data-lang="en">EN</button></div>
+      <div class="row" style="gap:6px"><div class="chips lang-chips" style="gap:4px"><button class="chip hc" data-lang="hi">हिं</button><button class="chip hc" data-lang="hn">Hn</button><button class="chip hc" data-lang="mr">मर</button><button class="chip hc" data-lang="en">EN</button></div>
       <button class="avatar" id="hAvatar" aria-label="My profile" style="border:2px solid #fff;width:40px;height:40px;cursor:pointer">—</button></div>
     </div>
     <div class="hero-text">
@@ -213,7 +213,7 @@ window.addEventListener('hashchange', route);
 // ---------- auth ----------
 sb.auth.onAuthStateChange(async (ev, session) => { user = session?.user || null; if (ev === 'SIGNED_OUT') { me = null; location.hash = '#landing'; } });
 (async () => { const { data: { session } } = await sb.auth.getSession(); user = session?.user || null; await loadMe(); [AREAS, CITIES] = await Promise.all([areas(), cities()]); fillCities(); route(); })();
-function fillCities() { const sel = $('citySel'); const cur = sel.value || 'Pune'; sel.innerHTML = CITIES.map((c) => `<option value="${esc(c.name)}" ${c.name === cur ? 'selected' : ''}>${getLang() === 'en' ? esc(c.name) : esc(c.name_hi) + ' · ' + esc(c.name)}</option>`).join(''); }
+function fillCities() { const sel = $('citySel'); const cur = sel.value || 'Pune'; sel.innerHTML = CITIES.map((c) => `<option value="${esc(c.name)}" ${c.name === cur ? 'selected' : ''}>${['en', 'hn'].includes(getLang()) ? esc(c.name) : esc(c.name_hi) + ' · ' + esc(c.name)}</option>`).join(''); }
 $('citySel').onchange = () => { selArea = null; $('area').value = ''; $('areaPick').textContent = ''; $('areaAc').style.display = 'none'; };
 
 const emailFor = (p) => `${p}@candidates.yorojobs.local`, pwFor = (pin, p) => `yj-${pin}-${p}`;
@@ -320,7 +320,7 @@ $('idCardBtn').onclick = async () => { const u = await signedUrl(me.photo_path);
 document.addEventListener('click', (e) => { const b = e.target.closest('[data-open]'); if (!b) return; e.preventDefault(); openCard(b.dataset.open); });
 function openLocation() {
   const c = me; let sel = null;
-  const cityName = (x) => (getLang() === 'en' ? esc(x.name) : esc(x.name_hi) + ' · ' + esc(x.name));
+  const cityName = (x) => (['en', 'hn'].includes(getLang()) ? esc(x.name) : esc(x.name_hi) + ' · ' + esc(x.name));
   openSheet(`<h2>${t('locTitle')}</h2><p class="sub">${t('locSub')}</p><label class="lbl" for="lcity">${t('cityLbl')}</label><select class="inp" id="lcity">${CITIES.map((x) => `<option value="${esc(x.name)}" ${x.name === c.city ? 'selected' : ''}>${cityName(x)}</option>`).join('')}</select><button class="btn sec" id="lgps" style="height:46px;font-size:14px;border-style:dashed;margin:12px 0 0">${t('gps')}</button><label class="lbl" for="larea">${t('areaLbl')}</label><input class="inp" id="larea" value="${esc(c.area)}" placeholder="${esc(t('areaPh'))}" autocomplete="off"><div class="ac" id="lac"></div><div class="note" id="lpick" style="margin-top:8px">📍 ${esc(c.area)}, ${esc(c.city)}</div><div class="err" id="lerr"></div><button class="btn" id="lsave" style="margin-top:20px">${t('save')}</button><button class="btn ghost" id="lclose" style="margin-top:8px">✕</button>`);
   const inp = $('larea'), lac = $('lac');
   const show = () => { $('lpick').innerHTML = `📍 ${t('pinned')} <b>${esc(sel.name)}, ${esc(sel.city)}</b>`; };

@@ -1,5 +1,5 @@
 // Candidate-app translations. Default language: Hindi. Keys are used via data-t="key" on static elements and t('key') in JS.
-export const LANGS = { hi: 'हिंदी', mr: 'मराठी', en: 'English' };
+export const LANGS = { hi: 'हिंदी', hn: 'Hinglish', mr: 'मराठी', en: 'English' };
 export const DEFAULT_LANG = 'hi';
 export const T = {
   hi: {
@@ -38,6 +38,37 @@ export const T = {
     genderOnly: { Female: 'सिर्फ महिला', Male: 'सिर्फ पुरुष' },
     locTitle: 'मेरी लोकेशन', locSub: 'शहर और इलाका — पास की नौकरियाँ इसी से मिलती हैं', save: 'सेव करें', locSaved: 'लोकेशन अपडेट हो गई', locPick: 'सूची से इलाका चुनें या लोकेशन लें',
     installTitle: 'Yoro Jobs ऐप इंस्टॉल करें', installSub: 'होम स्क्रीन पर आइकन — एक टैप में खोलें', installBtn: 'इंस्टॉल', installed: 'ऐप इंस्टॉल हो गया! होम स्क्रीन पर Yoro Jobs आइकन देखें।', installMenu: 'Chrome में ⋮ मेनू दबाएँ → "होम स्क्रीन में जोड़ें" / "ऐप इंस्टॉल करें"', iosHint: 'Safari में नीचे Share (⬆️) बटन दबाएँ → "Add to Home Screen" चुनें।',
+  },
+  hn: {
+    hero: 'Aapke ghar ke paas nursing aur care ki naukriyan', heroSub: '1 minute mein register karein. Hamari team 24 ghante mein call karegi. Naukriyan WhatsApp par milengi.',
+    role1: 'Caregiver', role1d: 'Buzurgon ki dekhbhaal, operation ke baad, bistar par mareez', role2: 'Nurse (GNM / ANM / BSc)', role2d: 'Home ICU, injection, ghaav ki dressing', role3: 'Physiotherapist (Physio)', role3d: 'Ghar par visit, rehab, chalne-phirne mein madad',
+    register: '1 minute mein register karein', login: 'Pehle se registered hain? Login karein', footer: 'YORO Health ki seva', staff: 'Staff login',
+    phoneTitle: 'Aapka mobile number', phoneSub: 'Yahi number aapka login hai. Koi SMS/OTP nahi — bas 4 digit ka PIN chunein.', phoneLbl: 'Mobile number', phonePh: '10 digit ka number',
+    pinEnter: 'Apna 4 digit ka PIN daalein', pinForgot: 'PIN bhool gaye? YORO ko WhatsApp/call karein', changeNo: 'Number badlein', continueBtn: 'Aage badhein', loginBtn: 'Login', terms: 'Aage badhne par aap Yoro Jobs ki terms aur privacy policy se sehmat hain.',
+    welcomeBack: 'Wapas swagat hai', err10: '10 digit ka mobile number daalein.', errPin: 'Apna 4 digit ka PIN daalein.', errWrongPin: 'PIN galat hai. Dobara try karein ya YORO ko call karke reset karwayein.', errNet: 'Connect nahi ho paya. Internet check karke dobara try karein.',
+    step2: 'Step 2 / 2', regTitle: 'Bas 3 cheezein', regSub: 'Shuru karne ke liye itna hi chahiye. Baaki sab optional hai.', nameLbl: 'Poora naam (Aadhaar ke hisaab se)', namePh: 'Aapka naam', pinLbl: '4 digit ka PIN chunein (login ke liye)', pinPh: 'PIN', pinAgain: 'Dobara',
+    iAm: 'Main hoon', cityLbl: 'Aapka shehar', areaLbl: 'Aapka ilaaka', useTyped: 'Yahi ilaaka chunein', areaLbl0: '', gps: '📍 Meri location lein', areaPh: 'Apna ilaaka likhein', registerBtn: 'Register karein',
+    errName: 'Kripya apna naam likhein.', errPin4: '4 digit ka PIN chunein.', errPinMatch: 'Dono PIN match nahi kar rahe.', errRole: 'Caregiver, Nurse ya Physio chunein.', errArea: 'List se apna ilaaka chunein ya location lein.', errReg: 'Register nahi ho paya. Internet check karke dobara try karein.',
+    pinned: 'Location set:', pinnedGps: 'Aapki location set ho gayi, sabse paas ka ilaaka:', wrongArea: 'Galat hai? Upar apna ilaaka likhein.', gpsFinding: 'Location dhoondh rahe hain…', gpsFail: 'Location nahi mili — ilaaka likhein', registered: 'Register ho gaya! Hamari team 24 ghante mein call karegi.',
+    namaste: 'Namaste,', verified: 'YORO Verified', notVerified: 'abhi verified nahi', inVerification: 'verification chal raha hai', availTitle: 'Kaam ke liye available', availOn: 'Recruiter aapko dekh sakte hain', availOff: 'Job alerts se chhupe hue',
+    jobsNear: 'Aapke paas ki naukriyan', within: 'ke {r} km ke andar', seeAll: 'Sab dekhein ›', seeAllN: 'Sabhi {n} naukriyan dekhein', finding: 'Aapke paas ki naukriyan dhoondh rahe hain…',
+    noJobs: 'Abhi {r} km ke andar koi {role} naukri nahi hai', noJobsSub: 'Nayi naukri aate hi hum WhatsApp karenge. Profile poori karein taaki aap pehle chune jaayein.',
+    completeProfile: 'Apni profile poori karein', completeBtn: 'Profile poori karein ›', nextPhoto: 'Agla: apni photo jodein', nextId: 'Agla: verified hone ke liye Aadhaar upload karein', nextPrefs: 'Agla: shift ki pasand batayein', nextExp: 'Agla: apna experience jodein', nextPersonal: 'Agla: personal details', profileDone: 'Profile poori 🎉',
+    idReady: '🛡 Aapka YORO ID card taiyaar hai', idShow: 'Client ke ghar par dikhayein', view: 'Dekhein',
+    w1: 'Verified banein', w1d: 'Aadhaar upload karein → hum check karenge → families aapko pehle dekhengi.', w2: 'Time par paisa', w2d: 'Kaam shuru karne se pehle paisa tay. Koi commission nahi.', w3: 'Ghar ke paas', w3d: 'Aapke ilaake se doori ke hisaab se naukriyan.', w4: 'Asli insaan', w4d: 'Har naukri se pehle hamara recruiter aapko call karega.',
+    help: 'Madad chahiye?', helpSub: 'WhatsApp +91 92725 71708 ya email care@yorohealth.com', logout: 'Logout',
+    myProfile: 'Meri profile', profileSub: 'Har card poora karne par naukri jaldi milti hai', yourPhoto: 'Aapki photo', photoSub: 'YORO ID card ke liye zaroori. Chehra saaf dikhe.', add: 'Jodein', change: 'Badlein',
+    prefs: 'Kaam ki pasand', prefsSub: 'Full/part-time, din/raat, timing · +15%', exp: 'Experience aur skills', expSub: 'Saal, skills, pichhla hospital · +15%', docs: 'Documents', docsSub: 'Aadhaar / PAN, certificate · isse aap verified bante hain', personal: 'Personal details', personalSub: 'Gender, bhasha, address · +10%', account: 'Account',
+    jobsTitle: 'Aapke paas ki naukriyan', fAll: 'Sab', fDay: 'Din', fNight: 'Raat', f5: '5 km ke andar', noJobsList: 'Abhi {r} km ke andar koi {role} naukri nahi hai. Nayi aate hi hum WhatsApp par batayenge.',
+    new: 'Nayi', kmAway: '{d} km door', starts: 'Shuru', perUnit: { shift: 'per shift', month: 'per mahina', visit: 'per visit', hour: 'per ghanta' }, shiftWord: 'shift', shifts: { Day: 'Din', Night: 'Raat', '24-hr': '24 ghante', Visit: 'Visit' },
+    kmFromYou: 'Aapse {d} km', addrLater: 'Sahi address kaam pakka hone ke baad bataya jaayega.', pay: 'Paisa', shift: 'Shift', duration: 'Kitne din', startsOn: 'Shuru', about: 'Mareez ke baare mein', skills: 'Zaroori skills', verifiedOnly: 'Is family ne sirf verified candidates maange hain. Verified hone ke liye Aadhaar upload karein.',
+    interested: 'Mujhe yeh kaam chahiye', youAre: 'Aapka status: {s}', noForm: 'Koi form nahi. Hamara recruiter call karke pakka karega.', interestSent: 'Bhej diya. Recruiter aapko call karega.',
+    status: { interested: 'Interested', shortlisted: 'Shortlist', assigned: 'Kaam mila', rejected: 'Nahi chuna gaya', withdrawn: 'Wapas liya' },
+    nav: { home: 'Home', jobs: 'Naukriyan', profile: 'Profile' },
+    roles: { Caregiver: 'Caregiver', Nurse: 'Nurse', Physio: 'Physio' },
+    genderOnly: { Female: 'Sirf mahila', Male: 'Sirf purush' },
+    locTitle: 'Meri location', locSub: 'Shehar aur ilaaka — paas ki naukriyan isi se milti hain', save: 'Save karein', locSaved: 'Location update ho gayi', locPick: 'List se ilaaka chunein ya location lein',
+    installTitle: 'Yoro Jobs app install karein', installSub: 'Home screen par icon — ek tap mein kholein', installBtn: 'Install', installed: 'App install ho gaya! Home screen par Yoro Jobs icon dekhein.', installMenu: 'Chrome mein ⋮ menu dabayein → "Add to Home screen" / "Install app"', iosHint: 'Safari mein neeche Share (⬆️) button dabayein → "Add to Home Screen" chunein.',
   },
   mr: {
     hero: 'तुमच्या घराजवळ नर्सिंग आणि केअरच्या नोकऱ्या', heroSub: '1 मिनिटात नोंदणी करा. आमची टीम 24 तासांत कॉल करेल. नोकऱ्या WhatsApp वर मिळतील.',
@@ -105,10 +136,10 @@ export const T = {
 let lang = DEFAULT_LANG;
 try { const saved = localStorage.getItem('yj-lang'); if (saved && T[saved]) lang = saved; } catch (e) { }
 export const getLang = () => lang;
-export function setLang(l) { if (!T[l]) return; lang = l; try { localStorage.setItem('yj-lang', l); } catch (e) { } document.documentElement.lang = l === 'en' ? 'en' : l === 'mr' ? 'mr' : 'hi'; applyStatic(); }
+export function setLang(l) { if (!T[l]) return; lang = l; try { localStorage.setItem('yj-lang', l); } catch (e) { } document.documentElement.lang = l === 'en' ? 'en' : l === 'mr' ? 'mr' : l === 'hn' ? 'hi-Latn' : 'hi'; applyStatic(); }
 export function t(key, vars) { let v = key.split('.').reduce((o, k) => (o == null ? undefined : o[k]), T[lang]); if (v === undefined) v = key.split('.').reduce((o, k) => (o == null ? undefined : o[k]), T.en); if (typeof v !== 'string') return v ?? key; return vars ? v.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '') : v; }
 export function applyStatic() {
-  document.documentElement.lang = lang === 'en' ? 'en' : lang === 'mr' ? 'mr' : 'hi';
+  document.documentElement.lang = lang === 'en' ? 'en' : lang === 'mr' ? 'mr' : lang === 'hn' ? 'hi-Latn' : 'hi';
   document.querySelectorAll('[data-t]').forEach((el) => { const v = t(el.dataset.t); if (typeof v === 'string') el.textContent = v; });
   document.querySelectorAll('[data-tp]').forEach((el) => { el.placeholder = t(el.dataset.tp); });
   document.querySelectorAll('[data-lang]').forEach((b) => b.classList.toggle('on', b.dataset.lang === lang));
