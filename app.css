@@ -77,3 +77,11 @@ td{padding:10px;border-bottom:1px solid #EEF2F1;vertical-align:top}
 .check input{width:18px;height:18px;margin-top:2px}
 .docthumb{width:56px;height:56px;border-radius:8px;object-fit:cover;background:#F1F5F4;border:1px solid #E3E8E7}
 .idcard{display:block;max-width:100%;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+/* hero */
+.hero{position:relative;height:300px;overflow:hidden;background:#0F3D3A}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 35%}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 35%,rgba(5,40,37,.85) 100%)}
+.hero-top{position:absolute;top:14px;left:20px;right:20px}
+.hero-text{position:absolute;left:20px;right:20px;bottom:46px;color:#fff}
+.ring{width:56px;height:56px;border-radius:50%;background:conic-gradient(#fff 108deg,rgba(255,255,255,.25) 0);display:flex;align-items:center;justify-content:center}
+.ring span{width:44px;height:44px;border-radius:50%;background:#0F766E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}

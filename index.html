@@ -74,23 +74,57 @@
   <div class="pad" style="margin-top:auto"><button class="btn" id="registerBtn">Register</button></div>
 </section>
 
-<section class="screen" id="s-home">
-  <div class="hdr">
-    <div class="row" style="justify-content:space-between"><div><div style="font-size:13px;opacity:.85">Namaste,</div><div style="font-size:22px;font-weight:700" id="hName">—</div></div><button class="avatar" id="hAvatar" aria-label="Change photo" style="border:0;cursor:pointer">—</button></div>
-    <div id="hStatus" style="margin-top:14px;background:rgba(255,255,255,.14);border-radius:10px;padding:9px 12px;font-size:13px">—</div>
+<section class="screen" id="s-home" style="background:#F7F9F8">
+  <div class="hero">
+    <img src="./assets/hero-800.jpg" srcset="./assets/hero-800.jpg 800w, ./assets/hero.jpg 1400w" sizes="430px" alt="" class="hero-img">
+    <div class="hero-shade"></div>
+    <div class="hero-top row" style="justify-content:space-between">
+      <div class="row" style="gap:8px"><div style="width:30px;height:30px;border-radius:8px;background:#fff;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">Y</div><b style="color:#fff;font-size:15px">Yoro Jobs</b></div>
+      <button class="avatar" id="hAvatar" aria-label="My profile" style="border:2px solid #fff;width:40px;height:40px;cursor:pointer">—</button>
+    </div>
+    <div class="hero-text">
+      <div style="font-size:13px;opacity:.9">Namaste,</div>
+      <div style="font-size:26px;font-weight:700;line-height:1.1" id="hName">—</div>
+      <div id="hStatus" style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600">—</div>
+    </div>
   </div>
-  <div class="pad" style="background:#F7F9F8;flex-grow:1">
-    <div class="card" id="photoNudge" style="border:2px solid #0F766E;display:none"><div class="row"><div class="grow"><b>Add your photo</b><div class="note">Needed for your YORO ID card. Face clearly visible, plain background.</div></div><label class="btn sm" style="cursor:pointer">Take photo<input type="file" accept="image/*" capture="user" id="photoIn" style="display:none"></label></div></div>
-    <div class="card"><div class="row" style="justify-content:space-between"><b>Profile strength</b><b style="color:#0F766E" id="hPct">30%</b></div><div class="bar" style="margin:8px 0"><i id="hBar" style="width:30%"></i></div><div class="note">Complete your profile to get jobs faster. Our team will also call you within 24 hours.</div></div>
-    <div class="card row" style="justify-content:space-between"><div><b>Available for work</b><div class="note" id="hAvailNote">From today</div></div><button class="toggle on" id="availToggle" aria-label="Available for work"><i></i></button></div>
-    <a class="card row" href="#jobs" style="text-decoration:none;color:inherit;justify-content:space-between"><div><b>Jobs near you</b><div class="note" id="hJobsNote">Within 10 km</div></div><span class="tag t-new" id="hJobsCount">…</span></a>
-    <div class="card row" id="idCardRow" style="display:none;justify-content:space-between"><div><b>My YORO ID card</b><div class="note">Show this at the client's home</div></div><button class="btn sm ghost" id="idCardBtn">View</button></div>
-    <div class="lbl" style="margin-top:8px">Complete your profile (optional)</div>
+
+  <div class="pad" style="padding-top:14px">
+    <div class="card row" style="justify-content:space-between;margin-top:-34px;position:relative;box-shadow:0 4px 16px rgba(0,0,0,.08)"><div><b>Available for work</b><div class="note" id="hAvailNote">Recruiters can see you</div></div><button class="toggle on" id="availToggle" aria-label="Available for work"><i></i></button></div>
+
+    <div class="row" style="justify-content:space-between;margin:18px 0 10px"><div><b style="font-size:17px">Jobs near you</b><div class="note" id="hJobsNote">Within 10 km</div></div><a href="#jobs" style="font-size:13px;font-weight:600;text-decoration:none">See all ›</a></div>
+    <div id="homeJobs"><div class="card note" style="text-align:center;padding:24px">Finding jobs near you…</div></div>
+
+    <div class="card" id="profileCard" style="margin-top:16px;background:linear-gradient(135deg,#0F766E,#0B5B55);color:#fff;border:0">
+      <div class="row" style="justify-content:space-between"><div><b style="font-size:15px">Complete your profile</b><div style="font-size:12px;opacity:.9" id="profileNext">Next: add your photo</div></div><div class="ring" id="ring"><span id="hPct">30%</span></div></div>
+      <div class="bar" style="margin:12px 0 10px;background:rgba(255,255,255,.25)"><i id="hBar" style="width:30%;background:#fff"></i></div>
+      <a class="btn" href="#profile" style="height:44px;font-size:15px;background:#fff;color:#0F766E">Complete profile ›</a>
+    </div>
+
+    <div id="idCardRow" class="card row" style="display:none;justify-content:space-between;margin-top:12px;border:2px solid #15803D"><div><b>🛡 Your YORO ID card is ready</b><div class="note">Show it at the client's home</div></div><button class="btn sm" id="idCardBtn">View</button></div>
+
+    <div class="grid2" style="margin-top:16px">
+      <div class="card" style="margin:0"><div style="font-size:22px">🛡️</div><b style="font-size:14px">Get verified</b><div class="note">Upload Aadhaar → we verify → families see you first.</div></div>
+      <div class="card" style="margin:0"><div style="font-size:22px">💰</div><b style="font-size:14px">Paid on time</b><div class="note">Pay is fixed before you start. No commission cut.</div></div>
+      <div class="card" style="margin:0"><div style="font-size:22px">📍</div><b style="font-size:14px">Near your home</b><div class="note">Jobs matched by distance from your area.</div></div>
+      <div class="card" style="margin:0"><div style="font-size:22px">📞</div><b style="font-size:14px">A real person</b><div class="note">Our recruiter calls you before every job.</div></div>
+    </div>
+
+    <div class="card row" style="margin-top:16px;background:#FFF8EC;border-color:#F3E2BF"><div class="grow"><b style="font-size:14px">Need help?</b><div class="note">Call or WhatsApp YORO, 9 am – 7 pm</div></div><a class="btn sm" href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener" id="helpWa">WhatsApp</a></div>
+    <div class="note" style="text-align:center;margin:14px 0 4px">A YORO Health service · Pune · <a href="#" id="logout">Log out</a></div>
+  </div>
+</section>
+
+<section class="screen" id="s-profile" style="background:#F7F9F8">
+  <div class="pad" style="background:#fff;border-bottom:1px solid #E3E8E7"><div class="row"><a class="back" href="#home" aria-label="Back">‹</a><div><h1 style="margin:0;font-size:22px">My profile</h1><div class="note">Each card you complete gets you jobs faster</div></div></div>
+    <div class="row" style="margin-top:14px"><div class="bar grow"><i id="pBar" style="width:30%"></i></div><b style="color:#0F766E" id="pPct">30%</b></div></div>
+  <div class="pad">
+    <div class="card" id="photoNudge" style="border:2px solid #0F766E"><div class="row"><div class="avatar" id="pAvatar" style="background:#E6F4F2;width:54px;height:54px">—</div><div class="grow"><b>Your photo</b><div class="note">Needed for your YORO ID card. Face clearly visible.</div></div><label class="btn sm" style="cursor:pointer" id="photoLbl">Add<input type="file" accept="image/*" capture="user" id="photoIn" style="display:none"></label></div></div>
     <button class="card row" style="width:100%;text-align:left" data-open="prefs"><div class="grow"><b>Work preference</b><div class="note" id="cPrefs">Full/part-time, day/night, timings · +15%</div></div><span id="okPrefs"></span>›</button>
     <button class="card row" style="width:100%;text-align:left" data-open="exp"><div class="grow"><b>Experience &amp; skills</b><div class="note" id="cExp">Years, skills, previous employer · +15%</div></div><span id="okExp"></span>›</button>
     <button class="card row" style="width:100%;text-align:left" data-open="docs"><div class="grow"><b>Documents</b><div class="note" id="cDocs">Aadhaar / PAN, certificate · gets you verified</div></div><span id="okDocs"></span>›</button>
     <button class="card row" style="width:100%;text-align:left" data-open="personal"><div class="grow"><b>Personal details</b><div class="note" id="cPersonal">Gender, languages, address · +10%</div></div><span id="okPersonal"></span>›</button>
-    <button class="btn ghost sm" id="logout" style="margin-top:12px">Log out</button>
+    <div class="card" style="margin-top:6px"><b style="font-size:14px">Account</b><div class="note" id="pAccount">—</div></div>
   </div>
 </section>
 
@@ -108,7 +142,7 @@
 <div class="nav" id="nav" style="display:none">
   <a href="#home" data-n="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
   <a href="#jobs" data-n="jobs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V4h6v3"/></svg>Jobs</a>
-  <a href="#home" data-n="docs" data-open="docs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8"/></svg>Documents</a>
+  <a href="#profile" data-n="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profile</a>
 </div>
 </div>
 <div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
@@ -131,12 +165,12 @@ const show = (id) => { document.querySelectorAll('.screen').forEach((s) => s.cla
 async function loadMe() { if (!user) { me = null; return; } const { data } = await sb.from('candidates').select('*').eq('id', user.id).maybeSingle(); me = data; if (me) { const { data: d } = await sb.from('documents').select('*').eq('candidate_id', user.id); docs = {}; (d || []).forEach((x) => (docs[x.slot] = x)); } }
 async function route() {
   let h = (location.hash || '#landing').slice(1);
-  if (!me && ['home', 'jobs', 'job'].includes(h)) h = 'landing';
+  if (!me && ['home', 'jobs', 'job', 'profile'].includes(h)) h = 'landing';
   if (me && ['landing', 'otp', 'register'].includes(h)) h = 'home';
   if (user && !me && h !== 'register') h = 'register';
   if (!user && h === 'register' && !pendingPhone) h = 'otp';
   show(h);
-  if (h === 'home') renderHome(); if (h === 'jobs') renderJobs(); if (h === 'job') renderJob();
+  if (h === 'home') renderHome(); if (h === 'profile') renderProfile(); if (h === 'jobs') renderJobs(); if (h === 'job') renderJob();
 }
 window.addEventListener('hashchange', route);
 
@@ -198,27 +232,37 @@ $('registerBtn').onclick = async () => {
 };
 
 // ---------- home ----------
+const jobCard = (j) => `<a class="card" href="#job" data-j="${j.id}" style="display:block;text-decoration:none;color:inherit"><div class="row" style="justify-content:space-between"><b style="font-size:16px">${esc(j.role)} · ${esc(j.shift)} shift</b>${j.my_status ? `<span class="tag t-warn">${esc(j.my_status).toUpperCase()}</span>` : '<span class="tag t-new">NEW</span>'}</div><div class="note" style="margin:6px 0">📍 ${esc(j.area)} · <b style="color:#0F766E">${j.distance_km} km away</b></div><div class="chips" style="gap:6px"><span class="tag t-mute">${esc(j.timing || '')}</span><span class="tag t-mute">${esc(j.duration || '')}</span>${(j.skills || []).slice(0, 2).map((s) => `<span class="tag t-mute">${esc(s)}</span>`).join('')}</div><div class="row" style="justify-content:space-between;margin-top:8px"><b>${pay(j)} <span class="note" style="font-weight:500">/ ${esc(j.pay_unit)}</span></b><span style="color:#0F766E;font-weight:600;font-size:13px">Starts ${fmtDate(j.start_date)}</span></div></a>`;
+function nextStep(c) { if (!c.photo_path) return ['Next: add your photo', 'photo']; if (!docs.id) return ['Next: upload Aadhaar to get verified', 'docs']; if (!c.prefs) return ['Next: tell us your shift preference', 'prefs']; if (!c.exp) return ['Next: add your experience', 'exp']; if (!c.personal) return ['Next: personal details', 'personal']; return ['Profile complete 🎉', null]; }
 async function renderHome() {
   const c = me; $('hName').textContent = c.name;
   const av = $('hAvatar'); av.innerHTML = initials(c.name); if (c.photo_path) { const u = await signedUrl(c.photo_path); if (u) av.innerHTML = `<img src="${u}" alt="">`; }
-  $('photoNudge').style.display = c.photo_path ? 'none' : 'block';
-  $('hStatus').innerHTML = c.verified ? `✅ ${esc(c.role)} · ${esc(c.area)}, ${esc(c.city)} · <b>YORO Verified</b>` : `<span style="display:inline-flex;width:18px;height:18px;border-radius:50%;background:#fff;color:#0F766E;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-right:6px">!</span>${esc(c.role)} · ${esc(c.area)}, ${esc(c.city)} · ${c.stage === 'In verification' ? 'Verification in progress' : 'Not yet verified'}`;
-  const p = strength(c, docs); $('hPct').textContent = p + '%'; $('hBar').style.width = p + '%';
+  $('hStatus').innerHTML = c.verified ? `🛡 YORO Verified · ${esc(c.role)} · ${esc(c.area)}` : `${esc(c.role)} · ${esc(c.area)} · ${c.stage === 'In verification' ? 'verification in progress' : 'not yet verified'}`;
+  const p = strength(c, docs); $('hPct').textContent = p + '%'; $('hBar').style.width = p + '%'; $('ring').style.background = `conic-gradient(#fff ${p * 3.6}deg, rgba(255,255,255,.25) 0)`;
+  $('profileNext').textContent = nextStep(c)[0]; $('profileCard').style.display = p >= 100 ? 'none' : 'block';
   $('availToggle').classList.toggle('on', !!c.available); $('hAvailNote').textContent = c.available ? 'Recruiters can see you' : 'Hidden from job alerts';
   $('hJobsNote').textContent = `Within ${c.prefs?.radius || 10} km of ${c.area}`;
   $('idCardRow').style.display = c.verified ? 'flex' : 'none';
+  const { data } = await sb.rpc('jobs_near_me'); jobs = data || [];
+  $('homeJobs').innerHTML = jobs.length ? jobs.slice(0, 3).map(jobCard).join('') + (jobs.length > 3 ? `<a class="btn ghost" href="#jobs" style="height:44px;font-size:14px">See all ${jobs.length} jobs</a>` : '') : `<div class="card" style="text-align:center;padding:24px"><div style="font-size:28px">🔔</div><b>No ${esc(c.role.toLowerCase())} jobs within ${c.prefs?.radius || 10} km right now</b><div class="note" style="margin-top:4px">We will WhatsApp you the moment one is posted. Complete your profile so you are picked first.</div></div>`;
+}
+async function renderProfile() {
+  const c = me; const p = strength(c, docs); $('pBar').style.width = p + '%'; $('pPct').textContent = p + '%';
+  const av = $('pAvatar'); av.innerHTML = initials(c.name); if (c.photo_path) { const u = await signedUrl(c.photo_path); if (u) av.innerHTML = `<img src="${u}" alt="">`; }
+  $('photoLbl').firstChild.textContent = c.photo_path ? 'Change' : 'Add'; $('photoNudge').style.border = c.photo_path ? '1px solid #E3E8E7' : '2px solid #0F766E';
   $('okPrefs').innerHTML = c.prefs ? '<span class="ok">✓</span>' : ''; $('okExp').innerHTML = c.exp ? '<span class="ok">✓</span>' : ''; $('okPersonal').innerHTML = c.personal ? '<span class="ok">✓</span>' : '';
   const dn = Object.keys(docs).filter((k) => k !== 'photo').length; $('okDocs').innerHTML = dn ? `<span class="ok">${dn} ✓</span>` : '';
   if (c.prefs) $('cPrefs').textContent = `${c.prefs.type} · ${c.prefs.shift} · ${c.prefs.timing || 'any time'} · up to ${c.prefs.radius} km`;
   if (c.exp) $('cExp').textContent = `${c.exp.years} yrs · ${(c.exp.skills || []).join(', ') || 'no skills added'}`;
   if (c.personal) $('cPersonal').textContent = `${c.personal.gender || ''} · ${(c.personal.langs || []).join(', ')} · ${c.personal.address || 'address not added'}`;
-  const { data } = await sb.rpc('jobs_near_me'); jobs = data || []; $('hJobsCount').textContent = jobs.length + ' open';
+  $('pAccount').innerHTML = `${esc(c.name)} · +91 ${esc(c.phone)} · ${esc(c.role)} · ${esc(c.area)}, ${esc(c.city)}<br>Registered ${fmtDate(c.created_at)} · ${c.verified ? '<span class="ok">YORO Verified</span>' : esc(c.stage)}`;
 }
 async function saveMe(patch) { const { error } = await sb.from('candidates').update(patch).eq('id', me.id); if (error) { toast('Could not save: ' + error.message); return false; } Object.assign(me, patch); return true; }
 $('availToggle').onclick = async () => { if (await saveMe({ available: !me.available })) renderHome(); };
-$('logout').onclick = async () => { await sb.auth.signOut(); };
-$('hAvatar').onclick = () => $('photoIn').click();
-$('photoIn').onchange = async () => { const f = $('photoIn').files[0]; if (!f) return; toast('Uploading photo…', 6000); try { const path = await uploadDoc(me.id, 'photo', f); await saveMe({ photo_path: path }); await loadMe(); renderHome(); toast('Photo added'); } catch (e) { toast('Upload failed: ' + e.message); } };
+$('logout').onclick = async (e) => { e.preventDefault(); await sb.auth.signOut(); };
+$('hAvatar').onclick = () => { location.hash = '#profile'; };
+$('homeJobs').onclick = (e) => { const a = e.target.closest('[data-j]'); if (a) curJob = Number(a.dataset.j); };
+$('photoIn').onchange = async () => { const f = $('photoIn').files[0]; if (!f) return; toast('Uploading photo…', 6000); try { const path = await uploadDoc(me.id, 'photo', f); await saveMe({ photo_path: path }); await loadMe(); renderProfile(); toast('Photo added'); } catch (e) { toast('Upload failed: ' + e.message); } };
 $('idCardBtn').onclick = async () => { const u = await signedUrl(me.photo_path); const png = await drawIdCard(me, u); openSheet(`<h2>My YORO ID card</h2><img class="idcard" src="${png}" alt="ID card"><a class="btn" href="${png}" download="yoro-id-${me.phone}.png" style="margin-top:14px">Download</a><button class="btn ghost" id="closeSheet" style="margin-top:8px">Close</button>`); $('closeSheet').onclick = closeSheet; };
 
 // profile sheets
@@ -226,15 +270,15 @@ document.addEventListener('click', (e) => { const b = e.target.closest('[data-op
 async function openCard(k) {
   const c = me; if (!c) return;
   if (k === 'prefs') { const p = c.prefs || {}; openSheet(`<h2>Work preference</h2><span class="lbl">Type</span>${chipRow('type', ['Full-time', 'Part-time', 'Both'], p.type)}<span class="lbl">Shift</span>${chipRow('shift', ['Day', 'Night', 'Both'], p.shift)}<label class="lbl" for="timing">Preferred timings</label><input class="inp" id="timing" value="${esc(p.timing || '')}" placeholder="e.g. 8 am – 8 pm, Mon–Sat"><span class="lbl">Willing to travel up to</span>${chipRow('radius', ['5', '10', '15', '25'], String(p.radius || 10))}<button class="btn" id="saveSheet" style="margin-top:20px">Save</button>`);
-    $('saveSheet').onclick = async () => { const patch = { prefs: { type: chipVal('type') || 'Both', shift: chipVal('shift') || 'Both', timing: $('timing').value.trim(), radius: Number(chipVal('radius') || 10) } }; if (c.stage === 'New') patch.stage = 'Contacted'; if (await saveMe(patch)) { closeSheet(); toast('Saved'); renderHome(); } }; }
+    $('saveSheet').onclick = async () => { const patch = { prefs: { type: chipVal('type') || 'Both', shift: chipVal('shift') || 'Both', timing: $('timing').value.trim(), radius: Number(chipVal('radius') || 10) } }; if (c.stage === 'New') patch.stage = 'Contacted'; if (await saveMe(patch)) { closeSheet(); toast('Saved'); renderProfile(); } }; }
   if (k === 'exp') { const x = c.exp || {}; openSheet(`<h2>Experience &amp; skills</h2><label class="lbl" for="years">Years of experience</label><input class="inp" id="years" type="number" min="0" value="${x.years ?? ''}"><span class="lbl">Skills (tap all that apply)</span>${chipRow('skills', SKILLS, x.skills || [], true)}<label class="lbl" for="emp">Previous employer / hospital</label><input class="inp" id="emp" value="${esc(x.employer || '')}">${c.role !== 'Caregiver' ? `<label class="lbl" for="qual">Qualification</label><input class="inp" id="qual" value="${esc(x.qual || '')}" placeholder="${c.role === 'Nurse' ? 'GNM / ANM / BSc Nursing' : 'BPT / MPT'}"><label class="lbl" for="reg">Council registration number</label><input class="inp" id="reg" value="${esc(x.reg || '')}">` : ''}<label class="lbl" for="sal">Expected salary (₹ / month)</label><input class="inp" id="sal" type="number" value="${x.salary ?? ''}"><button class="btn" id="saveSheet" style="margin-top:20px">Save</button>`);
-    $('saveSheet').onclick = async () => { if (await saveMe({ exp: { years: Number($('years').value || 0), skills: chipVal('skills'), employer: $('emp').value.trim(), qual: $('qual')?.value.trim() || '', reg: $('reg')?.value.trim() || '', salary: Number($('sal').value || 0) } })) { closeSheet(); toast('Saved'); renderHome(); } }; }
+    $('saveSheet').onclick = async () => { if (await saveMe({ exp: { years: Number($('years').value || 0), skills: chipVal('skills'), employer: $('emp').value.trim(), qual: $('qual')?.value.trim() || '', reg: $('reg')?.value.trim() || '', salary: Number($('sal').value || 0) } })) { closeSheet(); toast('Saved'); renderProfile(); } }; }
   if (k === 'personal') { const p = c.personal || {}; openSheet(`<h2>Personal details</h2><span class="lbl">Gender</span>${chipRow('gender', ['Female', 'Male', 'Other'], p.gender)}<span class="lbl">Languages</span>${chipRow('langs', ['Marathi', 'Hindi', 'English', 'Other'], p.langs || [], true)}<label class="lbl" for="dob">Date of birth</label><input class="inp" id="dob" type="date" value="${esc(p.dob || '')}"><label class="lbl" for="addr">Full address</label><textarea class="inp" id="addr" rows="3">${esc(p.address || '')}</textarea><button class="btn" id="saveSheet" style="margin-top:20px">Save</button>`);
-    $('saveSheet').onclick = async () => { if (await saveMe({ personal: { gender: chipVal('gender'), langs: chipVal('langs'), dob: $('dob').value, address: $('addr').value.trim() } })) { closeSheet(); toast('Saved'); renderHome(); } }; }
+    $('saveSheet').onclick = async () => { if (await saveMe({ personal: { gender: chipVal('gender'), langs: chipVal('langs'), dob: $('dob').value, address: $('addr').value.trim() } })) { closeSheet(); toast('Saved'); renderProfile(); } }; }
   if (k === 'docs') {
     const slots = [['photo', 'Photo', 'Face visible · for your ID card', 'image/*'], ['id', 'Aadhaar / PAN / Passport', 'Front and back in one photo · required for verification', 'image/*,.pdf'], ...(c.role !== 'Caregiver' ? [['cert', 'Registration certificate', 'Nursing / physio council · required', 'image/*,.pdf']] : [['cert', 'Training certificate', 'Optional', 'image/*,.pdf']]), ['addr', 'Address proof', 'Optional', 'image/*,.pdf']];
     openSheet(`<h2>My documents</h2><p class="sub">Only YORO's verification team can see these. Files are stored privately and never shared on WhatsApp.</p>${slots.map(([k, t, n, acc]) => { const f = docs[k]; return `<div class="card row"><div class="grow"><b>${t}</b><div class="note">${f ? `<span style="${f.status === 'Rejected' ? 'color:#B91C1C' : 'color:#15803D'};font-weight:600">${f.status === 'Uploaded' ? 'Uploaded · under review' : f.status}</span>${f.rejection_reason ? ' · ' + esc(f.rejection_reason) : ''}` : n}</div></div><label class="btn ghost sm" style="cursor:pointer">${f ? 'Replace' : 'Upload'}<input type="file" accept="${acc}" data-slot="${k}" style="display:none"></label></div>`; }).join('')}<button class="btn ghost" id="closeSheet" style="margin-top:10px">Done</button>`);
-    $('sheet').querySelectorAll('input[type=file]').forEach((i) => (i.onchange = async () => { const f = i.files[0]; if (!f) return; if (f.size > 10 * 1024 * 1024) return toast('File too large (max 10 MB)'); toast('Uploading…', 8000); try { const path = await uploadDoc(me.id, i.dataset.slot, f); const patch = {}; if (i.dataset.slot === 'photo') patch.photo_path = path; if (i.dataset.slot === 'id' && !['Verified', 'Blacklisted'].includes(c.stage)) patch.stage = 'In verification'; else if (c.stage === 'New') patch.stage = 'Docs pending'; if (Object.keys(patch).length) await saveMe(patch); await loadMe(); openCard('docs'); renderHome(); toast('Uploaded · under review'); } catch (e) { toast('Upload failed: ' + e.message, 5000); } }));
+    $('sheet').querySelectorAll('input[type=file]').forEach((i) => (i.onchange = async () => { const f = i.files[0]; if (!f) return; if (f.size > 10 * 1024 * 1024) return toast('File too large (max 10 MB)'); toast('Uploading…', 8000); try { const path = await uploadDoc(me.id, i.dataset.slot, f); const patch = {}; if (i.dataset.slot === 'photo') patch.photo_path = path; if (i.dataset.slot === 'id' && !['Verified', 'Blacklisted'].includes(c.stage)) patch.stage = 'In verification'; else if (c.stage === 'New') patch.stage = 'Docs pending'; if (Object.keys(patch).length) await saveMe(patch); await loadMe(); openCard('docs'); renderProfile(); toast('Uploaded · under review'); } catch (e) { toast('Upload failed: ' + e.message, 5000); } }));
     $('closeSheet').onclick = closeSheet;
   }
 }
@@ -244,7 +288,7 @@ async function renderJobs() {
   $('jArea').textContent = `${me.area} · ${me.prefs?.radius || 10} km`;
   const { data } = await sb.rpc('jobs_near_me'); jobs = data || [];
   const list = jobs.filter((j) => jobFilter === 'all' || (jobFilter === '5' ? j.distance_km <= 5 : j.shift === jobFilter));
-  $('jobList').innerHTML = list.length ? list.map((j) => `<a class="card" href="#job" data-j="${j.id}" style="display:block;text-decoration:none;color:inherit"><div class="row" style="justify-content:space-between"><b style="font-size:16px">${esc(j.role)} · ${esc(j.shift)} shift</b>${j.my_status ? `<span class="tag t-warn">${esc(j.my_status).toUpperCase()}</span>` : '<span class="tag t-new">NEW</span>'}</div><div class="note" style="margin:6px 0">📍 ${esc(j.area)} · <b style="color:#0F766E">${j.distance_km} km away</b></div><div class="chips" style="gap:6px"><span class="tag t-mute">${esc(j.timing || '')}</span><span class="tag t-mute">${esc(j.duration || '')}</span>${(j.skills || []).slice(0, 2).map((s) => `<span class="tag t-mute">${esc(s)}</span>`).join('')}</div><div class="row" style="justify-content:space-between;margin-top:8px"><b>${pay(j)} <span class="note" style="font-weight:500">/ ${esc(j.pay_unit)}</span></b><span style="color:#0F766E;font-weight:600;font-size:13px">Starts ${fmtDate(j.start_date)}</span></div></a>`).join('') : `<div class="card note" style="text-align:center;padding:30px">No open ${me.role.toLowerCase()} jobs within ${me.prefs?.radius || 10} km right now. We'll message you on WhatsApp when one comes up.</div>`;
+  $('jobList').innerHTML = list.length ? list.map(jobCard).join('') : `<div class="card note" style="text-align:center;padding:30px">No open ${me.role.toLowerCase()} jobs within ${me.prefs?.radius || 10} km right now. We'll message you on WhatsApp when one comes up.</div>`;
 }
 $('jobList').onclick = (e) => { const a = e.target.closest('[data-j]'); if (a) curJob = Number(a.dataset.j); };
 $('jobFilters').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; jobFilter = b.dataset.f; document.querySelectorAll('#jobFilters .chip').forEach((c) => c.classList.toggle('on', c === b)); renderJobs(); };
