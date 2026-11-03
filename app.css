@@ -85,3 +85,6 @@ td{padding:10px;border-bottom:1px solid #EEF2F1;vertical-align:top}
 .hero-text{position:absolute;left:20px;right:20px;bottom:46px;color:#fff}
 .ring{width:56px;height:56px;border-radius:50%;background:conic-gradient(#fff 108deg,rgba(255,255,255,.25) 0);display:flex;align-items:center;justify-content:center}
 .ring span{width:44px;height:44px;border-radius:50%;background:#0F766E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.lang-chips .chip.on{border:2px solid #0F766E;background:#E6F4F2;color:#0F766E;font-weight:600}
+.hero .chip.hc{padding:4px 8px;font-size:11px;background:rgba(255,255,255,.2);border:1px solid transparent;color:#fff}
+.hero .chip.hc.on{background:#fff;color:#0F766E;border:1px solid #fff;font-weight:600}

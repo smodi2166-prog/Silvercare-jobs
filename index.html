@@ -16,19 +16,19 @@
 
 <section class="screen" id="s-landing">
   <div class="pad" style="padding-top:40px">
-    <div class="row" style="margin-bottom:40px;justify-content:space-between"><div class="row"><div style="width:34px;height:34px;border-radius:9px;background:#0F766E;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">Y</div><b style="font-size:18px">Yoro Jobs</b></div><div class="chips" id="langChips"><button class="chip on" data-l="en" style="padding:5px 10px;font-size:12px">EN</button><button class="chip" data-l="hi" style="padding:5px 10px;font-size:12px">हिं</button><button class="chip" data-l="mr" style="padding:5px 10px;font-size:12px">मर</button></div></div>
+    <div class="row" style="margin-bottom:40px;justify-content:space-between"><div class="row"><div style="width:34px;height:34px;border-radius:9px;background:#0F766E;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">Y</div><b style="font-size:18px">Yoro Jobs</b></div><div class="chips lang-chips"><button class="chip" data-lang="hi" style="padding:5px 10px;font-size:12px">हिंदी</button><button class="chip" data-lang="mr" style="padding:5px 10px;font-size:12px">मराठी</button><button class="chip" data-lang="en" style="padding:5px 10px;font-size:12px">EN</button></div></div>
     <h1 style="font-size:32px;line-height:1.15" data-t="hero">Nursing &amp; care jobs near your home</h1>
     <p class="sub" data-t="heroSub">Register in 1 minute. Our team calls you within 24 hours. Jobs come to you on WhatsApp.</p>
     <div style="margin-top:28px;display:flex;flex-direction:column;gap:10px">
-      <div class="card row"><div style="width:38px;height:38px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">1</div><div><b>Caregiver</b><div class="note">Elder care, post-op, bedridden patients</div></div></div>
-      <div class="card row"><div style="width:38px;height:38px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">2</div><div><b>Nurse (GNM / ANM / BSc)</b><div class="note">Home ICU, injections, wound care</div></div></div>
-      <div class="card row"><div style="width:38px;height:38px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">3</div><div><b>Physiotherapist</b><div class="note">Home visits, rehab, mobility</div></div></div>
+      <div class="card row"><div style="width:38px;height:38px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">1</div><div><b data-t="role1">Caregiver</b><div class="note" data-t="role1d">Elder care, post-op, bedridden patients</div></div></div>
+      <div class="card row"><div style="width:38px;height:38px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">2</div><div><b data-t="role2">Nurse (GNM / ANM / BSc)</b><div class="note" data-t="role2d">Home ICU, injections, wound care</div></div></div>
+      <div class="card row"><div style="width:38px;height:38px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">3</div><div><b data-t="role3">Physiotherapist</b><div class="note" data-t="role3d">Home visits, rehab, mobility</div></div></div>
     </div>
   </div>
   <div class="pad" style="margin-top:auto">
     <a class="btn" href="#otp" data-t="register">Register in 1 minute</a>
     <a class="btn sec" href="#otp" style="margin-top:10px;border:0" data-t="login">Already registered? Log in</a>
-    <div class="note" style="text-align:center;margin-top:8px">A YORO Health service · Pune · +91 92725 71708 · care@yorohealth.com · <a href="./admin.html">Staff login</a></div>
+    <div class="note" style="text-align:center;margin-top:8px"><span data-t="footer">A YORO Health service · Pune</span> · +91 92725 71708 · care@yorohealth.com · <a href="./admin.html" data-t="staff">Staff login</a></div>
   </div>
 </section>
 
@@ -37,41 +37,41 @@
     <a class="back" href="#landing" aria-label="Back">‹</a>
     <h1 style="margin-top:24px" data-t="phoneTitle">Your mobile number</h1>
     <p class="sub" data-t="phoneSub">This number is your login. No SMS, no OTP — just a 4-digit PIN you choose.</p>
-    <label class="lbl" for="phone">Mobile number</label>
-    <div class="row"><div class="inp" style="width:70px;display:flex;align-items:center;font-weight:600">+91</div><input class="inp grow" id="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit number" autocomplete="tel-national"></div>
+    <label class="lbl" for="phone" data-t="phoneLbl">Mobile number</label>
+    <div class="row"><div class="inp" style="width:70px;display:flex;align-items:center;font-weight:600">+91</div><input class="inp grow" id="phone" type="tel" inputmode="numeric" maxlength="10" data-tp="phonePh" placeholder="10-digit number" autocomplete="tel-national"></div>
     <div id="pinBox" style="display:none;margin-top:22px;background:#F1F5F4;border-radius:14px;padding:16px">
       <b style="font-size:14px" id="pinTitle">Enter your 4-digit PIN</b>
       <input class="inp" id="pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="current-password" style="margin-top:10px;letter-spacing:8px;font-size:22px;text-align:center">
-      <div class="note" style="margin-top:8px" id="pinNote">Forgot your PIN? WhatsApp or call YORO on <b><a href="https://wa.me/919272571708" target="_blank" rel="noopener">+91 92725 71708</a></b> and we will reset it. · <a href="#" id="changeNo">Change number</a></div>
+      <div class="note" style="margin-top:8px" id="pinNote"><span data-t="pinForgot">Forgot your PIN? WhatsApp or call YORO on</span> <b><a href="https://wa.me/919272571708" target="_blank" rel="noopener">+91 92725 71708</a></b> · <a href="#" id="changeNo" data-t="changeNo">Change number</a></div>
     </div>
     <div id="otpErr" class="err"></div>
   </div>
   <div class="pad" style="margin-top:auto">
-    <button class="btn" id="sendOtp">Continue</button>
-    <button class="btn" id="verifyOtp" style="display:none">Log in</button>
-    <div class="note" style="text-align:center;margin-top:8px">By continuing you agree to the Yoro Jobs terms and privacy policy.</div>
+    <button class="btn" id="sendOtp" data-t="continueBtn">Continue</button>
+    <button class="btn" id="verifyOtp" style="display:none" data-t="loginBtn">Log in</button>
+    <div class="note" style="text-align:center;margin-top:8px" data-t="terms">By continuing you agree to the Yoro Jobs terms and privacy policy.</div>
   </div>
 </section>
 
 <section class="screen" id="s-register">
   <div class="pad">
-    <div class="row" style="justify-content:space-between"><span class="back" style="visibility:hidden">‹</span><span style="font-size:13px;font-weight:600;color:#0F766E">Step 2 of 2</span></div>
-    <h1 style="margin-top:20px">Just 3 things</h1>
-    <p class="sub">That's all we need to start. Everything else is optional.</p>
-    <label class="lbl" for="name">Full name (as on Aadhaar)</label>
-    <input class="inp" id="name" placeholder="Your name" autocomplete="name">
-    <label class="lbl" for="pin1">Choose a 4-digit PIN (you will use it to log in)</label>
-    <div class="row"><input class="inp" id="pin1" type="password" inputmode="numeric" maxlength="4" placeholder="PIN" autocomplete="new-password" style="letter-spacing:6px;text-align:center"><input class="inp" id="pin2" type="password" inputmode="numeric" maxlength="4" placeholder="Again" autocomplete="new-password" style="letter-spacing:6px;text-align:center"></div>
-    <span class="lbl">I am a</span>
+    <div class="row" style="justify-content:space-between"><span class="back" style="visibility:hidden">‹</span><span style="font-size:13px;font-weight:600;color:#0F766E" data-t="step2">Step 2 of 2</span></div>
+    <h1 style="margin-top:20px" data-t="regTitle">Just 3 things</h1>
+    <p class="sub" data-t="regSub">That's all we need to start. Everything else is optional.</p>
+    <label class="lbl" for="name" data-t="nameLbl">Full name (as on Aadhaar)</label>
+    <input class="inp" id="name" data-tp="namePh" placeholder="Your name" autocomplete="name">
+    <label class="lbl" for="pin1" data-t="pinLbl">Choose a 4-digit PIN (you will use it to log in)</label>
+    <div class="row"><input class="inp" id="pin1" type="password" inputmode="numeric" maxlength="4" data-tp="pinPh" placeholder="PIN" autocomplete="new-password" style="letter-spacing:6px;text-align:center"><input class="inp" id="pin2" type="password" inputmode="numeric" maxlength="4" data-tp="pinAgain" placeholder="Again" autocomplete="new-password" style="letter-spacing:6px;text-align:center"></div>
+    <span class="lbl" data-t="iAm">I am a</span>
     <div class="chips" id="roleChips"><button class="chip" data-v="Caregiver">Caregiver</button><button class="chip" data-v="Nurse">Nurse</button><button class="chip" data-v="Physio">Physio</button></div>
-    <label class="lbl" for="area">Where do you live? (area in Pune)</label>
-    <button class="btn sec" id="gpsBtn" style="height:46px;font-size:14px;border-style:dashed;margin-bottom:8px">📍 Use my current location</button>
-    <input class="inp" id="area" placeholder="Type your area, e.g. Hadapsar" autocomplete="off">
+    <label class="lbl" for="area" data-t="areaLbl">Where do you live? (area in Pune)</label>
+    <button class="btn sec" id="gpsBtn" style="height:46px;font-size:14px;border-style:dashed;margin-bottom:8px" data-t="gps">📍 Use my current location</button>
+    <input class="inp" id="area" data-tp="areaPh" placeholder="Type your area, e.g. Hadapsar" autocomplete="off">
     <div class="ac" id="areaAc"></div>
     <div id="areaPick" class="note" style="margin-top:8px"></div>
     <div id="regErr" class="err"></div>
   </div>
-  <div class="pad" style="margin-top:auto"><button class="btn" id="registerBtn">Register</button></div>
+  <div class="pad" style="margin-top:auto"><button class="btn" id="registerBtn" data-t="registerBtn">Register</button></div>
 </section>
 
 <section class="screen" id="s-home" style="background:#F7F9F8">
@@ -80,69 +80,70 @@
     <div class="hero-shade"></div>
     <div class="hero-top row" style="justify-content:space-between">
       <div class="row" style="gap:8px"><div style="width:30px;height:30px;border-radius:8px;background:#fff;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">Y</div><b style="color:#fff;font-size:15px">Yoro Jobs</b></div>
-      <button class="avatar" id="hAvatar" aria-label="My profile" style="border:2px solid #fff;width:40px;height:40px;cursor:pointer">—</button>
+      <div class="row" style="gap:6px"><div class="chips lang-chips" style="gap:4px"><button class="chip hc" data-lang="hi">हिं</button><button class="chip hc" data-lang="mr">मर</button><button class="chip hc" data-lang="en">EN</button></div>
+      <button class="avatar" id="hAvatar" aria-label="My profile" style="border:2px solid #fff;width:40px;height:40px;cursor:pointer">—</button></div>
     </div>
     <div class="hero-text">
-      <div style="font-size:13px;opacity:.9">Namaste,</div>
+      <div style="font-size:13px;opacity:.9" data-t="namaste">Namaste,</div>
       <div style="font-size:26px;font-weight:700;line-height:1.1" id="hName">—</div>
       <div id="hStatus" style="margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600">—</div>
     </div>
   </div>
 
   <div class="pad" style="padding-top:14px">
-    <div class="card row" style="justify-content:space-between;margin-top:-34px;position:relative;box-shadow:0 4px 16px rgba(0,0,0,.08)"><div><b>Available for work</b><div class="note" id="hAvailNote">Recruiters can see you</div></div><button class="toggle on" id="availToggle" aria-label="Available for work"><i></i></button></div>
+    <div class="card row" style="justify-content:space-between;margin-top:-34px;position:relative;box-shadow:0 4px 16px rgba(0,0,0,.08)"><div><b data-t="availTitle">Available for work</b><div class="note" id="hAvailNote">Recruiters can see you</div></div><button class="toggle on" id="availToggle" aria-label="Available for work"><i></i></button></div>
 
-    <div class="row" style="justify-content:space-between;margin:18px 0 10px"><div><b style="font-size:17px">Jobs near you</b><div class="note" id="hJobsNote">Within 10 km</div></div><a href="#jobs" style="font-size:13px;font-weight:600;text-decoration:none">See all ›</a></div>
-    <div id="homeJobs"><div class="card note" style="text-align:center;padding:24px">Finding jobs near you…</div></div>
+    <div class="row" style="justify-content:space-between;margin:18px 0 10px"><div><b style="font-size:17px" data-t="jobsNear">Jobs near you</b><div class="note" id="hJobsNote">Within 10 km</div></div><a href="#jobs" style="font-size:13px;font-weight:600;text-decoration:none" data-t="seeAll">See all ›</a></div>
+    <div id="homeJobs"><div class="card note" style="text-align:center;padding:24px" data-t="finding">Finding jobs near you…</div></div>
 
     <div class="card" id="profileCard" style="margin-top:16px;background:linear-gradient(135deg,#0F766E,#0B5B55);color:#fff;border:0">
-      <div class="row" style="justify-content:space-between"><div><b style="font-size:15px">Complete your profile</b><div style="font-size:12px;opacity:.9" id="profileNext">Next: add your photo</div></div><div class="ring" id="ring"><span id="hPct">30%</span></div></div>
+      <div class="row" style="justify-content:space-between"><div><b style="font-size:15px" data-t="completeProfile">Complete your profile</b><div style="font-size:12px;opacity:.9" id="profileNext">Next: add your photo</div></div><div class="ring" id="ring"><span id="hPct">30%</span></div></div>
       <div class="bar" style="margin:12px 0 10px;background:rgba(255,255,255,.25)"><i id="hBar" style="width:30%;background:#fff"></i></div>
-      <a class="btn" href="#profile" style="height:44px;font-size:15px;background:#fff;color:#0F766E">Complete profile ›</a>
+      <a class="btn" href="#profile" style="height:44px;font-size:15px;background:#fff;color:#0F766E" data-t="completeBtn">Complete profile ›</a>
     </div>
 
-    <div id="idCardRow" class="card row" style="display:none;justify-content:space-between;margin-top:12px;border:2px solid #15803D"><div><b>🛡 Your YORO ID card is ready</b><div class="note">Show it at the client's home</div></div><button class="btn sm" id="idCardBtn">View</button></div>
+    <div id="idCardRow" class="card row" style="display:none;justify-content:space-between;margin-top:12px;border:2px solid #15803D"><div><b data-t="idReady">🛡 Your YORO ID card is ready</b><div class="note" data-t="idShow">Show it at the client's home</div></div><button class="btn sm" id="idCardBtn" data-t="view">View</button></div>
 
     <div class="grid2" style="margin-top:16px">
-      <div class="card" style="margin:0"><div style="font-size:22px">🛡️</div><b style="font-size:14px">Get verified</b><div class="note">Upload Aadhaar → we verify → families see you first.</div></div>
-      <div class="card" style="margin:0"><div style="font-size:22px">💰</div><b style="font-size:14px">Paid on time</b><div class="note">Pay is fixed before you start. No commission cut.</div></div>
-      <div class="card" style="margin:0"><div style="font-size:22px">📍</div><b style="font-size:14px">Near your home</b><div class="note">Jobs matched by distance from your area.</div></div>
-      <div class="card" style="margin:0"><div style="font-size:22px">📞</div><b style="font-size:14px">A real person</b><div class="note">Our recruiter calls you before every job.</div></div>
+      <div class="card" style="margin:0"><div style="font-size:22px">🛡️</div><b style="font-size:14px" data-t="w1">Get verified</b><div class="note" data-t="w1d">Upload Aadhaar → we verify → families see you first.</div></div>
+      <div class="card" style="margin:0"><div style="font-size:22px">💰</div><b style="font-size:14px" data-t="w2">Paid on time</b><div class="note" data-t="w2d">Pay is fixed before you start. No commission cut.</div></div>
+      <div class="card" style="margin:0"><div style="font-size:22px">📍</div><b style="font-size:14px" data-t="w3">Near your home</b><div class="note" data-t="w3d">Jobs matched by distance from your area.</div></div>
+      <div class="card" style="margin:0"><div style="font-size:22px">📞</div><b style="font-size:14px" data-t="w4">A real person</b><div class="note" data-t="w4d">Our recruiter calls you before every job.</div></div>
     </div>
 
-    <div class="card row" style="margin-top:16px;background:#FFF8EC;border-color:#F3E2BF"><div class="grow"><b style="font-size:14px">Need help?</b><div class="note">WhatsApp <b>+91 92725 71708</b> or email care@yorohealth.com</div></div><a class="btn sm" href="https://wa.me/919272571708?text=Hi%20YORO%2C%20I%20need%20help%20with%20Yoro%20Jobs." target="_blank" rel="noopener" id="helpWa">WhatsApp</a></div>
-    <div class="note" style="text-align:center;margin:14px 0 4px">A YORO Health service · Pune · <a href="#" id="logout">Log out</a></div>
+    <div class="card row" style="margin-top:16px;background:#FFF8EC;border-color:#F3E2BF"><div class="grow"><b style="font-size:14px" data-t="help">Need help?</b><div class="note" data-t="helpSub">WhatsApp +91 92725 71708 or email care@yorohealth.com</div></div><a class="btn sm" href="https://wa.me/919272571708?text=Hi%20YORO%2C%20I%20need%20help%20with%20Yoro%20Jobs." target="_blank" rel="noopener" id="helpWa">WhatsApp</a></div>
+    <div class="note" style="text-align:center;margin:14px 0 4px"><span data-t="footer">A YORO Health service · Pune</span> · <a href="#" id="logout" data-t="logout">Log out</a></div>
   </div>
 </section>
 
 <section class="screen" id="s-profile" style="background:#F7F9F8">
-  <div class="pad" style="background:#fff;border-bottom:1px solid #E3E8E7"><div class="row"><a class="back" href="#home" aria-label="Back">‹</a><div><h1 style="margin:0;font-size:22px">My profile</h1><div class="note">Each card you complete gets you jobs faster</div></div></div>
+  <div class="pad" style="background:#fff;border-bottom:1px solid #E3E8E7"><div class="row"><a class="back" href="#home" aria-label="Back">‹</a><div><h1 style="margin:0;font-size:22px" data-t="myProfile">My profile</h1><div class="note" data-t="profileSub">Each card you complete gets you jobs faster</div></div></div>
     <div class="row" style="margin-top:14px"><div class="bar grow"><i id="pBar" style="width:30%"></i></div><b style="color:#0F766E" id="pPct">30%</b></div></div>
   <div class="pad">
-    <div class="card" id="photoNudge" style="border:2px solid #0F766E"><div class="row"><div class="avatar" id="pAvatar" style="background:#E6F4F2;width:54px;height:54px">—</div><div class="grow"><b>Your photo</b><div class="note">Needed for your YORO ID card. Face clearly visible.</div></div><label class="btn sm" style="cursor:pointer" id="photoLbl">Add<input type="file" accept="image/*" capture="user" id="photoIn" style="display:none"></label></div></div>
-    <button class="card row" style="width:100%;text-align:left" data-open="prefs"><div class="grow"><b>Work preference</b><div class="note" id="cPrefs">Full/part-time, day/night, timings · +15%</div></div><span id="okPrefs"></span>›</button>
-    <button class="card row" style="width:100%;text-align:left" data-open="exp"><div class="grow"><b>Experience &amp; skills</b><div class="note" id="cExp">Years, skills, previous employer · +15%</div></div><span id="okExp"></span>›</button>
-    <button class="card row" style="width:100%;text-align:left" data-open="docs"><div class="grow"><b>Documents</b><div class="note" id="cDocs">Aadhaar / PAN, certificate · gets you verified</div></div><span id="okDocs"></span>›</button>
-    <button class="card row" style="width:100%;text-align:left" data-open="personal"><div class="grow"><b>Personal details</b><div class="note" id="cPersonal">Gender, languages, address · +10%</div></div><span id="okPersonal"></span>›</button>
-    <div class="card" style="margin-top:6px"><b style="font-size:14px">Account</b><div class="note" id="pAccount">—</div></div>
+    <div class="card" id="photoNudge" style="border:2px solid #0F766E"><div class="row"><div class="avatar" id="pAvatar" style="background:#E6F4F2;width:54px;height:54px">—</div><div class="grow"><b data-t="yourPhoto">Your photo</b><div class="note" data-t="photoSub">Needed for your YORO ID card. Face clearly visible.</div></div><label class="btn sm" style="cursor:pointer" id="photoLbl">Add<input type="file" accept="image/*" capture="user" id="photoIn" style="display:none"></label></div></div>
+    <button class="card row" style="width:100%;text-align:left" data-open="prefs"><div class="grow"><b data-t="prefs">Work preference</b><div class="note" id="cPrefs" data-t="prefsSub">Full/part-time, day/night, timings · +15%</div></div><span id="okPrefs"></span>›</button>
+    <button class="card row" style="width:100%;text-align:left" data-open="exp"><div class="grow"><b data-t="exp">Experience &amp; skills</b><div class="note" id="cExp" data-t="expSub">Years, skills, previous employer · +15%</div></div><span id="okExp"></span>›</button>
+    <button class="card row" style="width:100%;text-align:left" data-open="docs"><div class="grow"><b data-t="docs">Documents</b><div class="note" id="cDocs" data-t="docsSub">Aadhaar / PAN, certificate · gets you verified</div></div><span id="okDocs"></span>›</button>
+    <button class="card row" style="width:100%;text-align:left" data-open="personal"><div class="grow"><b data-t="personal">Personal details</b><div class="note" id="cPersonal" data-t="personalSub">Gender, languages, address · +10%</div></div><span id="okPersonal"></span>›</button>
+    <div class="card" style="margin-top:6px"><b style="font-size:14px" data-t="account">Account</b><div class="note" id="pAccount">—</div></div>
   </div>
 </section>
 
 <section class="screen" id="s-jobs">
-  <div class="pad" style="padding-bottom:10px;border-bottom:1px solid #E3E8E7"><div class="row" style="justify-content:space-between"><h1 style="margin:0">Jobs near you</h1><span class="note" id="jArea"></span></div>
-  <div class="chips" style="margin-top:10px" id="jobFilters"><button class="chip on" data-f="all">All</button><button class="chip" data-f="Day">Day</button><button class="chip" data-f="Night">Night</button><button class="chip" data-f="5">Within 5 km</button></div></div>
+  <div class="pad" style="padding-bottom:10px;border-bottom:1px solid #E3E8E7"><div class="row" style="justify-content:space-between"><h1 style="margin:0" data-t="jobsTitle">Jobs near you</h1><span class="note" id="jArea"></span></div>
+  <div class="chips" style="margin-top:10px" id="jobFilters"><button class="chip on" data-f="all" data-t="fAll">All</button><button class="chip" data-f="Day" data-t="fDay">Day</button><button class="chip" data-f="Night" data-t="fNight">Night</button><button class="chip" data-f="5" data-t="f5">Within 5 km</button></div></div>
   <div class="pad" style="background:#F7F9F8;flex-grow:1" id="jobList"><div class="note" style="text-align:center;padding:30px">Loading…</div></div>
 </section>
 
 <section class="screen" id="s-job">
   <div class="pad"><a class="back" href="#jobs" aria-label="Back">‹</a><div id="jobDetail" style="margin-top:16px"></div></div>
-  <div class="pad" style="margin-top:auto;border-top:1px solid #E3E8E7"><button class="btn" id="interestBtn">I'm interested</button><div class="note" style="text-align:center;margin-top:8px">No form. Our recruiter calls you to confirm.</div></div>
+  <div class="pad" style="margin-top:auto;border-top:1px solid #E3E8E7"><button class="btn" id="interestBtn" data-t="interested">I'm interested</button><div class="note" style="text-align:center;margin-top:8px" data-t="noForm">No form. Our recruiter calls you to confirm.</div></div>
 </section>
 
 <div class="nav" id="nav" style="display:none">
-  <a href="#home" data-n="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
-  <a href="#jobs" data-n="jobs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V4h6v3"/></svg>Jobs</a>
-  <a href="#profile" data-n="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profile</a>
+  <a href="#home" data-n="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span data-t="nav.home">Home</span></a>
+  <a href="#jobs" data-n="jobs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V4h6v3"/></svg><span data-t="nav.jobs">Jobs</span></a>
+  <a href="#profile" data-n="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span data-t="nav.profile">Profile</span></a>
 </div>
 </div>
 <div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
@@ -151,13 +152,9 @@
 <script type="module">
 import { sb, $, esc, toast, openSheet, closeSheet, initModal, chipRow, chipVal, fmtDate, initials, strength, areas, uploadDoc, signedUrl, drawIdCard, pay } from './shared.js';
 import { SKILLS, DEFAULT_CITY, SUPPORT } from './config.js';
-initModal();
-
-const T = {
-  en: { hero: 'Nursing & care jobs near your home', heroSub: 'Register in 1 minute. Our team calls you within 24 hours. Jobs come to you on WhatsApp.', register: 'Register in 1 minute', login: 'Already registered? Log in', phoneTitle: 'Your mobile number', phoneSub: 'This number is your login. No SMS, no OTP — just a 4-digit PIN you choose.' },
-  hi: { hero: 'आपके घर के पास नर्सिंग और केयर की नौकरियाँ', heroSub: '1 मिनट में रजिस्टर करें। हमारी टीम 24 घंटे में कॉल करेगी। नौकरियाँ WhatsApp पर मिलेंगी।', register: '1 मिनट में रजिस्टर करें', login: 'पहले से रजिस्टर हैं? लॉग इन', phoneTitle: 'आपका मोबाइल नंबर', phoneSub: 'यही नंबर आपका लॉगिन है। कोई SMS/OTP नहीं — बस 4 अंकों का PIN चुनें।' },
-  mr: { hero: 'तुमच्या घराजवळ नर्सिंग आणि केअरच्या नोकऱ्या', heroSub: '1 मिनिटात नोंदणी करा. आमची टीम 24 तासांत कॉल करेल. नोकऱ्या WhatsApp वर मिळतील.', register: '1 मिनिटात नोंदणी करा', login: 'आधीच नोंदणी केली आहे? लॉग इन', phoneTitle: 'तुमचा मोबाइल नंबर', phoneSub: 'हाच नंबर तुमचा लॉगिन आहे. SMS/OTP नाही — फक्त 4 अंकी PIN निवडा.' } };
-$('langChips').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; document.querySelectorAll('#langChips .chip').forEach((c) => c.classList.toggle('on', c === b)); const t = T[b.dataset.l]; document.querySelectorAll('[data-t]').forEach((el) => { if (t[el.dataset.t]) el.textContent = t[el.dataset.t]; }); };
+import { t, setLang, getLang, applyStatic } from './i18n.js';
+initModal(); applyStatic();
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-lang]'); if (!b) return; setLang(b.dataset.lang); if (me) { const h = (location.hash || '#home').slice(1); if (h === 'home') renderHome(); if (h === 'profile') renderProfile(); if (h === 'jobs') renderJobs(); if (h === 'job') renderJob(); } });
 
 // ---------- state ----------
 let user = null, me = null, docs = {}, jobs = [], curJob = null, jobFilter = 'all', selRole = null, selArea = null, pendingPhone = null, AREAS = [];
@@ -183,25 +180,25 @@ const emailFor = (p) => `${p}@candidates.yorojobs.local`, pwFor = (pin, p) => `y
 let knownUser = false;
 $('sendOtp').onclick = async () => {
   const p = $('phone').value.replace(/\D/g, ''); const err = $('otpErr'); err.textContent = '';
-  if (p.length !== 10) return (err.textContent = 'Enter a 10-digit mobile number.');
+  if (p.length !== 10) return (err.textContent = t('err10'));
   $('sendOtp').innerHTML = '<span class="spinner"></span>'; $('sendOtp').disabled = true;
   const { data, error } = await sb.functions.invoke('candidate-auth', { body: { action: 'exists', phone: p } });
-  $('sendOtp').textContent = 'Continue'; $('sendOtp').disabled = false;
-  if (error || data?.error) return (err.textContent = data?.error || 'Could not connect. Check your internet and try again.');
+  $('sendOtp').textContent = t('continueBtn'); $('sendOtp').disabled = false;
+  if (error || data?.error) return (err.textContent = data?.error || t('errNet'));
   pendingPhone = p; knownUser = !!data.exists;
-  if (knownUser) { $('pinTitle').textContent = `Welcome back${data.name ? ', ' + data.name : ''} — enter your 4-digit PIN`; $('pinBox').style.display = 'block'; $('sendOtp').style.display = 'none'; $('verifyOtp').style.display = 'flex'; $('pin').value = ''; $('pin').focus(); }
+  if (knownUser) { $('pinTitle').textContent = `${t('welcomeBack')}${data.name ? ', ' + data.name : ''} — ${t('pinEnter')}`; $('pinBox').style.display = 'block'; $('sendOtp').style.display = 'none'; $('verifyOtp').style.display = 'flex'; $('pin').value = ''; $('pin').focus(); }
   else { location.hash = '#register'; show('register'); }
 };
 $('changeNo').onclick = (e) => { e.preventDefault(); $('pinBox').style.display = 'none'; $('sendOtp').style.display = 'flex'; $('verifyOtp').style.display = 'none'; };
 $('verifyOtp').onclick = async () => {
   const err = $('otpErr'); err.textContent = ''; const pin = $('pin').value.replace(/\D/g, '');
-  if (pin.length !== 4) return (err.textContent = 'Enter your 4-digit PIN.');
+  if (pin.length !== 4) return (err.textContent = t('errPin'));
   $('verifyOtp').innerHTML = '<span class="spinner"></span>'; $('verifyOtp').disabled = true;
   const { data, error } = await sb.auth.signInWithPassword({ email: emailFor(pendingPhone), password: pwFor(pin, pendingPhone) });
-  $('verifyOtp').textContent = 'Log in'; $('verifyOtp').disabled = false;
-  if (error) return (err.textContent = /invalid/i.test(error.message) ? 'Wrong PIN. Try again, or call YORO to reset it.' : error.message);
+  $('verifyOtp').textContent = t('loginBtn'); $('verifyOtp').disabled = false;
+  if (error) return (err.textContent = /invalid/i.test(error.message) ? t('errWrongPin') : error.message);
   user = data.user; await loadMe();
-  if (me) { toast('Welcome back, ' + me.name.split(' ')[0]); location.hash = '#home'; } else location.hash = '#register';
+  if (me) { toast(t('welcomeBack') + ', ' + me.name.split(' ')[0]); location.hash = '#home'; } else location.hash = '#register';
   route();
 };
 
@@ -209,54 +206,54 @@ $('verifyOtp').onclick = async () => {
 $('roleChips').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; selRole = b.dataset.v; document.querySelectorAll('#roleChips .chip').forEach((c) => c.classList.toggle('on', c === b)); };
 const areaIn = $('area'), ac = $('areaAc');
 areaIn.oninput = () => { selArea = null; $('areaPick').textContent = ''; const q = areaIn.value.trim().toLowerCase(); const m = q ? AREAS.filter((a) => a.name.toLowerCase().includes(q)).slice(0, 6) : []; ac.innerHTML = m.map((a) => `<div data-a="${esc(a.name)}"><b>${esc(a.name)}</b>, ${esc(a.city)}</div>`).join(''); ac.style.display = m.length ? 'block' : 'none'; };
-ac.onclick = (e) => { const d = e.target.closest('[data-a]'); if (!d) return; const a = AREAS.find((x) => x.name === d.dataset.a); selArea = { name: a.name, city: a.city, lat: a.lat, lng: a.lng }; areaIn.value = a.name; ac.style.display = 'none'; $('areaPick').innerHTML = `📍 Pinned: <b>${esc(a.name)}, ${esc(a.city)}</b>`; };
+ac.onclick = (e) => { const d = e.target.closest('[data-a]'); if (!d) return; const a = AREAS.find((x) => x.name === d.dataset.a); selArea = { name: a.name, city: a.city, lat: a.lat, lng: a.lng }; areaIn.value = a.name; ac.style.display = 'none'; $('areaPick').innerHTML = `📍 ${t('pinned')} <b>${esc(a.name)}, ${esc(a.city)}</b>`; };
 $('gpsBtn').onclick = () => {
-  if (!navigator.geolocation) return toast('Location not available on this phone');
-  $('gpsBtn').textContent = 'Finding you…';
-  navigator.geolocation.getCurrentPosition((pos) => { const { latitude: la, longitude: lo } = pos.coords; const d = (a) => (a.lat - la) ** 2 + (a.lng - lo) ** 2; const near = [...AREAS].sort((a, b) => d(a) - d(b))[0]; selArea = { name: near.name, city: near.city, lat: la, lng: lo }; areaIn.value = near.name; $('areaPick').innerHTML = `📍 Pinned at your location, nearest area: <b>${esc(near.name)}</b>. Wrong? Type your area above.`; $('gpsBtn').textContent = '📍 Use my current location'; }, () => { toast('Could not get location — type your area'); $('gpsBtn').textContent = '📍 Use my current location'; }, { enableHighAccuracy: true, timeout: 8000 });
+  if (!navigator.geolocation) return toast(t('gpsFail'));
+  $('gpsBtn').textContent = t('gpsFinding');
+  navigator.geolocation.getCurrentPosition((pos) => { const { latitude: la, longitude: lo } = pos.coords; const d = (a) => (a.lat - la) ** 2 + (a.lng - lo) ** 2; const near = [...AREAS].sort((a, b) => d(a) - d(b))[0]; selArea = { name: near.name, city: near.city, lat: la, lng: lo }; areaIn.value = near.name; $('areaPick').innerHTML = `📍 ${t('pinnedGps')} <b>${esc(near.name)}</b>. ${t('wrongArea')}`; $('gpsBtn').textContent = t('gps'); }, () => { toast(t('gpsFail')); $('gpsBtn').textContent = t('gps'); }, { enableHighAccuracy: true, timeout: 8000 });
 };
 $('registerBtn').onclick = async () => {
   const name = $('name').value.trim(); const err = $('regErr'); err.textContent = '';
   const pin1 = $('pin1').value.replace(/\D/g, ''), pin2 = $('pin2').value.replace(/\D/g, '');
-  if (!name) return (err.textContent = 'Please enter your name.');
-  if (pin1.length !== 4) return (err.textContent = 'Choose a 4-digit PIN.');
-  if (pin1 !== pin2) return (err.textContent = 'The two PINs do not match.');
-  if (!selRole) return (err.textContent = 'Please choose Caregiver, Nurse or Physio.');
-  if (!selArea) return (err.textContent = 'Please pick your area from the list or use your location.');
+  if (!name) return (err.textContent = t('errName'));
+  if (pin1.length !== 4) return (err.textContent = t('errPin4'));
+  if (pin1 !== pin2) return (err.textContent = t('errPinMatch'));
+  if (!selRole) return (err.textContent = t('errRole'));
+  if (!selArea) return (err.textContent = t('errArea'));
   $('registerBtn').disabled = true; $('registerBtn').innerHTML = '<span class="spinner"></span>';
   const { data, error } = await sb.functions.invoke('candidate-auth', { body: { action: 'register', phone: pendingPhone, pin: pin1, name, role: selRole, area: selArea.name, city: selArea.city || DEFAULT_CITY, lat: selArea.lat, lng: selArea.lng } });
-  if (error || data?.error) { $('registerBtn').disabled = false; $('registerBtn').textContent = 'Register'; return (err.textContent = data?.error || 'Could not register. Check your internet and try again.'); }
+  if (error || data?.error) { $('registerBtn').disabled = false; $('registerBtn').textContent = t('registerBtn'); return (err.textContent = data?.error || t('errReg')); }
   const { data: s2, error: e2 } = await sb.auth.signInWithPassword({ email: emailFor(pendingPhone), password: pwFor(pin1, pendingPhone) });
-  $('registerBtn').disabled = false; $('registerBtn').textContent = 'Register';
+  $('registerBtn').disabled = false; $('registerBtn').textContent = t('registerBtn');
   if (e2) return (err.textContent = e2.message);
-  user = s2.user; await loadMe(); toast('Registered! Our team will call you within 24 h.'); location.hash = '#home'; route();
+  user = s2.user; await loadMe(); toast(t('registered')); location.hash = '#home'; route();
 };
 
 // ---------- home ----------
-const jobCard = (j) => `<a class="card" href="#job" data-j="${j.id}" style="display:block;text-decoration:none;color:inherit"><div class="row" style="justify-content:space-between"><b style="font-size:16px">${esc(j.role)} · ${esc(j.shift)} shift</b>${j.my_status ? `<span class="tag t-warn">${esc(j.my_status).toUpperCase()}</span>` : '<span class="tag t-new">NEW</span>'}</div><div class="note" style="margin:6px 0">📍 ${esc(j.area)} · <b style="color:#0F766E">${j.distance_km} km away</b></div><div class="chips" style="gap:6px"><span class="tag t-mute">${esc(j.timing || '')}</span><span class="tag t-mute">${esc(j.duration || '')}</span>${(j.skills || []).slice(0, 2).map((s) => `<span class="tag t-mute">${esc(s)}</span>`).join('')}</div><div class="row" style="justify-content:space-between;margin-top:8px"><b>${pay(j)} <span class="note" style="font-weight:500">/ ${esc(j.pay_unit)}</span></b><span style="color:#0F766E;font-weight:600;font-size:13px">Starts ${fmtDate(j.start_date)}</span></div></a>`;
-function nextStep(c) { if (!c.photo_path) return ['Next: add your photo', 'photo']; if (!docs.id) return ['Next: upload Aadhaar to get verified', 'docs']; if (!c.prefs) return ['Next: tell us your shift preference', 'prefs']; if (!c.exp) return ['Next: add your experience', 'exp']; if (!c.personal) return ['Next: personal details', 'personal']; return ['Profile complete 🎉', null]; }
+const jobCard = (j) => `<a class="card" href="#job" data-j="${j.id}" style="display:block;text-decoration:none;color:inherit"><div class="row" style="justify-content:space-between"><b style="font-size:16px">${esc(t('roles.' + j.role))} · ${esc(t('shifts.' + j.shift))} ${t('shiftWord')}</b>${j.my_status ? `<span class="tag t-warn">${esc(t('status.' + j.my_status))}</span>` : `<span class="tag t-new">${t('new')}</span>`}</div><div class="note" style="margin:6px 0">📍 ${esc(j.area)} · <b style="color:#0F766E">${t('kmAway', { d: j.distance_km })}</b></div><div class="chips" style="gap:6px"><span class="tag t-mute">${esc(j.timing || '')}</span><span class="tag t-mute">${esc(j.duration || '')}</span>${(j.skills || []).slice(0, 2).map((s) => `<span class="tag t-mute">${esc(s)}</span>`).join('')}</div><div class="row" style="justify-content:space-between;margin-top:8px"><b>${pay(j)} <span class="note" style="font-weight:500">${esc(t('perUnit.' + j.pay_unit))}</span></b><span style="color:#0F766E;font-weight:600;font-size:13px">${t('starts')} ${fmtDate(j.start_date)}</span></div></a>`;
+function nextStep(c) { if (!c.photo_path) return [t('nextPhoto'), 'photo']; if (!docs.id) return [t('nextId'), 'docs']; if (!c.prefs) return [t('nextPrefs'), 'prefs']; if (!c.exp) return [t('nextExp'), 'exp']; if (!c.personal) return [t('nextPersonal'), 'personal']; return [t('profileDone'), null]; }
 async function renderHome() {
   const c = me; $('hName').textContent = c.name;
   const av = $('hAvatar'); av.innerHTML = initials(c.name); if (c.photo_path) { const u = await signedUrl(c.photo_path); if (u) av.innerHTML = `<img src="${u}" alt="">`; }
-  $('hStatus').innerHTML = c.verified ? `🛡 YORO Verified · ${esc(c.role)} · ${esc(c.area)}` : `${esc(c.role)} · ${esc(c.area)} · ${c.stage === 'In verification' ? 'verification in progress' : 'not yet verified'}`;
+  $('hStatus').innerHTML = c.verified ? `🛡 ${t('verified')} · ${esc(t('roles.' + c.role))} · ${esc(c.area)}` : `${esc(t('roles.' + c.role))} · ${esc(c.area)} · ${c.stage === 'In verification' ? t('inVerification') : t('notVerified')}`;
   const p = strength(c, docs); $('hPct').textContent = p + '%'; $('hBar').style.width = p + '%'; $('ring').style.background = `conic-gradient(#fff ${p * 3.6}deg, rgba(255,255,255,.25) 0)`;
   $('profileNext').textContent = nextStep(c)[0]; $('profileCard').style.display = p >= 100 ? 'none' : 'block';
-  $('availToggle').classList.toggle('on', !!c.available); $('hAvailNote').textContent = c.available ? 'Recruiters can see you' : 'Hidden from job alerts';
-  $('hJobsNote').textContent = `Within ${c.prefs?.radius || 10} km of ${c.area}`;
+  $('availToggle').classList.toggle('on', !!c.available); $('hAvailNote').textContent = c.available ? t('availOn') : t('availOff');
+  $('hJobsNote').textContent = `${c.area} ${t('within', { r: c.prefs?.radius || 10 })}`;
   $('idCardRow').style.display = c.verified ? 'flex' : 'none';
   const { data } = await sb.rpc('jobs_near_me'); jobs = data || [];
-  $('homeJobs').innerHTML = jobs.length ? jobs.slice(0, 3).map(jobCard).join('') + (jobs.length > 3 ? `<a class="btn ghost" href="#jobs" style="height:44px;font-size:14px">See all ${jobs.length} jobs</a>` : '') : `<div class="card" style="text-align:center;padding:24px"><div style="font-size:28px">🔔</div><b>No ${esc(c.role.toLowerCase())} jobs within ${c.prefs?.radius || 10} km right now</b><div class="note" style="margin-top:4px">We will WhatsApp you the moment one is posted. Complete your profile so you are picked first.</div></div>`;
+  $('homeJobs').innerHTML = jobs.length ? jobs.slice(0, 3).map(jobCard).join('') + (jobs.length > 3 ? `<a class="btn ghost" href="#jobs" style="height:44px;font-size:14px">${t('seeAllN', { n: jobs.length })}</a>` : '') : `<div class="card" style="text-align:center;padding:24px"><div style="font-size:28px">🔔</div><b>${esc(t('noJobs', { role: t('roles.' + c.role), r: c.prefs?.radius || 10 }))}</b><div class="note" style="margin-top:4px">${t('noJobsSub')}</div></div>`;
 }
 async function renderProfile() {
   const c = me; const p = strength(c, docs); $('pBar').style.width = p + '%'; $('pPct').textContent = p + '%';
   const av = $('pAvatar'); av.innerHTML = initials(c.name); if (c.photo_path) { const u = await signedUrl(c.photo_path); if (u) av.innerHTML = `<img src="${u}" alt="">`; }
-  $('photoLbl').firstChild.textContent = c.photo_path ? 'Change' : 'Add'; $('photoNudge').style.border = c.photo_path ? '1px solid #E3E8E7' : '2px solid #0F766E';
+  $('photoLbl').firstChild.textContent = c.photo_path ? t('change') : t('add'); $('photoNudge').style.border = c.photo_path ? '1px solid #E3E8E7' : '2px solid #0F766E';
   $('okPrefs').innerHTML = c.prefs ? '<span class="ok">✓</span>' : ''; $('okExp').innerHTML = c.exp ? '<span class="ok">✓</span>' : ''; $('okPersonal').innerHTML = c.personal ? '<span class="ok">✓</span>' : '';
   const dn = Object.keys(docs).filter((k) => k !== 'photo').length; $('okDocs').innerHTML = dn ? `<span class="ok">${dn} ✓</span>` : '';
   if (c.prefs) $('cPrefs').textContent = `${c.prefs.type} · ${c.prefs.shift} · ${c.prefs.timing || 'any time'} · up to ${c.prefs.radius} km`;
   if (c.exp) $('cExp').textContent = `${c.exp.years} yrs · ${(c.exp.skills || []).join(', ') || 'no skills added'}`;
   if (c.personal) $('cPersonal').textContent = `${c.personal.gender || ''} · ${(c.personal.langs || []).join(', ')} · ${c.personal.address || 'address not added'}`;
-  $('pAccount').innerHTML = `${esc(c.name)} · +91 ${esc(c.phone)} · ${esc(c.role)} · ${esc(c.area)}, ${esc(c.city)}<br>Registered ${fmtDate(c.created_at)} · ${c.verified ? '<span class="ok">YORO Verified</span>' : esc(c.stage)}`;
+  $('pAccount').innerHTML = `${esc(c.name)} · +91 ${esc(c.phone)} · ${esc(t('roles.' + c.role))} · ${esc(c.area)}, ${esc(c.city)}<br>${fmtDate(c.created_at)} · ${c.verified ? '<span class="ok">' + t('verified') + '</span>' : esc(c.stage)}`;
 }
 async function saveMe(patch) { const { error } = await sb.from('candidates').update(patch).eq('id', me.id); if (error) { toast('Could not save: ' + error.message); return false; } Object.assign(me, patch); return true; }
 $('availToggle').onclick = async () => { if (await saveMe({ available: !me.available })) renderHome(); };
@@ -289,16 +286,16 @@ async function renderJobs() {
   $('jArea').textContent = `${me.area} · ${me.prefs?.radius || 10} km`;
   const { data } = await sb.rpc('jobs_near_me'); jobs = data || [];
   const list = jobs.filter((j) => jobFilter === 'all' || (jobFilter === '5' ? j.distance_km <= 5 : j.shift === jobFilter));
-  $('jobList').innerHTML = list.length ? list.map(jobCard).join('') : `<div class="card note" style="text-align:center;padding:30px">No open ${me.role.toLowerCase()} jobs within ${me.prefs?.radius || 10} km right now. We'll message you on WhatsApp when one comes up.</div>`;
+  $('jobList').innerHTML = list.length ? list.map(jobCard).join('') : `<div class="card note" style="text-align:center;padding:30px">${esc(t('noJobsList', { role: t('roles.' + me.role), r: me.prefs?.radius || 10 }))}</div>`;
 }
 $('jobList').onclick = (e) => { const a = e.target.closest('[data-j]'); if (a) curJob = Number(a.dataset.j); };
 $('jobFilters').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; jobFilter = b.dataset.f; document.querySelectorAll('#jobFilters .chip').forEach((c) => c.classList.toggle('on', c === b)); renderJobs(); };
 function renderJob() {
   const j = jobs.find((x) => x.id === curJob); if (!j) { location.hash = '#jobs'; return; }
-  $('jobDetail').innerHTML = `<span class="tag ${j.my_status ? 't-warn' : 't-new'}">${j.my_status ? esc(j.my_status).toUpperCase() : 'NEW'}</span><h1 style="margin-top:8px">${esc(j.role)} · ${esc(j.shift)} shift</h1><div class="sub">📍 ${esc(j.area)}, Pune · <b style="color:#0F766E">${j.distance_km} km from you</b></div><div class="note">Exact address shared after you are assigned.</div><div class="grid2" style="margin:16px 0"><div class="kv"><b>PAY</b><span>${pay(j)} / ${esc(j.pay_unit)}</span></div><div class="kv"><b>SHIFT</b><span>${esc(j.timing || j.shift)}</span></div><div class="kv"><b>DURATION</b><span>${esc(j.duration || '—')}</span></div><div class="kv"><b>STARTS</b><span>${fmtDate(j.start_date)}</span></div></div><b>About the patient</b><p class="sub" style="margin:4px 0 14px">${esc(j.brief || '—')}</p><b>Skills needed</b><div class="chips" style="margin-top:6px">${(j.skills || []).map((s) => `<span class="tag t-mute" style="font-size:13px;padding:6px 10px">${esc(s)}</span>`).join('') || '<span class="note">—</span>'}</div>${j.verified_only && !me.verified ? '<div class="card" style="margin-top:14px;background:#FFF4E5;border-color:#FCD9A8;font-size:13px">This family asked for verified candidates only. Upload your Aadhaar to get verified.</div>' : ''}`;
-  const b = $('interestBtn'); b.disabled = !!j.my_status; b.textContent = j.my_status ? `You are ${j.my_status}` : "I'm interested";
+  $('jobDetail').innerHTML = `<span class="tag ${j.my_status ? 't-warn' : 't-new'}">${j.my_status ? esc(t('status.' + j.my_status)) : t('new')}</span><h1 style="margin-top:8px">${esc(t('roles.' + j.role))} · ${esc(t('shifts.' + j.shift))} ${t('shiftWord')}</h1><div class="sub">📍 ${esc(j.area)}, Pune · <b style="color:#0F766E">${t('kmFromYou', { d: j.distance_km })}</b></div><div class="note">${t('addrLater')}</div><div class="grid2" style="margin:16px 0"><div class="kv"><b>${t('pay')}</b><span>${pay(j)} ${esc(t('perUnit.' + j.pay_unit))}</span></div><div class="kv"><b>${t('shift')}</b><span>${esc(j.timing || t('shifts.' + j.shift))}</span></div><div class="kv"><b>${t('duration')}</b><span>${esc(j.duration || '—')}</span></div><div class="kv"><b>${t('startsOn')}</b><span>${fmtDate(j.start_date)}</span></div></div><b>${t('about')}</b><p class="sub" style="margin:4px 0 14px">${esc(j.brief || '—')}</p><b>${t('skills')}</b><div class="chips" style="margin-top:6px">${(j.skills || []).map((s) => `<span class="tag t-mute" style="font-size:13px;padding:6px 10px">${esc(s)}</span>`).join('') || '<span class="note">—</span>'}</div>${j.verified_only && !me.verified ? `<div class="card" style="margin-top:14px;background:#FFF4E5;border-color:#FCD9A8;font-size:13px">${t('verifiedOnly')}</div>` : ''}`;
+  const b = $('interestBtn'); b.disabled = !!j.my_status; b.textContent = j.my_status ? t('youAre', { s: t('status.' + j.my_status) }) : t('interested');
 }
-$('interestBtn').onclick = async () => { const { error } = await sb.from('job_interests').insert({ job_id: curJob, candidate_id: me.id }); if (error) return toast('Could not send: ' + error.message); toast('Interest sent. Recruiter will call you.'); const { data } = await sb.rpc('jobs_near_me'); jobs = data || []; renderJob(); };
+$('interestBtn').onclick = async () => { const { error } = await sb.from('job_interests').insert({ job_id: curJob, candidate_id: me.id }); if (error) return toast('Could not send: ' + error.message); toast(t('interestSent')); const { data } = await sb.rpc('jobs_near_me'); jobs = data || []; renderJob(); };
 </script>
 </body>
 </html>
