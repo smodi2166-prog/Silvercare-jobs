@@ -28,7 +28,7 @@
   <div class="pad" style="margin-top:auto">
     <a class="btn" href="#otp" data-t="register">Register in 1 minute</a>
     <a class="btn sec" href="#otp" style="margin-top:10px;border:0" data-t="login">Already registered? Log in</a>
-    <div class="note" style="text-align:center;margin-top:8px">A YORO Health service · Pune · <a href="./admin.html">Staff login</a></div>
+    <div class="note" style="text-align:center;margin-top:8px">A YORO Health service · Pune · +91 92725 71708 · care@yorohealth.com · <a href="./admin.html">Staff login</a></div>
   </div>
 </section>
 
@@ -42,7 +42,7 @@
     <div id="pinBox" style="display:none;margin-top:22px;background:#F1F5F4;border-radius:14px;padding:16px">
       <b style="font-size:14px" id="pinTitle">Enter your 4-digit PIN</b>
       <input class="inp" id="pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="current-password" style="margin-top:10px;letter-spacing:8px;font-size:22px;text-align:center">
-      <div class="note" style="margin-top:8px" id="pinNote">Forgot your PIN? Call YORO on <b>+91 XXXXX XXXXX</b> and we will reset it. · <a href="#" id="changeNo">Change number</a></div>
+      <div class="note" style="margin-top:8px" id="pinNote">Forgot your PIN? WhatsApp or call YORO on <b><a href="https://wa.me/919272571708" target="_blank" rel="noopener">+91 92725 71708</a></b> and we will reset it. · <a href="#" id="changeNo">Change number</a></div>
     </div>
     <div id="otpErr" class="err"></div>
   </div>
@@ -110,7 +110,7 @@
       <div class="card" style="margin:0"><div style="font-size:22px">📞</div><b style="font-size:14px">A real person</b><div class="note">Our recruiter calls you before every job.</div></div>
     </div>
 
-    <div class="card row" style="margin-top:16px;background:#FFF8EC;border-color:#F3E2BF"><div class="grow"><b style="font-size:14px">Need help?</b><div class="note">Call or WhatsApp YORO, 9 am – 7 pm</div></div><a class="btn sm" href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener" id="helpWa">WhatsApp</a></div>
+    <div class="card row" style="margin-top:16px;background:#FFF8EC;border-color:#F3E2BF"><div class="grow"><b style="font-size:14px">Need help?</b><div class="note">WhatsApp <b>+91 92725 71708</b> or email care@yorohealth.com</div></div><a class="btn sm" href="https://wa.me/919272571708?text=Hi%20YORO%2C%20I%20need%20help%20with%20Yoro%20Jobs." target="_blank" rel="noopener" id="helpWa">WhatsApp</a></div>
     <div class="note" style="text-align:center;margin:14px 0 4px">A YORO Health service · Pune · <a href="#" id="logout">Log out</a></div>
   </div>
 </section>
@@ -150,7 +150,7 @@
 
 <script type="module">
 import { sb, $, esc, toast, openSheet, closeSheet, initModal, chipRow, chipVal, fmtDate, initials, strength, areas, uploadDoc, signedUrl, drawIdCard, pay } from './shared.js';
-import { SKILLS, DEFAULT_CITY } from './config.js';
+import { SKILLS, DEFAULT_CITY, SUPPORT } from './config.js';
 initModal();
 
 const T = {
