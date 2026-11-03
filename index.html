@@ -124,7 +124,7 @@
     </div>
 
     <div class="card row" style="margin-top:16px;background:#FFF8EC;border-color:#F3E2BF"><div class="grow"><b style="font-size:14px" data-t="help">Need help?</b><div class="note" data-t="helpSub">WhatsApp +91 92725 71708 or email care@yorohealth.com</div></div><a class="btn sm" href="https://wa.me/919272571708?text=Hi%20YORO%2C%20I%20need%20help%20with%20Yoro%20Jobs." target="_blank" rel="noopener" id="helpWa">WhatsApp</a></div>
-    <div class="note" style="text-align:center;margin:14px 0 4px"><span data-t="footer">A YORO Health service · Pune</span> · <a href="#" id="logout" data-t="logout">Log out</a></div>
+    <div class="note" style="text-align:center;margin:14px 0 4px"><span data-t="footer">A YORO Health service · Pune</span> · <a href="#" id="logout" data-t="logout">Log out</a> · <a href="./admin.html" data-t="staff">Staff login</a></div>
   </div>
 </section>
 
@@ -160,7 +160,7 @@
 </div>
 </div>
 <div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
-<a href="./admin.html" class="staff-pill" id="staffPill" style="display:none" aria-label="Admin console">🛠 Admin</a>
+<a href="./admin.html" class="staff-pill" id="staffPill" style="display:none" aria-label="Admin console">🛠 Admin console</a>
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -170,8 +170,9 @@ import { t, setLang, getLang, applyStatic } from './i18n.js';
 initModal(); applyStatic();
 // ---------- staff switch (visible only on devices where a YORO staff member is logged in) ----------
 const lastMode = getMode(); setMode('candidate');
+try { if (localStorage.getItem('yj-staff-auth')) $('staffPill').style.display = 'flex'; } catch (e) { } // show at once, confirm below
 isStaffOnDevice().then((staff) => {
-  if (!staff) return;
+  if (!staff) { $('staffPill').style.display = 'none'; return; }
   const launchedFromApp = new URLSearchParams(location.search).get('source') === 'app';
   if (launchedFromApp && lastMode === 'admin') { setMode('admin'); location.replace('./admin.html'); return; }
   $('staffPill').style.display = 'flex';
