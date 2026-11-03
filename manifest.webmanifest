@@ -1,0 +1,24 @@
+{
+  "id": "/",
+  "name": "Yoro Jobs — नर्सिंग और केयर की नौकरियाँ",
+  "short_name": "Yoro Jobs",
+  "description": "घर के पास नर्स, केयरगिवर और फिज़ियो की नौकरियाँ — YORO Health",
+  "lang": "hi",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0F766E",
+  "categories": ["business", "medical", "productivity"],
+  "icons": [
+    { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/assets/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "नौकरियाँ", "short_name": "Jobs", "url": "/#jobs", "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "मेरी प्रोफ़ाइल", "short_name": "Profile", "url": "/#profile", "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

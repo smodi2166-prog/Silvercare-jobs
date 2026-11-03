@@ -36,6 +36,7 @@ export const T = {
     nav: { home: 'होम', jobs: 'नौकरियाँ', profile: 'प्रोफ़ाइल' },
     roles: { Caregiver: 'केयरगिवर', Nurse: 'नर्स', Physio: 'फिज़ियो' },
     genderOnly: { Female: 'सिर्फ महिला', Male: 'सिर्फ पुरुष' },
+    installTitle: 'Yoro Jobs ऐप इंस्टॉल करें', installSub: 'होम स्क्रीन पर आइकन — एक टैप में खोलें', installBtn: 'इंस्टॉल', installed: 'ऐप इंस्टॉल हो गया! होम स्क्रीन पर Yoro Jobs आइकन देखें।', installMenu: 'Chrome में ⋮ मेनू दबाएँ → "होम स्क्रीन में जोड़ें" / "ऐप इंस्टॉल करें"', iosHint: 'Safari में नीचे Share (⬆️) बटन दबाएँ → "Add to Home Screen" चुनें।',
   },
   mr: {
     hero: 'तुमच्या घराजवळ नर्सिंग आणि केअरच्या नोकऱ्या', heroSub: '1 मिनिटात नोंदणी करा. आमची टीम 24 तासांत कॉल करेल. नोकऱ्या WhatsApp वर मिळतील.',
@@ -65,6 +66,7 @@ export const T = {
     nav: { home: 'होम', jobs: 'नोकऱ्या', profile: 'प्रोफाइल' },
     roles: { Caregiver: 'केअरगिव्हर', Nurse: 'नर्स', Physio: 'फिजिओ' },
     genderOnly: { Female: 'फक्त महिला', Male: 'फक्त पुरुष' },
+    installTitle: 'Yoro Jobs ॲप इन्स्टॉल करा', installSub: 'होम स्क्रीनवर आयकॉन — एका टॅपमध्ये उघडा', installBtn: 'इन्स्टॉल', installed: 'ॲप इन्स्टॉल झाले! होम स्क्रीनवर Yoro Jobs आयकॉन पहा.', installMenu: 'Chrome मध्ये ⋮ मेनू दाबा → "होम स्क्रीनवर जोडा" / "ॲप इन्स्टॉल करा"', iosHint: 'Safari मध्ये खाली Share (⬆️) बटण दाबा → "Add to Home Screen" निवडा.',
   },
   en: {
     hero: 'Nursing & care jobs near your home', heroSub: 'Register in 1 minute. Our team calls you within 24 hours. Jobs come to you on WhatsApp.',
@@ -94,6 +96,7 @@ export const T = {
     nav: { home: 'Home', jobs: 'Jobs', profile: 'Profile' },
     roles: { Caregiver: 'Caregiver', Nurse: 'Nurse', Physio: 'Physio' },
     genderOnly: { Female: 'Female only', Male: 'Male only' },
+    installTitle: 'Install the Yoro Jobs app', installSub: 'Icon on your home screen — open in one tap', installBtn: 'Install', installed: 'App installed! Look for the Yoro Jobs icon on your home screen.', installMenu: 'In Chrome, tap the ⋮ menu → "Add to Home screen" / "Install app"', iosHint: 'In Safari, tap the Share (⬆️) button at the bottom → "Add to Home Screen".',
   },
 };
 let lang = DEFAULT_LANG;
