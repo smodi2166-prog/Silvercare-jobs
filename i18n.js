@@ -35,6 +35,7 @@ export const T = {
     status: { interested: 'इच्छुक', shortlisted: 'शॉर्टलिस्ट', assigned: 'काम मिला', rejected: 'नहीं चुना गया', withdrawn: 'वापस लिया' },
     nav: { home: 'होम', jobs: 'नौकरियाँ', profile: 'प्रोफ़ाइल' },
     roles: { Caregiver: 'केयरगिवर', Nurse: 'नर्स', Physio: 'फिज़ियो' },
+    genderOnly: { Female: 'सिर्फ महिला', Male: 'सिर्फ पुरुष' },
   },
   mr: {
     hero: 'तुमच्या घराजवळ नर्सिंग आणि केअरच्या नोकऱ्या', heroSub: '1 मिनिटात नोंदणी करा. आमची टीम 24 तासांत कॉल करेल. नोकऱ्या WhatsApp वर मिळतील.',
@@ -63,6 +64,7 @@ export const T = {
     status: { interested: 'इच्छुक', shortlisted: 'शॉर्टलिस्ट', assigned: 'काम मिळाले', rejected: 'निवड झाली नाही', withdrawn: 'मागे घेतले' },
     nav: { home: 'होम', jobs: 'नोकऱ्या', profile: 'प्रोफाइल' },
     roles: { Caregiver: 'केअरगिव्हर', Nurse: 'नर्स', Physio: 'फिजिओ' },
+    genderOnly: { Female: 'फक्त महिला', Male: 'फक्त पुरुष' },
   },
   en: {
     hero: 'Nursing & care jobs near your home', heroSub: 'Register in 1 minute. Our team calls you within 24 hours. Jobs come to you on WhatsApp.',
@@ -91,6 +93,7 @@ export const T = {
     status: { interested: 'interested', shortlisted: 'shortlisted', assigned: 'assigned', rejected: 'not selected', withdrawn: 'withdrawn' },
     nav: { home: 'Home', jobs: 'Jobs', profile: 'Profile' },
     roles: { Caregiver: 'Caregiver', Nurse: 'Nurse', Physio: 'Physio' },
+    genderOnly: { Female: 'Female only', Male: 'Male only' },
   },
 };
 let lang = DEFAULT_LANG;
