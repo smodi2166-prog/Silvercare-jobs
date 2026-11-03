@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoro Jobs — Nursing & care jobs in Pune</title>
+<meta name="description" content="Register in 1 minute for caregiver, nurse and physiotherapist jobs near your home. A YORO Health service.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="./app.css">
+</head>
+<body>
+<div class="app" id="app">
+<div class="banner" id="banner" style="display:none"></div>
+
+<section class="screen on" id="s-loading"><div class="pad" style="margin:auto;text-align:center"><div class="spinner" style="border-color:#CFD8D6;border-top-color:#0F766E"></div></div></section>
+
+<section class="screen" id="s-landing">
+  <div class="pad" style="padding-top:40px">
+    <div class="row" style="margin-bottom:40px;justify-content:space-between"><div class="row"><div style="width:34px;height:34px;border-radius:9px;background:#0F766E;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">Y</div><b style="font-size:18px">Yoro Jobs</b></div><div class="chips" id="langChips"><button class="chip on" data-l="en" style="padding:5px 10px;font-size:12px">EN</button><button class="chip" data-l="hi" style="padding:5px 10px;font-size:12px">हिं</button><button class="chip" data-l="mr" style="padding:5px 10px;font-size:12px">मर</button></div></div>
+    <h1 style="font-size:32px;line-height:1.15" data-t="hero">Nursing &amp; care jobs near your home</h1>
+    <p class="sub" data-t="heroSub">Register in 1 minute. Our team calls you within 24 hours. Jobs come to you on WhatsApp.</p>
+    <div style="margin-top:28px;display:flex;flex-direction:column;gap:10px">
+      <div class="card row"><div style="width:38px;height:38px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">1</div><div><b>Caregiver</b><div class="note">Elder care, post-op, bedridden patients</div></div></div>
+      <div class="card row"><div style="width:38px;height:38px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">2</div><div><b>Nurse (GNM / ANM / BSc)</b><div class="note">Home ICU, injections, wound care</div></div></div>
+      <div class="card row"><div style="width:38px;height:38px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;font-weight:700">3</div><div><b>Physiotherapist</b><div class="note">Home visits, rehab, mobility</div></div></div>
+    </div>
+  </div>
+  <div class="pad" style="margin-top:auto">
+    <a class="btn" href="#otp" data-t="register">Register in 1 minute</a>
+    <a class="btn sec" href="#otp" style="margin-top:10px;border:0" data-t="login">Already registered? Log in</a>
+    <div class="note" style="text-align:center;margin-top:8px">A YORO Health service · Pune · <a href="./admin.html">Staff login</a></div>
+  </div>
+</section>
+
+<section class="screen" id="s-otp">
+  <div class="pad">
+    <a class="back" href="#landing" aria-label="Back">‹</a>
+    <h1 style="margin-top:24px" data-t="phoneTitle">Your mobile number</h1>
+    <p class="sub" data-t="phoneSub">We send a 6-digit code by SMS. This number is your login.</p>
+    <label class="lbl" for="phone">Mobile number</label>
+    <div class="row"><div class="inp" style="width:70px;display:flex;align-items:center;font-weight:600">+91</div><input class="inp grow" id="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit number" autocomplete="tel-national"></div>
+    <div id="otpBox" style="display:none;margin-top:22px;background:#F1F5F4;border-radius:14px;padding:16px">
+      <b style="font-size:14px">Enter the 6-digit code</b>
+      <input class="inp" id="otp" inputmode="numeric" maxlength="6" placeholder="••••••" autocomplete="one-time-code" style="margin-top:10px;letter-spacing:6px;font-size:22px;text-align:center">
+      <div class="note" style="margin-top:8px">Sent to +91 <span id="otpTo"></span> · <a href="#" id="resend">Resend</a> · <a href="#" id="changeNo">Change number</a></div>
+    </div>
+    <div id="otpErr" class="err"></div>
+  </div>
+  <div class="pad" style="margin-top:auto">
+    <button class="btn" id="sendOtp">Send code</button>
+    <button class="btn" id="verifyOtp" style="display:none">Verify &amp; continue</button>
+    <div class="note" style="text-align:center;margin-top:8px">By continuing you agree to the Yoro Jobs terms and privacy policy.</div>
+  </div>
+</section>
+
+<section class="screen" id="s-register">
+  <div class="pad">
+    <div class="row" style="justify-content:space-between"><span class="back" style="visibility:hidden">‹</span><span style="font-size:13px;font-weight:600;color:#0F766E">Step 2 of 2</span></div>
+    <h1 style="margin-top:20px">Just 3 things</h1>
+    <p class="sub">That's all we need to start. Everything else is optional.</p>
+    <label class="lbl" for="name">Full name (as on Aadhaar)</label>
+    <input class="inp" id="name" placeholder="Your name" autocomplete="name">
+    <span class="lbl">I am a</span>
+    <div class="chips" id="roleChips"><button class="chip" data-v="Caregiver">Caregiver</button><button class="chip" data-v="Nurse">Nurse</button><button class="chip" data-v="Physio">Physio</button></div>
+    <label class="lbl" for="area">Where do you live? (area in Pune)</label>
+    <button class="btn sec" id="gpsBtn" style="height:46px;font-size:14px;border-style:dashed;margin-bottom:8px">📍 Use my current location</button>
+    <input class="inp" id="area" placeholder="Type your area, e.g. Hadapsar" autocomplete="off">
+    <div class="ac" id="areaAc"></div>
+    <div id="areaPick" class="note" style="margin-top:8px"></div>
+    <div id="regErr" class="err"></div>
+  </div>
+  <div class="pad" style="margin-top:auto"><button class="btn" id="registerBtn">Register</button></div>
+</section>
+
+<section class="screen" id="s-home">
+  <div class="hdr">
+    <div class="row" style="justify-content:space-between"><div><div style="font-size:13px;opacity:.85">Namaste,</div><div style="font-size:22px;font-weight:700" id="hName">—</div></div><button class="avatar" id="hAvatar" aria-label="Change photo" style="border:0;cursor:pointer">—</button></div>
+    <div id="hStatus" style="margin-top:14px;background:rgba(255,255,255,.14);border-radius:10px;padding:9px 12px;font-size:13px">—</div>
+  </div>
+  <div class="pad" style="background:#F7F9F8;flex-grow:1">
+    <div class="card" id="photoNudge" style="border:2px solid #0F766E;display:none"><div class="row"><div class="grow"><b>Add your photo</b><div class="note">Needed for your YORO ID card. Face clearly visible, plain background.</div></div><label class="btn sm" style="cursor:pointer">Take photo<input type="file" accept="image/*" capture="user" id="photoIn" style="display:none"></label></div></div>
+    <div class="card"><div class="row" style="justify-content:space-between"><b>Profile strength</b><b style="color:#0F766E" id="hPct">30%</b></div><div class="bar" style="margin:8px 0"><i id="hBar" style="width:30%"></i></div><div class="note">Complete your profile to get jobs faster. Our team will also call you within 24 hours.</div></div>
+    <div class="card row" style="justify-content:space-between"><div><b>Available for work</b><div class="note" id="hAvailNote">From today</div></div><button class="toggle on" id="availToggle" aria-label="Available for work"><i></i></button></div>
+    <a class="card row" href="#jobs" style="text-decoration:none;color:inherit;justify-content:space-between"><div><b>Jobs near you</b><div class="note" id="hJobsNote">Within 10 km</div></div><span class="tag t-new" id="hJobsCount">…</span></a>
+    <div class="card row" id="idCardRow" style="display:none;justify-content:space-between"><div><b>My YORO ID card</b><div class="note">Show this at the client's home</div></div><button class="btn sm ghost" id="idCardBtn">View</button></div>
+    <div class="lbl" style="margin-top:8px">Complete your profile (optional)</div>
+    <button class="card row" style="width:100%;text-align:left" data-open="prefs"><div class="grow"><b>Work preference</b><div class="note" id="cPrefs">Full/part-time, day/night, timings · +15%</div></div><span id="okPrefs"></span>›</button>
+    <button class="card row" style="width:100%;text-align:left" data-open="exp"><div class="grow"><b>Experience &amp; skills</b><div class="note" id="cExp">Years, skills, previous employer · +15%</div></div><span id="okExp"></span>›</button>
+    <button class="card row" style="width:100%;text-align:left" data-open="docs"><div class="grow"><b>Documents</b><div class="note" id="cDocs">Aadhaar / PAN, certificate · gets you verified</div></div><span id="okDocs"></span>›</button>
+    <button class="card row" style="width:100%;text-align:left" data-open="personal"><div class="grow"><b>Personal details</b><div class="note" id="cPersonal">Gender, languages, address · +10%</div></div><span id="okPersonal"></span>›</button>
+    <button class="btn ghost sm" id="logout" style="margin-top:12px">Log out</button>
+  </div>
+</section>
+
+<section class="screen" id="s-jobs">
+  <div class="pad" style="padding-bottom:10px;border-bottom:1px solid #E3E8E7"><div class="row" style="justify-content:space-between"><h1 style="margin:0">Jobs near you</h1><span class="note" id="jArea"></span></div>
+  <div class="chips" style="margin-top:10px" id="jobFilters"><button class="chip on" data-f="all">All</button><button class="chip" data-f="Day">Day</button><button class="chip" data-f="Night">Night</button><button class="chip" data-f="5">Within 5 km</button></div></div>
+  <div class="pad" style="background:#F7F9F8;flex-grow:1" id="jobList"><div class="note" style="text-align:center;padding:30px">Loading…</div></div>
+</section>
+
+<section class="screen" id="s-job">
+  <div class="pad"><a class="back" href="#jobs" aria-label="Back">‹</a><div id="jobDetail" style="margin-top:16px"></div></div>
+  <div class="pad" style="margin-top:auto;border-top:1px solid #E3E8E7"><button class="btn" id="interestBtn">I'm interested</button><div class="note" style="text-align:center;margin-top:8px">No form. Our recruiter calls you to confirm.</div></div>
+</section>
+
+<div class="nav" id="nav" style="display:none">
+  <a href="#home" data-n="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
+  <a href="#jobs" data-n="jobs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V4h6v3"/></svg>Jobs</a>
+  <a href="#home" data-n="docs" data-open="docs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8"/></svg>Documents</a>
+</div>
+</div>
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { sb, $, esc, toast, openSheet, closeSheet, initModal, chipRow, chipVal, fmtDate, initials, strength, areas, uploadDoc, signedUrl, drawIdCard, pay } from './shared.js';
+import { SKILLS, COUNTRY_CODE, DEFAULT_CITY } from './config.js';
+initModal();
+
+const T = {
+  en: { hero: 'Nursing & care jobs near your home', heroSub: 'Register in 1 minute. Our team calls you within 24 hours. Jobs come to you on WhatsApp.', register: 'Register in 1 minute', login: 'Already registered? Log in', phoneTitle: 'Your mobile number', phoneSub: 'We send a 6-digit code by SMS. This number is your login.' },
+  hi: { hero: 'आपके घर के पास नर्सिंग और केयर की नौकरियाँ', heroSub: '1 मिनट में रजिस्टर करें। हमारी टीम 24 घंटे में कॉल करेगी। नौकरियाँ WhatsApp पर मिलेंगी।', register: '1 मिनट में रजिस्टर करें', login: 'पहले से रजिस्टर हैं? लॉग इन', phoneTitle: 'आपका मोबाइल नंबर', phoneSub: 'हम SMS से 6 अंकों का कोड भेजेंगे। यही नंबर आपका लॉगिन है।' },
+  mr: { hero: 'तुमच्या घराजवळ नर्सिंग आणि केअरच्या नोकऱ्या', heroSub: '1 मिनिटात नोंदणी करा. आमची टीम 24 तासांत कॉल करेल. नोकऱ्या WhatsApp वर मिळतील.', register: '1 मिनिटात नोंदणी करा', login: 'आधीच नोंदणी केली आहे? लॉग इन', phoneTitle: 'तुमचा मोबाइल नंबर', phoneSub: 'आम्ही SMS ने 6 अंकी कोड पाठवू. हाच नंबर तुमचा लॉगिन आहे.' } };
+$('langChips').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; document.querySelectorAll('#langChips .chip').forEach((c) => c.classList.toggle('on', c === b)); const t = T[b.dataset.l]; document.querySelectorAll('[data-t]').forEach((el) => { if (t[el.dataset.t]) el.textContent = t[el.dataset.t]; }); };
+
+// ---------- state ----------
+let user = null, me = null, docs = {}, jobs = [], curJob = null, jobFilter = 'all', selRole = null, selArea = null, pendingPhone = null, AREAS = [];
+const show = (id) => { document.querySelectorAll('.screen').forEach((s) => s.classList.remove('on')); $('s-' + id).classList.add('on'); $('nav').style.display = (me && !['landing', 'otp', 'register', 'job', 'loading'].includes(id)) ? 'flex' : 'none'; document.querySelectorAll('#nav a').forEach((a) => a.classList.toggle('on', a.dataset.n === id)); window.scrollTo(0, 0); };
+async function loadMe() { if (!user) { me = null; return; } const { data } = await sb.from('candidates').select('*').eq('id', user.id).maybeSingle(); me = data; if (me) { const { data: d } = await sb.from('documents').select('*').eq('candidate_id', user.id); docs = {}; (d || []).forEach((x) => (docs[x.slot] = x)); } }
+async function route() {
+  let h = (location.hash || '#landing').slice(1);
+  if (!me && ['home', 'jobs', 'job'].includes(h)) h = 'landing';
+  if (me && ['landing', 'otp', 'register'].includes(h)) h = 'home';
+  if (user && !me && h !== 'register') h = 'register';
+  show(h);
+  if (h === 'home') renderHome(); if (h === 'jobs') renderJobs(); if (h === 'job') renderJob();
+}
+window.addEventListener('hashchange', route);
+
+// ---------- auth ----------
+sb.auth.onAuthStateChange(async (ev, session) => { user = session?.user || null; if (ev === 'SIGNED_OUT') { me = null; location.hash = '#landing'; } });
+(async () => { const { data: { session } } = await sb.auth.getSession(); user = session?.user || null; await loadMe(); AREAS = await areas(); route(); })();
+
+const fullPhone = (p) => COUNTRY_CODE + p;
+$('sendOtp').onclick = async () => {
+  const p = $('phone').value.replace(/\D/g, ''); const err = $('otpErr'); err.textContent = '';
+  if (p.length !== 10) return (err.textContent = 'Enter a 10-digit mobile number.');
+  $('sendOtp').innerHTML = '<span class="spinner"></span>'; $('sendOtp').disabled = true;
+  const { error } = await sb.auth.signInWithOtp({ phone: fullPhone(p), options: { channel: 'sms' } });
+  $('sendOtp').textContent = 'Send code'; $('sendOtp').disabled = false;
+  if (error) return (err.textContent = friendlyAuthError(error));
+  pendingPhone = p; $('otpTo').textContent = p; $('otpBox').style.display = 'block'; $('sendOtp').style.display = 'none'; $('verifyOtp').style.display = 'flex'; $('otp').focus();
+};
+$('resend').onclick = (e) => { e.preventDefault(); $('sendOtp').click(); };
+$('changeNo').onclick = (e) => { e.preventDefault(); $('otpBox').style.display = 'none'; $('sendOtp').style.display = 'flex'; $('verifyOtp').style.display = 'none'; };
+$('verifyOtp').onclick = async () => {
+  const err = $('otpErr'); err.textContent = ''; const token = $('otp').value.trim();
+  if (token.length < 4) return (err.textContent = 'Enter the code from the SMS.');
+  $('verifyOtp').innerHTML = '<span class="spinner"></span>'; $('verifyOtp').disabled = true;
+  const { data, error } = await sb.auth.verifyOtp({ phone: fullPhone(pendingPhone), token, type: 'sms' });
+  $('verifyOtp').textContent = 'Verify & continue'; $('verifyOtp').disabled = false;
+  if (error) return (err.textContent = friendlyAuthError(error));
+  user = data.user; await loadMe();
+  if (me) { toast('Welcome back, ' + me.name.split(' ')[0]); location.hash = '#home'; } else location.hash = '#register';
+  route();
+};
+function friendlyAuthError(e) { const m = (e.message || '').toLowerCase(); if (m.includes('unsupported phone provider') || m.includes('phone provider')) return 'SMS login is not switched on yet. YORO team: enable Phone auth in Supabase → Authentication → Providers.'; if (m.includes('rate')) return 'Too many attempts. Please wait a minute and try again.'; if (m.includes('expired') || m.includes('invalid')) return 'Wrong or expired code. Tap Resend to get a new one.'; return e.message; }
+
+// ---------- register ----------
+$('roleChips').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; selRole = b.dataset.v; document.querySelectorAll('#roleChips .chip').forEach((c) => c.classList.toggle('on', c === b)); };
+const areaIn = $('area'), ac = $('areaAc');
+areaIn.oninput = () => { selArea = null; $('areaPick').textContent = ''; const q = areaIn.value.trim().toLowerCase(); const m = q ? AREAS.filter((a) => a.name.toLowerCase().includes(q)).slice(0, 6) : []; ac.innerHTML = m.map((a) => `<div data-a="${esc(a.name)}"><b>${esc(a.name)}</b>, ${esc(a.city)}</div>`).join(''); ac.style.display = m.length ? 'block' : 'none'; };
+ac.onclick = (e) => { const d = e.target.closest('[data-a]'); if (!d) return; const a = AREAS.find((x) => x.name === d.dataset.a); selArea = { name: a.name, city: a.city, lat: a.lat, lng: a.lng }; areaIn.value = a.name; ac.style.display = 'none'; $('areaPick').innerHTML = `📍 Pinned: <b>${esc(a.name)}, ${esc(a.city)}</b>`; };
+$('gpsBtn').onclick = () => {
+  if (!navigator.geolocation) return toast('Location not available on this phone');
+  $('gpsBtn').textContent = 'Finding you…';
+  navigator.geolocation.getCurrentPosition((pos) => { const { latitude: la, longitude: lo } = pos.coords; const d = (a) => (a.lat - la) ** 2 + (a.lng - lo) ** 2; const near = [...AREAS].sort((a, b) => d(a) - d(b))[0]; selArea = { name: near.name, city: near.city, lat: la, lng: lo }; areaIn.value = near.name; $('areaPick').innerHTML = `📍 Pinned at your location, nearest area: <b>${esc(near.name)}</b>. Wrong? Type your area above.`; $('gpsBtn').textContent = '📍 Use my current location'; }, () => { toast('Could not get location — type your area'); $('gpsBtn').textContent = '📍 Use my current location'; }, { enableHighAccuracy: true, timeout: 8000 });
+};
+$('registerBtn').onclick = async () => {
+  const name = $('name').value.trim(); const err = $('regErr'); err.textContent = '';
+  if (!name) return (err.textContent = 'Please enter your name.');
+  if (!selRole) return (err.textContent = 'Please choose Caregiver, Nurse or Physio.');
+  if (!selArea) return (err.textContent = 'Please pick your area from the list or use your location.');
+  $('registerBtn').disabled = true;
+  const phone = (user.phone || '').replace(/^\+?91/, '');
+  const { error } = await sb.from('candidates').insert({ id: user.id, phone, name, role: selRole, area: selArea.name, city: selArea.city || DEFAULT_CITY, lat: selArea.lat, lng: selArea.lng });
+  $('registerBtn').disabled = false;
+  if (error) return (err.textContent = error.message);
+  await loadMe(); toast('Registered! Our team will call you within 24 h.'); location.hash = '#home'; route();
+};
+
+// ---------- home ----------
+async function renderHome() {
+  const c = me; $('hName').textContent = c.name;
+  const av = $('hAvatar'); av.innerHTML = initials(c.name); if (c.photo_path) { const u = await signedUrl(c.photo_path); if (u) av.innerHTML = `<img src="${u}" alt="">`; }
+  $('photoNudge').style.display = c.photo_path ? 'none' : 'block';
+  $('hStatus').innerHTML = c.verified ? `✅ ${esc(c.role)} · ${esc(c.area)}, ${esc(c.city)} · <b>YORO Verified</b>` : `<span style="display:inline-flex;width:18px;height:18px;border-radius:50%;background:#fff;color:#0F766E;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-right:6px">!</span>${esc(c.role)} · ${esc(c.area)}, ${esc(c.city)} · ${c.stage === 'In verification' ? 'Verification in progress' : 'Not yet verified'}`;
+  const p = strength(c, docs); $('hPct').textContent = p + '%'; $('hBar').style.width = p + '%';
+  $('availToggle').classList.toggle('on', !!c.available); $('hAvailNote').textContent = c.available ? 'Recruiters can see you' : 'Hidden from job alerts';
+  $('hJobsNote').textContent = `Within ${c.prefs?.radius || 10} km of ${c.area}`;
+  $('idCardRow').style.display = c.verified ? 'flex' : 'none';
+  $('okPrefs').innerHTML = c.prefs ? '<span class="ok">✓</span>' : ''; $('okExp').innerHTML = c.exp ? '<span class="ok">✓</span>' : ''; $('okPersonal').innerHTML = c.personal ? '<span class="ok">✓</span>' : '';
+  const dn = Object.keys(docs).filter((k) => k !== 'photo').length; $('okDocs').innerHTML = dn ? `<span class="ok">${dn} ✓</span>` : '';
+  if (c.prefs) $('cPrefs').textContent = `${c.prefs.type} · ${c.prefs.shift} · ${c.prefs.timing || 'any time'} · up to ${c.prefs.radius} km`;
+  if (c.exp) $('cExp').textContent = `${c.exp.years} yrs · ${(c.exp.skills || []).join(', ') || 'no skills added'}`;
+  if (c.personal) $('cPersonal').textContent = `${c.personal.gender || ''} · ${(c.personal.langs || []).join(', ')} · ${c.personal.address || 'address not added'}`;
+  const { data } = await sb.rpc('jobs_near_me'); jobs = data || []; $('hJobsCount').textContent = jobs.length + ' open';
+}
+async function saveMe(patch) { const { error } = await sb.from('candidates').update(patch).eq('id', me.id); if (error) { toast('Could not save: ' + error.message); return false; } Object.assign(me, patch); return true; }
+$('availToggle').onclick = async () => { if (await saveMe({ available: !me.available })) renderHome(); };
+$('logout').onclick = async () => { await sb.auth.signOut(); };
+$('hAvatar').onclick = () => $('photoIn').click();
+$('photoIn').onchange = async () => { const f = $('photoIn').files[0]; if (!f) return; toast('Uploading photo…', 6000); try { const path = await uploadDoc(me.id, 'photo', f); await saveMe({ photo_path: path }); await loadMe(); renderHome(); toast('Photo added'); } catch (e) { toast('Upload failed: ' + e.message); } };
+$('idCardBtn').onclick = async () => { const u = await signedUrl(me.photo_path); const png = await drawIdCard(me, u); openSheet(`<h2>My YORO ID card</h2><img class="idcard" src="${png}" alt="ID card"><a class="btn" href="${png}" download="yoro-id-${me.phone}.png" style="margin-top:14px">Download</a><button class="btn ghost" id="closeSheet" style="margin-top:8px">Close</button>`); $('closeSheet').onclick = closeSheet; };
+
+// profile sheets
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-open]'); if (!b) return; e.preventDefault(); openCard(b.dataset.open); });
+async function openCard(k) {
+  const c = me; if (!c) return;
+  if (k === 'prefs') { const p = c.prefs || {}; openSheet(`<h2>Work preference</h2><span class="lbl">Type</span>${chipRow('type', ['Full-time', 'Part-time', 'Both'], p.type)}<span class="lbl">Shift</span>${chipRow('shift', ['Day', 'Night', 'Both'], p.shift)}<label class="lbl" for="timing">Preferred timings</label><input class="inp" id="timing" value="${esc(p.timing || '')}" placeholder="e.g. 8 am – 8 pm, Mon–Sat"><span class="lbl">Willing to travel up to</span>${chipRow('radius', ['5', '10', '15', '25'], String(p.radius || 10))}<button class="btn" id="saveSheet" style="margin-top:20px">Save</button>`);
+    $('saveSheet').onclick = async () => { const patch = { prefs: { type: chipVal('type') || 'Both', shift: chipVal('shift') || 'Both', timing: $('timing').value.trim(), radius: Number(chipVal('radius') || 10) } }; if (c.stage === 'New') patch.stage = 'Contacted'; if (await saveMe(patch)) { closeSheet(); toast('Saved'); renderHome(); } }; }
+  if (k === 'exp') { const x = c.exp || {}; openSheet(`<h2>Experience &amp; skills</h2><label class="lbl" for="years">Years of experience</label><input class="inp" id="years" type="number" min="0" value="${x.years ?? ''}"><span class="lbl">Skills (tap all that apply)</span>${chipRow('skills', SKILLS, x.skills || [], true)}<label class="lbl" for="emp">Previous employer / hospital</label><input class="inp" id="emp" value="${esc(x.employer || '')}">${c.role !== 'Caregiver' ? `<label class="lbl" for="qual">Qualification</label><input class="inp" id="qual" value="${esc(x.qual || '')}" placeholder="${c.role === 'Nurse' ? 'GNM / ANM / BSc Nursing' : 'BPT / MPT'}"><label class="lbl" for="reg">Council registration number</label><input class="inp" id="reg" value="${esc(x.reg || '')}">` : ''}<label class="lbl" for="sal">Expected salary (₹ / month)</label><input class="inp" id="sal" type="number" value="${x.salary ?? ''}"><button class="btn" id="saveSheet" style="margin-top:20px">Save</button>`);
+    $('saveSheet').onclick = async () => { if (await saveMe({ exp: { years: Number($('years').value || 0), skills: chipVal('skills'), employer: $('emp').value.trim(), qual: $('qual')?.value.trim() || '', reg: $('reg')?.value.trim() || '', salary: Number($('sal').value || 0) } })) { closeSheet(); toast('Saved'); renderHome(); } }; }
+  if (k === 'personal') { const p = c.personal || {}; openSheet(`<h2>Personal details</h2><span class="lbl">Gender</span>${chipRow('gender', ['Female', 'Male', 'Other'], p.gender)}<span class="lbl">Languages</span>${chipRow('langs', ['Marathi', 'Hindi', 'English', 'Other'], p.langs || [], true)}<label class="lbl" for="dob">Date of birth</label><input class="inp" id="dob" type="date" value="${esc(p.dob || '')}"><label class="lbl" for="addr">Full address</label><textarea class="inp" id="addr" rows="3">${esc(p.address || '')}</textarea><button class="btn" id="saveSheet" style="margin-top:20px">Save</button>`);
+    $('saveSheet').onclick = async () => { if (await saveMe({ personal: { gender: chipVal('gender'), langs: chipVal('langs'), dob: $('dob').value, address: $('addr').value.trim() } })) { closeSheet(); toast('Saved'); renderHome(); } }; }
+  if (k === 'docs') {
+    const slots = [['photo', 'Photo', 'Face visible · for your ID card', 'image/*'], ['id', 'Aadhaar / PAN / Passport', 'Front and back in one photo · required for verification', 'image/*,.pdf'], ...(c.role !== 'Caregiver' ? [['cert', 'Registration certificate', 'Nursing / physio council · required', 'image/*,.pdf']] : [['cert', 'Training certificate', 'Optional', 'image/*,.pdf']]), ['addr', 'Address proof', 'Optional', 'image/*,.pdf']];
+    openSheet(`<h2>My documents</h2><p class="sub">Only YORO's verification team can see these. Files are stored privately and never shared on WhatsApp.</p>${slots.map(([k, t, n, acc]) => { const f = docs[k]; return `<div class="card row"><div class="grow"><b>${t}</b><div class="note">${f ? `<span style="${f.status === 'Rejected' ? 'color:#B91C1C' : 'color:#15803D'};font-weight:600">${f.status === 'Uploaded' ? 'Uploaded · under review' : f.status}</span>${f.rejection_reason ? ' · ' + esc(f.rejection_reason) : ''}` : n}</div></div><label class="btn ghost sm" style="cursor:pointer">${f ? 'Replace' : 'Upload'}<input type="file" accept="${acc}" data-slot="${k}" style="display:none"></label></div>`; }).join('')}<button class="btn ghost" id="closeSheet" style="margin-top:10px">Done</button>`);
+    $('sheet').querySelectorAll('input[type=file]').forEach((i) => (i.onchange = async () => { const f = i.files[0]; if (!f) return; if (f.size > 10 * 1024 * 1024) return toast('File too large (max 10 MB)'); toast('Uploading…', 8000); try { const path = await uploadDoc(me.id, i.dataset.slot, f); const patch = {}; if (i.dataset.slot === 'photo') patch.photo_path = path; if (i.dataset.slot === 'id' && !['Verified', 'Blacklisted'].includes(c.stage)) patch.stage = 'In verification'; else if (c.stage === 'New') patch.stage = 'Docs pending'; if (Object.keys(patch).length) await saveMe(patch); await loadMe(); openCard('docs'); renderHome(); toast('Uploaded · under review'); } catch (e) { toast('Upload failed: ' + e.message, 5000); } }));
+    $('closeSheet').onclick = closeSheet;
+  }
+}
+
+// ---------- jobs ----------
+async function renderJobs() {
+  $('jArea').textContent = `${me.area} · ${me.prefs?.radius || 10} km`;
+  const { data } = await sb.rpc('jobs_near_me'); jobs = data || [];
+  const list = jobs.filter((j) => jobFilter === 'all' || (jobFilter === '5' ? j.distance_km <= 5 : j.shift === jobFilter));
+  $('jobList').innerHTML = list.length ? list.map((j) => `<a class="card" href="#job" data-j="${j.id}" style="display:block;text-decoration:none;color:inherit"><div class="row" style="justify-content:space-between"><b style="font-size:16px">${esc(j.role)} · ${esc(j.shift)} shift</b>${j.my_status ? `<span class="tag t-warn">${esc(j.my_status).toUpperCase()}</span>` : '<span class="tag t-new">NEW</span>'}</div><div class="note" style="margin:6px 0">📍 ${esc(j.area)} · <b style="color:#0F766E">${j.distance_km} km away</b></div><div class="chips" style="gap:6px"><span class="tag t-mute">${esc(j.timing || '')}</span><span class="tag t-mute">${esc(j.duration || '')}</span>${(j.skills || []).slice(0, 2).map((s) => `<span class="tag t-mute">${esc(s)}</span>`).join('')}</div><div class="row" style="justify-content:space-between;margin-top:8px"><b>${pay(j)} <span class="note" style="font-weight:500">/ ${esc(j.pay_unit)}</span></b><span style="color:#0F766E;font-weight:600;font-size:13px">Starts ${fmtDate(j.start_date)}</span></div></a>`).join('') : `<div class="card note" style="text-align:center;padding:30px">No open ${me.role.toLowerCase()} jobs within ${me.prefs?.radius || 10} km right now. We'll message you on WhatsApp when one comes up.</div>`;
+}
+$('jobList').onclick = (e) => { const a = e.target.closest('[data-j]'); if (a) curJob = Number(a.dataset.j); };
+$('jobFilters').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) return; jobFilter = b.dataset.f; document.querySelectorAll('#jobFilters .chip').forEach((c) => c.classList.toggle('on', c === b)); renderJobs(); };
+function renderJob() {
+  const j = jobs.find((x) => x.id === curJob); if (!j) { location.hash = '#jobs'; return; }
+  $('jobDetail').innerHTML = `<span class="tag ${j.my_status ? 't-warn' : 't-new'}">${j.my_status ? esc(j.my_status).toUpperCase() : 'NEW'}</span><h1 style="margin-top:8px">${esc(j.role)} · ${esc(j.shift)} shift</h1><div class="sub">📍 ${esc(j.area)}, Pune · <b style="color:#0F766E">${j.distance_km} km from you</b></div><div class="note">Exact address shared after you are assigned.</div><div class="grid2" style="margin:16px 0"><div class="kv"><b>PAY</b><span>${pay(j)} / ${esc(j.pay_unit)}</span></div><div class="kv"><b>SHIFT</b><span>${esc(j.timing || j.shift)}</span></div><div class="kv"><b>DURATION</b><span>${esc(j.duration || '—')}</span></div><div class="kv"><b>STARTS</b><span>${fmtDate(j.start_date)}</span></div></div><b>About the patient</b><p class="sub" style="margin:4px 0 14px">${esc(j.brief || '—')}</p><b>Skills needed</b><div class="chips" style="margin-top:6px">${(j.skills || []).map((s) => `<span class="tag t-mute" style="font-size:13px;padding:6px 10px">${esc(s)}</span>`).join('') || '<span class="note">—</span>'}</div>${j.verified_only && !me.verified ? '<div class="card" style="margin-top:14px;background:#FFF4E5;border-color:#FCD9A8;font-size:13px">This family asked for verified candidates only. Upload your Aadhaar to get verified.</div>' : ''}`;
+  const b = $('interestBtn'); b.disabled = !!j.my_status; b.textContent = j.my_status ? `You are ${j.my_status}` : "I'm interested";
+}
+$('interestBtn').onclick = async () => { const { error } = await sb.from('job_interests').insert({ job_id: curJob, candidate_id: me.id }); if (error) return toast('Could not send: ' + error.message); toast('Interest sent. Recruiter will call you.'); const { data } = await sb.rpc('jobs_near_me'); jobs = data || []; renderJob(); };
+</script>
+</body>
+</html>
