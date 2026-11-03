@@ -1,7 +1,9 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { SUPABASE_URL, SUPABASE_KEY, BUCKET, BRAND } from './config.js';
 
-export const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Separate sessions for the candidate app and the staff console so logging into one never affects the other.
+export const IS_ADMIN_PAGE = /admin\.html$/.test(location.pathname);
+export const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storageKey: IS_ADMIN_PAGE ? 'yj-staff-auth' : 'yj-candidate-auth' } });
 
 // ---------- tiny UI helpers ----------
 export const $ = (id) => document.getElementById(id);

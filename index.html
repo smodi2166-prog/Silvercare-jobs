@@ -162,12 +162,13 @@ $('langChips').onclick = (e) => { const b = e.target.closest('.chip'); if (!b) r
 // ---------- state ----------
 let user = null, me = null, docs = {}, jobs = [], curJob = null, jobFilter = 'all', selRole = null, selArea = null, pendingPhone = null, AREAS = [];
 const show = (id) => { document.querySelectorAll('.screen').forEach((s) => s.classList.remove('on')); $('s-' + id).classList.add('on'); $('nav').style.display = (me && !['landing', 'otp', 'register', 'job', 'loading'].includes(id)) ? 'flex' : 'none'; document.querySelectorAll('#nav a').forEach((a) => a.classList.toggle('on', a.dataset.n === id)); window.scrollTo(0, 0); };
-async function loadMe() { if (!user) { me = null; return; } const { data } = await sb.from('candidates').select('*').eq('id', user.id).maybeSingle(); me = data; if (me) { const { data: d } = await sb.from('documents').select('*').eq('candidate_id', user.id); docs = {}; (d || []).forEach((x) => (docs[x.slot] = x)); } }
+const isCandidateUser = (u) => !!u && /@candidates\.yorojobs\.local$/.test(u.email || '');
+async function loadMe() { if (!user) { me = null; return; } if (!isCandidateUser(user)) { await sb.auth.signOut({ scope: 'local' }); user = null; me = null; return; } const { data } = await sb.from('candidates').select('*').eq('id', user.id).maybeSingle(); me = data; if (me) { const { data: d } = await sb.from('documents').select('*').eq('candidate_id', user.id); docs = {}; (d || []).forEach((x) => (docs[x.slot] = x)); } }
 async function route() {
   let h = (location.hash || '#landing').slice(1);
   if (!me && ['home', 'jobs', 'job', 'profile'].includes(h)) h = 'landing';
   if (me && ['landing', 'otp', 'register'].includes(h)) h = 'home';
-  if (user && !me && h !== 'register') h = 'register';
+  if (user && !me) { if (!pendingPhone) pendingPhone = (user.email || '').split('@')[0]; if (h !== 'register') h = 'register'; }
   if (!user && h === 'register' && !pendingPhone) h = 'otp';
   show(h);
   if (h === 'home') renderHome(); if (h === 'profile') renderProfile(); if (h === 'jobs') renderJobs(); if (h === 'job') renderJob();
