@@ -172,7 +172,7 @@ initModal(); applyStatic();
 const lastMode = getMode(); setMode('candidate');
 try { if (localStorage.getItem('yj-staff-auth')) $('staffPill').style.display = 'flex'; } catch (e) { } // show at once, confirm below
 isStaffOnDevice().then((staff) => {
-  if (!staff) { $('staffPill').style.display = 'none'; return; }
+  if (!staff) { if (!window.__candAdmin) $('staffPill').style.display = 'none'; return; }
   const launchedFromApp = new URLSearchParams(location.search).get('source') === 'app';
   if (launchedFromApp && lastMode === 'admin') { setMode('admin'); location.replace('./admin.html'); return; }
   $('staffPill').style.display = 'flex';
@@ -213,7 +213,7 @@ window.addEventListener('hashchange', route);
 
 // ---------- auth ----------
 sb.auth.onAuthStateChange(async (ev, session) => { user = session?.user || null; if (ev === 'SIGNED_OUT') { me = null; location.hash = '#landing'; } });
-(async () => { const { data: { session } } = await sb.auth.getSession(); user = session?.user || null; await loadMe(); [AREAS, CITIES] = await Promise.all([areas(), cities()]); fillCities(); route(); })();
+(async () => { const { data: { session } } = await sb.auth.getSession(); user = session?.user || null; await loadMe(); [AREAS, CITIES] = await Promise.all([areas(), cities()]); fillCities(); route(); if (user) sb.rpc('is_admin').then(({ data }) => { if (data === true) { window.__candAdmin = true; $('staffPill').style.display = 'flex'; } }); })();
 function fillCities() { const sel = $('citySel'); const cur = sel.value || 'Pune'; sel.innerHTML = CITIES.map((c) => `<option value="${esc(c.name)}" ${c.name === cur ? 'selected' : ''}>${['en', 'hn'].includes(getLang()) ? esc(c.name) : esc(c.name_hi) + ' · ' + esc(c.name)}</option>`).join(''); }
 $('citySel').onchange = () => { selArea = null; $('area').value = ''; $('areaPick').textContent = ''; $('areaAc').style.display = 'none'; };
 
