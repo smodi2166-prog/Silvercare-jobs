@@ -297,15 +297,29 @@ function custForm(c) {
 }
 
 // ---------- orders ----------
-let ordF = 'active';
+let ordF = 'active', OF = { staff: '', cust: '', svc: '', from: '', to: '' };
 async function orders() {
-  const list = await loadOrders();
-  const f = { active: (o) => ACTIVE.includes(o.status), Open: (o) => o.status === 'Open', Completed: (o) => o.status === 'Completed', all: () => true }[ordF];
-  const rows = list.filter(f);
+  const [list, staffAll, custs] = await Promise.all([loadOrders(), loadStaff(true), loadCustomers()]);
+  const f = { active: (o) => ACTIVE.includes(o.status), all: () => true }[ordF] || ((o) => o.status === ordF);
+  // date filter: order runs during the chosen period (start ≤ to, and end ≥ from or ongoing)
+  const inDates = (o) => (!OF.to || o.start_date <= OF.to) && (!OF.from || !o.end_date || o.end_date >= OF.from);
+  const rows = list.filter((o) => f(o) && (!OF.staff || (OF.staff === 'none' ? !o.staff_id : o.staff_id === OF.staff)) && (!OF.cust || o.customer_id === OF.cust) && (!OF.svc || o.service === OF.svc) && inDates(o));
+  const nF = [OF.staff, OF.cust, OF.svc, OF.from, OF.to].filter(Boolean).length + (ordF !== 'active' ? 1 : 0);
+  const billed = rows.reduce((t, o) => { if (!o.bill_rate || o.status === 'Cancelled') return t; const a = OF.from && OF.from > o.start_date ? OF.from : o.start_date; const e0 = o.end_date || today(); const e = OF.to && OF.to < e0 ? OF.to : e0; return a <= e ? t + daysBetween(a, e) * Number(o.bill_rate) : t; }, 0);
   M.innerHTML = `<div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px"><div><h1 style="margin:0">Orders</h1><div class="note">${list.filter((o) => ACTIVE.includes(o.status)).length} active · ${list.length} total</div></div><button class="btn sm" id="addOrd">+ New order</button></div>
-  <div class="filters">${[['active', 'Active'], ['Open', 'Needs staff'], ['Completed', 'Completed'], ['all', 'All']].map(([k, l]) => `<button class="chip ${ordF === k ? 'on' : ''}" data-of="${k}">${l}</button>`).join('')}</div>
+  <div class="card" style="padding:12px 14px;margin-bottom:12px"><div class="grid2" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end">
+    <div><label class="lbl" style="margin-top:0">Status</label><select class="inp" id="ofStatus">${[['active', 'Active (open + assigned + ongoing)'], ['Open', 'Open — needs staff'], ['Assigned', 'Assigned'], ['Ongoing', 'Ongoing'], ['Completed', 'Completed'], ['Cancelled', 'Cancelled'], ['all', 'All statuses']].map(([k, l]) => `<option value="${k}" ${ordF === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+    <div><label class="lbl" style="margin-top:0">Staff</label><select class="inp" id="ofStaff"><option value="">All staff</option><option value="none" ${OF.staff === 'none' ? 'selected' : ''}>— Not assigned —</option>${staffAll.map((x) => `<option value="${x.id}" ${OF.staff === x.id ? 'selected' : ''}>${esc(x.name)}${x.active ? '' : ' (left)'}</option>`).join('')}</select></div>
+    <div><label class="lbl" style="margin-top:0">Customer</label><select class="inp" id="ofCust"><option value="">All customers</option>${custs.map((c) => `<option value="${c.id}" ${OF.cust === c.id ? 'selected' : ''}>${esc(c.name)}${c.patient_name ? ' — ' + esc(c.patient_name) : ''}</option>`).join('')}</select></div>
+    <div><label class="lbl" style="margin-top:0">Service</label><select class="inp" id="ofSvc"><option value="">All services</option>${ROLES.map((r) => `<option ${OF.svc === r ? 'selected' : ''}>${r}</option>`).join('')}</select></div>
+    <div><label class="lbl" style="margin-top:0">From date</label><input class="inp" type="date" id="ofFrom" value="${OF.from}"></div>
+    <div><label class="lbl" style="margin-top:0">To date</label><input class="inp" type="date" id="ofTo" value="${OF.to}"></div>
+  </div><div class="row" style="margin-top:10px;flex-wrap:wrap;gap:8px"><span class="note grow"><b>${rows.length}</b> order${rows.length === 1 ? '' : 's'} shown${OF.from || OF.to ? ' running between the dates' : ''} · billing ${OF.from || OF.to ? 'in this period' : 'to date'} <b>${rupee(billed)}</b></span>${['Today', 'This month', 'Last month'].map((k) => `<button class="chip" data-qd="${k}">${k}</button>`).join('')}${nF ? '<button class="chip" id="ofClear">✕ Clear filters</button>' : ''}</div></div>
   <div class="tbl"><table><thead><tr><th>#</th><th>Customer</th><th>Service</th><th>Timing</th><th>Dates &amp; duration</th><th>Bill rate</th><th>Assigned staff</th><th>Status</th><th></th></tr></thead><tbody>${rows.map((o) => `<tr><td class="note">${o.id}</td><td><b>${esc(o.ag_customers?.name || '')}</b>${o.ag_customers?.patient_name ? `<div class="note">Patient: ${esc(o.ag_customers.patient_name)}</div>` : ''}</td><td>${esc(o.service)} · ${esc(o.shift)}</td><td style="white-space:nowrap">${durText(o).t || '—'}</td><td>${fmtD(o.start_date)} → ${o.end_date ? fmtD(o.end_date) : '…'}<div class="note">${durText(o).d}</div></td><td>${o.bill_rate ? rupee(o.bill_rate) + '/day' : '—'}</td><td>${o.ag_staff ? `<b>${esc(o.ag_staff.name)}</b>` : '<span class="tag t-warn">Not assigned</span>'}</td><td>${statusTag(o.status)}</td><td><button class="btn sm ${o.staff_id ? 'ghost' : ''}" data-oedit="${o.id}">${o.staff_id ? 'Edit' : 'Assign'}</button></td></tr>`).join('') || `<tr><td colspan="9" class="note" style="text-align:center;padding:28px">No orders here. Tap <b>+ New order</b>.</td></tr>`}</tbody></table></div>`;
-  M.querySelectorAll('[data-of]').forEach((b) => (b.onclick = () => { ordF = b.dataset.of; orders(); }));
+  $('ofStatus').onchange = (e) => { ordF = e.target.value; orders(); };
+  [['ofStaff', 'staff'], ['ofCust', 'cust'], ['ofSvc', 'svc'], ['ofFrom', 'from'], ['ofTo', 'to']].forEach(([id, k]) => ($(id).onchange = (e) => { OF[k] = e.target.value; if (OF.from && OF.to && OF.to < OF.from) OF.to = OF.from; orders(); }));
+  M.querySelectorAll('[data-qd]').forEach((b) => (b.onclick = () => { const t = today(), k = b.dataset.qd; if (k === 'Today') OF.from = OF.to = t; else if (k === 'This month') { OF.from = t.slice(0, 8) + '01'; OF.to = monthRange(t.slice(0, 7))[1]; } else { const d = new Date(t.slice(0, 8) + '01T00:00:00Z'); d.setUTCDate(0); const ym = d.toISOString().slice(0, 7); OF.from = ym + '-01'; OF.to = monthRange(ym)[1]; if (ordF === 'active') ordF = 'all'; } orders(); }));
+  const cl = $('ofClear'); if (cl) cl.onclick = () => { ordF = 'active'; OF = { staff: '', cust: '', svc: '', from: '', to: '' }; orders(); };
   $('addOrd').onclick = () => orderForm(null);
   M.querySelectorAll('[data-oedit]').forEach((b) => (b.onclick = () => orderForm(Number(b.dataset.oedit))));
 }
