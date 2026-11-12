@@ -85,7 +85,6 @@ export async function drawIdCard(c, photoUrl) {
   line('Valid till', new Date(Date.now() + 365 * 864e5).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }));
   // verified badge
   if (c.verified) { x.fillStyle = '#15803D'; x.beginPath(); x.roundRect(lx, 520, 330, 56, 28); x.fill(); x.fillStyle = '#fff'; x.font = '700 24px Inter, system-ui, sans-serif'; x.fillText('✓  YORO VERIFIED', lx + 28, 557); }
-  else { x.fillStyle = '#B45309'; x.font = '600 22px Inter, system-ui, sans-serif'; x.fillText('Verification pending', lx, 556); }
   x.fillStyle = '#5B6565'; x.font = '400 18px Inter, system-ui, sans-serif'; x.fillText('If found, please return to YORO Health, Pune · +91 92725 71708 · care@yorohealth.com', 40, H - 28);
   return cv.toDataURL('image/png');
 }
