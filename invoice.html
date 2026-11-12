@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0;background:#F1F4F3;font-family:Inter,system-ui,sans-serif;color:#1B2423;font-size:14px}
+.doc{max-width:760px;margin:20px auto;background:#fff;border-radius:14px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.note{color:#5B6565;font-size:12.5px}
+table{width:100%;border-collapse:collapse;margin-top:14px}
+th{text-align:left;font-size:12px;color:#5B6565;padding:8px 4px;border-bottom:1px solid #CFD8D6}
+td{padding:8px 4px;border-bottom:1px solid #EEF2F1;vertical-align:top}
+.r{text-align:right}
+.box{margin:16px 0;padding:12px 14px;background:#F7F9F8;border-radius:10px}
+.tag{display:inline-block;padding:3px 10px;border-radius:999px;font-weight:700;font-size:12px}
+.paid{background:#DCFCE7;color:#15803D}.unpaid{background:#FEE2E2;color:#B91C1C}.part{background:#FEF3C7;color:#B45309}
+button{height:44px;padding:0 20px;border-radius:10px;border:0;background:#1E3A5F;color:#fff;font-weight:700;font-family:inherit;font-size:14px;cursor:pointer}
+@media print{body{background:#fff}.doc{box-shadow:none;margin:0}.noprint{display:none}}
+</style>
+</head>
+<body>
+<div class="doc" id="doc"><p class="note">Loading invoice…</p></div>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false, storageKey: 'yj-invoice-view' } });
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const rupee = (n) => '₹' + Math.round(Number(n || 0)).toLocaleString('en-IN');
+const fmtD = (d) => (d ? new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—');
+const t = new URLSearchParams(location.search).get('t');
+const doc = document.getElementById('doc');
+const { data: i, error } = t && /^[0-9a-f-]{36}$/i.test(t) ? await sb.rpc('public_invoice', { p_token: t }) : { data: null };
+if (error || !i) { doc.innerHTML = '<h2>Invoice not found</h2><p class="note">This link is invalid or the invoice was cancelled. Please contact the agency.</p>'; }
+else {
+  document.title = `Invoice ${i.invoice_no} — ${i.agency.name}`;
+  const bal = Number(i.total) - Number(i.paid_amount || 0);
+  const st = i.status === 'Paid' ? '<span class="tag paid">PAID</span>' : i.status === 'Partly paid' ? '<span class="tag part">PARTLY PAID</span>' : '<span class="tag unpaid">PAYMENT DUE</span>';
+  doc.innerHTML = `<div class="row"><div><b style="font-size:20px">${esc(i.agency.name)}</b><div class="note">${esc(i.agency.address || '')}${i.agency.phone ? '<br>📞 ' + esc(i.agency.phone) : ''}${i.agency.email ? ' · ' + esc(i.agency.email) : ''}</div></div><div style="text-align:right"><b style="font-size:17px;letter-spacing:1px">INVOICE</b><div>${esc(i.invoice_no)}</div><div class="note">Date ${fmtD(i.issue_date)}<br>Due ${fmtD(i.due_date)}</div></div></div>
+  <div class="box"><span class="note">Bill to</span><br><b>${esc(i.customer.name)}</b>${i.customer.patient_name ? `<br>Patient: ${esc(i.customer.patient_name)}` : ''}${i.customer.address ? `<br><span class="note">${esc(i.customer.address)}</span>` : ''}<br><span class="note">Service period: ${fmtD(i.period_from)} – ${fmtD(i.period_to)}</span></div>
+  <table><thead><tr><th>Service</th><th>Qty</th><th>Rate</th><th class="r">Amount</th></tr></thead><tbody>${(i.lines || []).map((l) => `<tr><td>${esc(l.desc)}</td><td>${l.qty} ${esc(l.unit || '')}</td><td>${rupee(l.rate)}</td><td class="r">${rupee(l.amount ?? l.qty * l.rate)}</td></tr>`).join('')}</tbody></table>
+  <div class="r" style="margin-top:12px;line-height:1.9">Subtotal ${rupee(i.subtotal)}${Number(i.discount) ? `<br>Discount −${rupee(i.discount)}` : ''}${Number(i.gst_pct) ? `<br>GST ${i.gst_pct}%` : ''}<br><b style="font-size:19px">Total ${rupee(i.total)}</b>${Number(i.paid_amount) ? `<br>Paid ${rupee(i.paid_amount)}${i.paid_on ? ' on ' + fmtD(i.paid_on) : ''}<br><b>Balance due ${rupee(bal)}</b>` : ''}</div>
+  <div style="margin-top:10px">${st}</div>${i.notes ? `<p>${esc(i.notes)}</p>` : ''}
+  <div class="noprint" style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap"><button onclick="print()">🖨 Print / Save as PDF</button></div>
+  <p class="note" style="margin-top:18px">Thank you for choosing ${esc(i.agency.name)}.</p>`;
+}
+</script>
+</body>
+</html>
