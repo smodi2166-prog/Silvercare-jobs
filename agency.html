@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YORO Agency Portal — staff, customers, orders, attendance</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="./app.css">
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32.png">
+<meta name="theme-color" content="#1E3A5F">
+<style>
+.app.wide{max-width:1200px}
+.top{background:#1E3A5F}
+.att{display:flex;gap:4px}
+.att button{min-width:40px;height:34px;border-radius:8px;border:1px solid #CFD8D6;background:#fff;font-weight:700;font-size:12px;font-family:inherit;cursor:pointer}
+.att button.P.on{background:#15803D;color:#fff;border-color:#15803D}
+.att button.A.on{background:#B91C1C;color:#fff;border-color:#B91C1C}
+.att button.H.on{background:#B45309;color:#fff;border-color:#B45309}
+.att button.L.on{background:#475569;color:#fff;border-color:#475569}
+.super{background:#FEF3C7;color:#78350F;padding:8px 20px;font-size:13px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.super select{height:32px;border-radius:6px;border:1px solid #D6B45A;font-family:inherit}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 18px}
+.steps span{font-size:12px;padding:5px 10px;border-radius:999px;background:#F1F5F4;color:#5B6565}
+.steps span.on{background:#1E3A5F;color:#fff}
+</style>
+</head>
+<body>
+<div class="app wide" id="app">
+
+<section class="screen on" id="s-loading"><div class="pad" style="margin:auto;text-align:center" class="note">Loading…</div></section>
+
+<!-- ===== login ===== -->
+<section class="screen" id="s-login" style="background:#F1F4F3;align-items:center;justify-content:center;padding:20px">
+  <div class="card" style="width:100%;max-width:420px;padding:28px">
+    <div class="row" style="margin-bottom:6px"><div style="width:36px;height:36px;border-radius:9px;background:#1E3A5F;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">Y</div><div><b style="font-size:18px">Agency Portal</b><div class="note">by YORO Health</div></div></div>
+    <p class="sub" style="margin:14px 0 4px">Manage your nursing agency's staff, customers, orders and attendance in one place.</p>
+    <label class="lbl" for="lphone">Admin mobile number</label>
+    <div class="row"><div class="inp" style="width:64px;display:flex;align-items:center;font-weight:600">+91</div><input class="inp grow" id="lphone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile"></div>
+    <div id="lpinBox" style="display:none"><label class="lbl" for="lpin" id="lpinLbl">4-digit PIN</label><input class="inp" id="lpin" type="password" inputmode="numeric" maxlength="4" style="letter-spacing:8px;text-align:center;font-size:22px"></div>
+    <div class="err" id="lerr"></div>
+    <button class="btn" id="lgo" style="margin-top:18px">Continue</button>
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid #E3E8E7;text-align:center"><span class="note">New agency?</span> <a href="#enroll" style="font-weight:700">Register your agency →</a></div>
+    <div class="note" style="text-align:center;margin-top:10px">Forgot PIN? Ask another admin of your agency, or WhatsApp YORO on 92725 71708.</div>
+  </div>
+</section>
+
+<!-- ===== enrolment ===== -->
+<section class="screen" id="s-enroll" style="background:#F1F4F3;padding:20px">
+  <div class="card" style="width:100%;max-width:640px;margin:0 auto;padding:26px">
+    <a href="#login" class="note">← Back to login</a>
+    <h1 style="margin-top:10px">Register your nursing agency</h1>
+    <p class="sub">Free. Your data stays private to your agency's admins.</p>
+    <h2 style="margin-top:18px">1 · Agency details</h2>
+    <div class="grid2"><div><label class="lbl">Agency name *</label><input class="inp" id="eName"></div><div><label class="lbl">City</label><input class="inp" id="eCity" value="Pune"></div><div><label class="lbl">Office phone</label><input class="inp" id="ePhone" inputmode="numeric" maxlength="10"></div><div><label class="lbl">Email</label><input class="inp" id="eEmail" type="email"></div></div>
+    <label class="lbl">Office address</label><textarea class="inp" id="eAddr" rows="2"></textarea>
+    <h2 style="margin-top:22px">2 · Admins (up to 3)</h2>
+    <p class="note">Each admin logs in with their own mobile number and PIN. The first admin is the owner.</p>
+    <div id="eAdmins"></div>
+    <button class="btn sm ghost" id="eAddAdmin" style="margin-top:6px">+ Add another admin</button>
+    <div class="err" id="eErr"></div>
+    <button class="btn" id="eGo" style="margin-top:20px">Register agency</button>
+  </div>
+</section>
+
+<!-- ===== app ===== -->
+<section class="screen" id="s-app">
+  <div class="super" id="superBar" style="display:none"></div>
+  <div class="top"><b style="margin-right:8px" id="agName">Agency</b><a href="#dash" data-a="dash">Dashboard</a><a href="#staff" data-a="staff">Staff</a><a href="#customers" data-a="customers">Customers</a><a href="#orders" data-a="orders">Orders</a><a href="#attendance" data-a="attendance">Attendance</a><a href="#settings" data-a="settings">Settings</a><span class="note" style="color:#fff;opacity:.8;margin-left:auto" id="who"></span><button class="btn sm ghost" id="logout" style="height:30px;font-size:12px">Log out</button></div>
+  <div class="main" id="main"></div>
+</section>
+</div>
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
+
+// ---------- clients ----------
+const agencyDb = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storageKey: 'yj-agency-auth' } });
+let db = agencyDb; // switches to Sahil's YORO session in super mode
+const emailFor = (p) => `${p}@agency.yorojobs.local`, pwFor = (pin, p) => `ya-${pin}-${p}`;
+
+// ---------- helpers ----------
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let tt; const toast = (t, ms = 2400) => { const e = $('toast'); e.textContent = t; e.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => e.classList.remove('on'), ms); };
+const openSheet = (h) => { $('sheet').innerHTML = h; $('modal').classList.add('on'); };
+const closeSheet = () => $('modal').classList.remove('on');
+$('modal').onclick = (e) => { if (e.target === $('modal')) closeSheet(); };
+const rupee = (n) => '₹' + Math.round(Number(n || 0)).toLocaleString('en-IN');
+const today = () => new Date(Date.now() + 5.5 * 3600e3).toISOString().slice(0, 10); // IST date
+const fmtD = (d) => (d ? new Date(d + (d.length === 10 ? 'T00:00:00' : '')).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '—');
+const digits = (x) => String(x || '').replace(/\D/g, '').slice(-10);
+const WEAK = ['0000', '1111', '1234', '2026'];
+const ROLES = ['Caregiver', 'Nurse', 'Physio', 'Attendant', 'Other'];
+const show = (id) => { document.querySelectorAll('.screen').forEach((s) => s.classList.remove('on')); $('s-' + id).classList.add('on'); window.scrollTo(0, 0); };
+const M = $('main');
+const opts = (list, sel) => list.map((o) => `<option ${o === sel ? 'selected' : ''}>${esc(o)}</option>`).join('');
+const val = (id) => ($(id)?.value ?? '').trim();
+const must = async (p) => { const r = await p; if (r.error) { toast('Error: ' + r.error.message, 5000); throw r.error; } return r; };
+
+// ---------- state ----------
+let AG = null, ME = null, SUPER = false, AGENCIES = [];
+const A = () => AG.id;
+
+// ---------- boot ----------
+async function boot() {
+  // 1) agency admin session
+  const { data: { session } } = await agencyDb.auth.getSession();
+  if (session) {
+    const m = /^(\d{10})@agency\.yorojobs\.local$/.exec(session.user.email || '');
+    const { data: aid } = await agencyDb.rpc('my_agency_id');
+    if (m && aid) { db = agencyDb; const { data: g } = await db.from('agencies').select('*').eq('id', aid).single(); const { data: me } = await db.from('agency_admins').select('*').eq('phone', m[1]).single(); AG = g; ME = me; return enterApp(); }
+    await agencyDb.auth.signOut({ scope: 'local' });
+  }
+  // 2) Sahil (YORO super) — reuse his YORO login on this device
+  for (const key of ['yj-staff-auth', 'yj-candidate-auth']) {
+    try { if (!localStorage.getItem(key)) continue; } catch (e) { continue; }
+    const c = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storageKey: key } });
+    const { data: { session: s } } = await c.auth.getSession(); if (!s) continue;
+    const { data: sup } = await c.rpc('is_agency_super');
+    if (sup === true) { db = c; SUPER = true; ME = { name: 'Sahil (YORO)', role: 'super', phone: '' }; const { data } = await db.rpc('agency_overview'); AGENCIES = data || []; let pick = null; try { pick = localStorage.getItem('yj-agency-pick'); } catch (e) { } const g = AGENCIES.find((x) => x.id === pick) || AGENCIES[0]; if (g) { const { data: full } = await db.from('agencies').select('*').eq('id', g.id).single(); AG = full; } return enterApp(); }
+  }
+  route();
+}
+function enterApp() {
+  show('app');
+  $('who').textContent = `${ME.name}${ME.phone ? ' · +91 ' + ME.phone : ''}`;
+  $('agName').textContent = AG ? AG.name : 'Agency Portal';
+  if (SUPER) {
+    $('superBar').style.display = 'flex';
+    $('superBar').innerHTML = `<b>👑 YORO super view</b><span>Agency:</span><select id="agPick">${AGENCIES.map((g) => `<option value="${g.id}" ${AG && g.id === AG.id ? 'selected' : ''}>${esc(g.name)}${g.active ? '' : ' (suspended)'}</option>`).join('') || '<option>No agencies yet</option>'}</select><a href="#all" style="font-weight:700;color:#78350F">All agencies overview →</a><a href="./admin.html" style="margin-left:auto;color:#78350F">← Yoro Jobs admin</a>`;
+    const p = $('agPick'); if (p) p.onchange = async () => { const { data } = await db.from('agencies').select('*').eq('id', p.value).single(); AG = data; try { localStorage.setItem('yj-agency-pick', AG.id); } catch (e) { } $('agName').textContent = AG.name; route(); };
+    $('logout').style.display = 'none';
+    if (!AG) location.hash = '#all';
+  }
+  route();
+}
+$('logout').onclick = async () => { await agencyDb.auth.signOut(); location.hash = '#login'; location.reload(); };
+window.addEventListener('hashchange', route);
+function route() {
+  const h = (location.hash || '').slice(1);
+  if (!ME) { if (h === 'enroll') { show('enroll'); initEnroll(); } else show('login'); return; }
+  show('app'); closeSheet();
+  const tab = h || 'dash'; document.querySelectorAll('.top a').forEach((a) => a.classList.toggle('on', a.dataset.a === tab));
+  if (tab === 'all' && SUPER) return allAgencies();
+  if (!AG) { M.innerHTML = '<div class="card note" style="text-align:center;padding:30px">No agency selected.</div>'; return; }
+  ({ dash, staff, customers, orders, attendance, settings }[tab] || dash)();
+}
+boot();
+
+// ---------- login ----------
+let loginPhone = null;
+$('lgo').onclick = async () => {
+  $('lerr').textContent = '';
+  if (!loginPhone) {
+    const p = digits($('lphone').value); if (p.length !== 10) return ($('lerr').textContent = 'Enter a 10-digit mobile number');
+    $('lgo').disabled = true; const { data, error } = await agencyDb.functions.invoke('agency-auth', { body: { action: 'exists', phone: p } }); $('lgo').disabled = false;
+    if (error || data?.error) return ($('lerr').textContent = data?.error || 'Could not connect. Try again.');
+    if (!data.exists) return ($('lerr').innerHTML = 'This number is not an agency admin. <a href="#enroll">Register your agency</a> or ask your agency owner to add you.');
+    if (data.active === false) return ($('lerr').textContent = 'This agency account is suspended. Contact YORO on 92725 71708.');
+    loginPhone = p; $('lpinBox').style.display = 'block'; $('lpinLbl').textContent = `Welcome ${data.name} (${data.agency}) — enter your 4-digit PIN`; $('lgo').textContent = 'Log in'; $('lpin').focus(); return;
+  }
+  const pin = $('lpin').value.replace(/\D/g, ''); if (pin.length !== 4) return ($('lerr').textContent = 'Enter your 4-digit PIN');
+  $('lgo').disabled = true; const { error } = await agencyDb.auth.signInWithPassword({ email: emailFor(loginPhone), password: pwFor(pin, loginPhone) }); $('lgo').disabled = false;
+  if (error) return ($('lerr').textContent = /invalid/i.test(error.message) ? 'Wrong PIN. Try again.' : error.message);
+  location.hash = '#dash'; boot();
+};
+$('lphone').onkeydown = (e) => { if (e.key === 'Enter') $('lgo').click(); };
+$('lpin').onkeydown = (e) => { if (e.key === 'Enter') $('lgo').click(); };
+
+// ---------- enrolment ----------
+let enrollN = 0;
+function adminBlock(i) { return `<div class="card" style="background:#F7F9F8" data-adm="${i}"><b style="font-size:13px">${i === 0 ? 'Owner / main admin' : 'Admin ' + (i + 1)}</b><div class="grid2" style="grid-template-columns:2fr 2fr 1fr 1fr;gap:8px"><div><label class="lbl" style="margin-top:8px">Name</label><input class="inp" data-f="name"></div><div><label class="lbl" style="margin-top:8px">Mobile</label><input class="inp" data-f="phone" inputmode="numeric" maxlength="10"></div><div><label class="lbl" style="margin-top:8px">PIN</label><input class="inp" data-f="pin" type="password" inputmode="numeric" maxlength="4"></div><div><label class="lbl" style="margin-top:8px">PIN again</label><input class="inp" data-f="pin2" type="password" inputmode="numeric" maxlength="4"></div></div></div>`; }
+function initEnroll() { if (enrollN) return; enrollN = 1; $('eAdmins').innerHTML = adminBlock(0); }
+$('eAddAdmin').onclick = () => { if (enrollN >= 3) return toast('Maximum 3 admins'); $('eAdmins').insertAdjacentHTML('beforeend', adminBlock(enrollN++)); if (enrollN >= 3) $('eAddAdmin').style.display = 'none'; };
+$('eGo').onclick = async () => {
+  $('eErr').textContent = '';
+  const admins = [...document.querySelectorAll('[data-adm]')].map((b) => Object.fromEntries([...b.querySelectorAll('[data-f]')].map((i) => [i.dataset.f, i.value.trim()]))).filter((a) => a.name || a.phone);
+  if (!val('eName')) return ($('eErr').textContent = 'Agency name is required');
+  if (!admins.length) return ($('eErr').textContent = 'Add at least the owner');
+  for (const a of admins) { if (!a.name || digits(a.phone).length !== 10) return ($('eErr').textContent = 'Each admin needs a name and 10-digit mobile'); if (a.pin.length !== 4) return ($('eErr').textContent = `4-digit PIN needed for ${a.name}`); if (a.pin !== a.pin2) return ($('eErr').textContent = `PINs don't match for ${a.name}`); if (WEAK.includes(a.pin)) return ($('eErr').textContent = `Choose a less common PIN for ${a.name}`); }
+  $('eGo').disabled = true; $('eGo').textContent = 'Registering…';
+  const { data, error } = await agencyDb.functions.invoke('agency-auth', { body: { action: 'enroll', agency: { name: val('eName'), city: val('eCity'), phone: val('ePhone'), email: val('eEmail'), address: val('eAddr') }, admins: admins.map((a) => ({ name: a.name, phone: a.phone, pin: a.pin })) } });
+  $('eGo').disabled = false; $('eGo').textContent = 'Register agency';
+  if (error || data?.error) return ($('eErr').textContent = data?.error || error.message);
+  const owner = admins[0]; const p = digits(owner.phone);
+  await agencyDb.auth.signInWithPassword({ email: emailFor(p), password: pwFor(owner.pin, p) });
+  toast('Agency registered 🎉 Next: add your staff'); location.hash = '#staff'; boot();
+};
+
+// ---------- data loaders ----------
+const loadStaff = async (all) => { let q = db.from('ag_staff').select('*').eq('agency_id', A()).order('name'); if (!all) q = q.eq('active', true); return (await q).data || []; };
+const loadCustomers = async () => (await db.from('ag_customers').select('*').eq('agency_id', A()).order('name')).data || [];
+const loadOrders = async () => (await db.from('ag_orders').select('*, ag_customers(name,phone,area,patient_name), ag_staff(name,phone)').eq('agency_id', A()).order('created_at', { ascending: false }).limit(500)).data || [];
+const ACTIVE = ['Open', 'Assigned', 'Ongoing'];
+const statusTag = (s) => `<span class="tag ${{ Open: 't-warn', Assigned: 't-new', Ongoing: 't-ok', Completed: 't-mute', Cancelled: 't-bad' }[s] || 't-mute'}">${esc(s)}</span>`;
+const steps = (on) => `<div class="steps">${['1 Agency', '2 Staff', '3 Customers', '4 Orders', '5 Attendance'].map((x, i) => `<span class="${i + 1 === on ? 'on' : ''}">${x}</span>`).join('')}</div>`;
+function monthRange(ym) { const [y, m] = ym.split('-').map(Number); const s = `${ym}-01`; const e = new Date(Date.UTC(y, m, 0)).toISOString().slice(0, 10); return [s, e, new Date(Date.UTC(y, m, 0)).getUTCDate()]; }
+
+// ---------- dashboard ----------
+async function dash() {
+  M.innerHTML = '<div class="note">Loading…</div>';
+  const t = today(), ym = t.slice(0, 7), [ms, me] = monthRange(ym);
+  const [staffAll, custs, ords, attToday, attMonth] = await Promise.all([loadStaff(true), loadCustomers(), loadOrders(),
+    db.from('ag_attendance').select('status,staff_id').eq('agency_id', A()).eq('day', t).then((r) => r.data || []),
+    db.from('ag_attendance').select('status,staff_id').eq('agency_id', A()).gte('day', ms).lte('day', me).then((r) => r.data || [])]);
+  const active = staffAll.filter((s) => s.active), rate = Object.fromEntries(staffAll.map((s) => [s.id, Number(s.daily_rate || 0)]));
+  const cnt = (st) => ords.filter((o) => o.status === st).length;
+  const pres = attToday.filter((a) => a.status === 'Present').length, half = attToday.filter((a) => a.status === 'Half-day').length, abs = attToday.filter((a) => a.status === 'Absent' || a.status === 'Leave').length, unmarked = active.length - attToday.length;
+  const salary = attMonth.reduce((s, a) => s + (a.status === 'Present' ? rate[a.staff_id] || 0 : a.status === 'Half-day' ? (rate[a.staff_id] || 0) / 2 : 0), 0);
+  const busy = new Set(ords.filter((o) => ACTIVE.includes(o.status) && o.staff_id).map((o) => o.staff_id));
+  const byRole = ROLES.map((r) => [r, active.filter((s) => s.role === r).length]).filter(([, n]) => n);
+  const empty = !staffAll.length && !custs.length;
+  M.innerHTML = `<h1 style="margin:0 0 4px">${esc(AG.name)}</h1><div class="note" style="margin-bottom:14px">${esc(AG.city || '')} · ${new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+  ${empty ? `<div class="card" style="border:2px solid #1E3A5F"><b>Get started</b>${steps(2)}<div class="row" style="flex-wrap:wrap"><a class="btn sm" href="#staff">+ Add your staff</a><a class="btn sm ghost" href="#customers">+ Add customers</a></div></div>` : ''}
+  <div class="stats">
+    <div class="stat"><b>ACTIVE STAFF</b><span>${active.length}</span><div class="note">${byRole.map(([r, n]) => `${n} ${r}`).join(' · ') || '—'}</div></div>
+    <div class="stat"><b>ON DUTY (ASSIGNED)</b><span>${busy.size}</span><div class="note">${active.length - busy.size} free</div></div>
+    <div class="stat"><b>CUSTOMERS</b><span>${custs.length}</span></div>
+    <div class="stat" style="border-color:#B45309"><b style="color:#B45309">OPEN ORDERS (UNASSIGNED)</b><span>${cnt('Open')}</span></div>
+    <div class="stat"><b>ASSIGNED / ONGOING</b><span>${cnt('Assigned') + cnt('Ongoing')}</span></div>
+    <div class="stat"><b>COMPLETED ORDERS</b><span>${cnt('Completed')}</span></div>
+  </div>
+  <div class="stats">
+    <div class="stat" style="border-color:#15803D"><b style="color:#15803D">TODAY PRESENT</b><span>${pres}${half ? ` <small style="font-size:13px">+${half} half</small>` : ''}</span></div>
+    <div class="stat"><b>TODAY ABSENT / LEAVE</b><span>${abs}</span></div>
+    <div class="stat"><b>TODAY NOT MARKED</b><span>${Math.max(0, unmarked)}</span>${unmarked > 0 ? '<a href="#attendance" class="note">Mark now →</a>' : ''}</div>
+    <div class="stat"><b>SALARY THIS MONTH (SO FAR)</b><span>${rupee(salary)}</span><div class="note">present days × daily rate</div></div>
+  </div>
+  <h2>Open orders needing staff</h2>${ords.filter((o) => o.status === 'Open').slice(0, 8).map((o) => `<div class="card row" style="padding:10px 14px"><div class="grow"><b>${esc(o.ag_customers?.name || '')}</b> <span class="note">· ${esc(o.service)} · ${esc(o.shift)} · from ${fmtD(o.start_date)}</span></div><button class="btn sm" data-oedit="${o.id}">Assign</button></div>`).join('') || '<div class="note">None — all orders have staff.</div>'}`;
+  M.querySelectorAll('[data-oedit]').forEach((b) => (b.onclick = () => orderForm(Number(b.dataset.oedit))));
+}
+
+// ---------- staff ----------
+let staffQ = '', staffShowAll = false;
+async function staff() {
+  const [list, ords] = await Promise.all([loadStaff(true), loadOrders()]);
+  const onOrder = {}; ords.filter((o) => ACTIVE.includes(o.status) && o.staff_id).forEach((o) => (onOrder[o.staff_id] = o));
+  const rows = list.filter((s) => (staffShowAll || s.active) && (!staffQ || (s.name + ' ' + (s.phone || '') + ' ' + (s.area || '')).toLowerCase().includes(staffQ)));
+  M.innerHTML = `<div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px"><div><h1 style="margin:0">Staff</h1><div class="note">${list.filter((s) => s.active).length} active · ${list.length} total</div></div><button class="btn sm" id="addStaff">+ Add staff</button></div>
+  <div class="filters"><input class="inp" id="sq" placeholder="Search name / phone / area" value="${esc(staffQ)}"><button class="chip ${staffShowAll ? 'on' : ''}" id="sAll">Show inactive too</button></div>
+  <div class="tbl"><table><thead><tr><th>Name</th><th>Role</th><th>Phone</th><th>Area</th><th>Daily rate</th><th>Current assignment</th><th>Status</th><th></th></tr></thead><tbody>${rows.map((s) => `<tr><td><b>${esc(s.name)}</b>${s.gender ? `<div class="note">${esc(s.gender)}</div>` : ''}</td><td>${esc(s.role)}</td><td>${s.phone ? `<a href="tel:+91${esc(s.phone)}">${esc(s.phone)}</a>` : '—'}</td><td>${esc(s.area || '—')}</td><td>${rupee(s.daily_rate)}/day</td><td>${onOrder[s.id] ? `${esc(onOrder[s.id].ag_customers?.name || '')} <span class="note">#${onOrder[s.id].id}</span>` : '<span class="note">Free</span>'}</td><td>${s.active ? '<span class="tag t-ok">Active</span>' : '<span class="tag t-mute">Inactive</span>'}</td><td style="white-space:nowrap">${s.phone ? `<a class="btn sm" style="background:#25D366;padding:0 10px" target="_blank" rel="noopener" href="https://wa.me/91${esc(s.phone)}">💬</a> ` : ''}<button class="btn sm ghost" data-sedit="${s.id}">Edit</button></td></tr>`).join('') || `<tr><td colspan="8" class="note" style="text-align:center;padding:28px">No staff yet. Tap <b>+ Add staff</b> to build your staff database.</td></tr>`}</tbody></table></div>`;
+  $('sq').oninput = (e) => { staffQ = e.target.value.toLowerCase(); clearTimeout(window._sq); window._sq = setTimeout(staff, 250); };
+  $('sAll').onclick = () => { staffShowAll = !staffShowAll; staff(); };
+  $('addStaff').onclick = () => staffForm(null);
+  M.querySelectorAll('[data-sedit]').forEach((b) => (b.onclick = () => staffForm(list.find((s) => s.id === b.dataset.sedit))));
+}
+function staffForm(s) {
+  const e = !!s; s = s || { role: 'Caregiver', active: true, joined_on: today() };
+  openSheet(`<h2>${e ? 'Edit staff' : 'Add staff'}</h2><div class="grid2"><div><label class="lbl">Full name *</label><input class="inp" id="fsName" value="${esc(s.name || '')}"></div><div><label class="lbl">Mobile</label><input class="inp" id="fsPhone" inputmode="numeric" maxlength="10" value="${esc(s.phone || '')}"></div><div><label class="lbl">Role</label><select class="inp" id="fsRole">${opts(ROLES, s.role)}</select></div><div><label class="lbl">Gender</label><select class="inp" id="fsGender">${opts(['', 'Female', 'Male', 'Other'], s.gender || '')}</select></div><div><label class="lbl">Daily salary rate (₹/day) *</label><input class="inp" id="fsRate" type="number" min="0" value="${esc(s.daily_rate ?? '')}"></div><div><label class="lbl">Joined on</label><input class="inp" id="fsJoin" type="date" value="${esc(s.joined_on || '')}"></div><div><label class="lbl">Area</label><input class="inp" id="fsArea" value="${esc(s.area || '')}"></div><div><label class="lbl">Status</label><select class="inp" id="fsActive"><option value="1" ${s.active ? 'selected' : ''}>Active</option><option value="0" ${s.active ? '' : 'selected'}>Inactive (left)</option></select></div></div><label class="lbl">Address</label><textarea class="inp" id="fsAddr" rows="2">${esc(s.address || '')}</textarea><label class="lbl">Notes</label><textarea class="inp" id="fsNotes" rows="2" placeholder="Skills, languages, documents collected…">${esc(s.notes || '')}</textarea><div class="err" id="fsErr"></div><button class="btn" id="fsSave" style="margin-top:16px">${e ? 'Save changes' : 'Add staff'}</button>${e ? '<button class="btn danger" id="fsDel" style="margin-top:8px">Delete staff</button>' : ''}<button class="btn ghost" id="closeSheet" style="margin-top:8px">Cancel</button>`);
+  $('closeSheet').onclick = closeSheet;
+  $('fsSave').onclick = async () => {
+    if (!val('fsName')) return ($('fsErr').textContent = 'Name is required'); if (val('fsPhone') && digits(val('fsPhone')).length !== 10) return ($('fsErr').textContent = 'Mobile must be 10 digits');
+    const row = { agency_id: A(), name: val('fsName'), phone: digits(val('fsPhone')) || null, role: val('fsRole'), gender: val('fsGender') || null, daily_rate: Number(val('fsRate') || 0), joined_on: val('fsJoin') || null, area: val('fsArea') || null, active: val('fsActive') === '1', address: val('fsAddr') || null, notes: val('fsNotes') || null };
+    if (e) await must(db.from('ag_staff').update(row).eq('id', s.id)); else await must(db.from('ag_staff').insert(row));
+    closeSheet(); toast(e ? 'Saved' : 'Staff added'); staff();
+  };
+  if (e) $('fsDel').onclick = async () => { if (!confirm(`Delete ${s.name}? Their attendance history will be deleted too. To keep history, mark them Inactive instead.`)) return; await must(db.from('ag_staff').delete().eq('id', s.id)); closeSheet(); toast('Deleted'); staff(); };
+}
+
+// ---------- customers ----------
+let custQ = '';
+async function customers() {
+  const [list, ords] = await Promise.all([loadCustomers(), loadOrders()]);
+  const act = {}; ords.filter((o) => ACTIVE.includes(o.status)).forEach((o) => (act[o.customer_id] = (act[o.customer_id] || 0) + 1));
+  const rows = list.filter((c) => !custQ || (c.name + ' ' + (c.phone || '') + ' ' + (c.area || '') + ' ' + (c.patient_name || '')).toLowerCase().includes(custQ));
+  M.innerHTML = `<div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px"><div><h1 style="margin:0">Customers</h1><div class="note">${list.length} customers</div></div><button class="btn sm" id="addCust">+ Add customer</button></div>
+  <div class="filters"><input class="inp" id="cq" placeholder="Search customer / patient / phone / area" value="${esc(custQ)}"></div>
+  <div class="tbl"><table><thead><tr><th>Customer</th><th>Phone</th><th>Patient</th><th>Area</th><th>Active orders</th><th></th></tr></thead><tbody>${rows.map((c) => `<tr><td><b>${esc(c.name)}</b></td><td>${c.phone ? `<a href="tel:+91${esc(c.phone)}">${esc(c.phone)}</a>` : '—'}</td><td>${esc(c.patient_name || '—')}${c.patient_age ? `, ${c.patient_age}` : ''}${c.condition ? `<div class="note">${esc(c.condition)}</div>` : ''}</td><td>${esc(c.area || '—')}</td><td>${act[c.id] || 0}</td><td style="white-space:nowrap"><button class="btn sm" data-cnew="${c.id}">+ Order</button> <button class="btn sm ghost" data-cedit="${c.id}">Edit</button></td></tr>`).join('') || `<tr><td colspan="6" class="note" style="text-align:center;padding:28px">No customers yet. Tap <b>+ Add customer</b>.</td></tr>`}</tbody></table></div>`;
+  $('cq').oninput = (e) => { custQ = e.target.value.toLowerCase(); clearTimeout(window._cq); window._cq = setTimeout(customers, 250); };
+  $('addCust').onclick = () => custForm(null);
+  M.querySelectorAll('[data-cedit]').forEach((b) => (b.onclick = () => custForm(list.find((c) => c.id === b.dataset.cedit))));
+  M.querySelectorAll('[data-cnew]').forEach((b) => (b.onclick = () => orderForm(null, b.dataset.cnew)));
+}
+function custForm(c) {
+  const e = !!c; c = c || {};
+  openSheet(`<h2>${e ? 'Edit customer' : 'Add customer'}</h2><div class="grid2"><div><label class="lbl">Customer / family contact name *</label><input class="inp" id="fcName" value="${esc(c.name || '')}"></div><div><label class="lbl">Mobile</label><input class="inp" id="fcPhone" inputmode="numeric" maxlength="10" value="${esc(c.phone || '')}"></div><div><label class="lbl">Patient name</label><input class="inp" id="fcPat" value="${esc(c.patient_name || '')}"></div><div class="grid2" style="gap:8px"><div><label class="lbl">Age</label><input class="inp" id="fcAge" type="number" value="${esc(c.patient_age ?? '')}"></div><div><label class="lbl">Gender</label><select class="inp" id="fcGen">${opts(['', 'Female', 'Male', 'Other'], c.patient_gender || '')}</select></div></div><div><label class="lbl">Area</label><input class="inp" id="fcArea" value="${esc(c.area || '')}"></div><div><label class="lbl">Condition</label><input class="inp" id="fcCond" placeholder="e.g. post-stroke, bedridden" value="${esc(c.condition || '')}"></div></div><label class="lbl">Address</label><textarea class="inp" id="fcAddr" rows="2">${esc(c.address || '')}</textarea><label class="lbl">Notes</label><textarea class="inp" id="fcNotes" rows="2">${esc(c.notes || '')}</textarea><div class="err" id="fcErr"></div><button class="btn" id="fcSave" style="margin-top:16px">${e ? 'Save changes' : 'Add customer'}</button>${e ? '<button class="btn danger" id="fcDel" style="margin-top:8px">Delete customer</button>' : ''}<button class="btn ghost" id="closeSheet" style="margin-top:8px">Cancel</button>`);
+  $('closeSheet').onclick = closeSheet;
+  $('fcSave').onclick = async () => {
+    if (!val('fcName')) return ($('fcErr').textContent = 'Name is required');
+    const row = { agency_id: A(), name: val('fcName'), phone: digits(val('fcPhone')) || null, patient_name: val('fcPat') || null, patient_age: val('fcAge') ? Number(val('fcAge')) : null, patient_gender: val('fcGen') || null, area: val('fcArea') || null, condition: val('fcCond') || null, address: val('fcAddr') || null, notes: val('fcNotes') || null };
+    let id = c.id; if (e) await must(db.from('ag_customers').update(row).eq('id', c.id)); else { const r = await must(db.from('ag_customers').insert(row).select('id').single()); id = r.data.id; }
+    closeSheet(); toast(e ? 'Saved' : 'Customer added');
+    if (!e && confirm('Create an order for this customer now?')) return orderForm(null, id);
+    customers();
+  };
+  if (e) $('fcDel').onclick = async () => { if (!confirm(`Delete ${c.name} and all their orders?`)) return; await must(db.from('ag_customers').delete().eq('id', c.id)); closeSheet(); toast('Deleted'); customers(); };
+}
+
+// ---------- orders ----------
+let ordF = 'active';
+async function orders() {
+  const list = await loadOrders();
+  const f = { active: (o) => ACTIVE.includes(o.status), Open: (o) => o.status === 'Open', Completed: (o) => o.status === 'Completed', all: () => true }[ordF];
+  const rows = list.filter(f);
+  M.innerHTML = `<div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px"><div><h1 style="margin:0">Orders</h1><div class="note">${list.filter((o) => ACTIVE.includes(o.status)).length} active · ${list.length} total</div></div><button class="btn sm" id="addOrd">+ New order</button></div>
+  <div class="filters">${[['active', 'Active'], ['Open', 'Needs staff'], ['Completed', 'Completed'], ['all', 'All']].map(([k, l]) => `<button class="chip ${ordF === k ? 'on' : ''}" data-of="${k}">${l}</button>`).join('')}</div>
+  <div class="tbl"><table><thead><tr><th>#</th><th>Customer</th><th>Service</th><th>Dates</th><th>Bill rate</th><th>Assigned staff</th><th>Status</th><th></th></tr></thead><tbody>${rows.map((o) => `<tr><td class="note">${o.id}</td><td><b>${esc(o.ag_customers?.name || '')}</b>${o.ag_customers?.patient_name ? `<div class="note">Patient: ${esc(o.ag_customers.patient_name)}</div>` : ''}</td><td>${esc(o.service)} · ${esc(o.shift)}</td><td>${fmtD(o.start_date)} → ${o.end_date ? fmtD(o.end_date) : 'ongoing'}</td><td>${o.bill_rate ? rupee(o.bill_rate) + '/day' : '—'}</td><td>${o.ag_staff ? `<b>${esc(o.ag_staff.name)}</b>` : '<span class="tag t-warn">Not assigned</span>'}</td><td>${statusTag(o.status)}</td><td><button class="btn sm ${o.staff_id ? 'ghost' : ''}" data-oedit="${o.id}">${o.staff_id ? 'Edit' : 'Assign'}</button></td></tr>`).join('') || `<tr><td colspan="8" class="note" style="text-align:center;padding:28px">No orders here. Tap <b>+ New order</b>.</td></tr>`}</tbody></table></div>`;
+  M.querySelectorAll('[data-of]').forEach((b) => (b.onclick = () => { ordF = b.dataset.of; orders(); }));
+  $('addOrd').onclick = () => orderForm(null);
+  M.querySelectorAll('[data-oedit]').forEach((b) => (b.onclick = () => orderForm(Number(b.dataset.oedit))));
+}
+async function orderForm(id, presetCustomer) {
+  const [custs, staffList, ords] = await Promise.all([loadCustomers(), loadStaff(false), loadOrders()]);
+  if (!custs.length) { toast('Add a customer first'); location.hash = '#customers'; return; }
+  const o = id ? ords.find((x) => x.id === id) : { service: 'Caregiver', shift: 'Day', start_date: today(), status: 'Open', customer_id: presetCustomer || '' };
+  const e = !!id;
+  const busyWith = {}; ords.filter((x) => ACTIVE.includes(x.status) && x.staff_id && x.id !== id).forEach((x) => (busyWith[x.staff_id] = x));
+  const staffOpts = (svc) => `<option value="">— Not assigned yet —</option>` + [...staffList].sort((a, b) => (a.role === svc ? 0 : 1) - (b.role === svc ? 0 : 1) || (busyWith[a.id] ? 1 : 0) - (busyWith[b.id] ? 1 : 0) || a.name.localeCompare(b.name)).map((s) => `<option value="${s.id}" ${s.id === o.staff_id ? 'selected' : ''}>${esc(s.name)} · ${esc(s.role)}${busyWith[s.id] ? ` · busy with ${esc(busyWith[s.id].ag_customers?.name || '#' + busyWith[s.id].id)}` : ' · free'}</option>`).join('');
+  openSheet(`<h2>${e ? 'Order #' + o.id : 'New order'}</h2><label class="lbl">Customer *</label><select class="inp" id="foCust"><option value="">Select customer</option>${custs.map((c) => `<option value="${c.id}" ${c.id === o.customer_id ? 'selected' : ''}>${esc(c.name)}${c.patient_name ? ' — ' + esc(c.patient_name) : ''}${c.area ? ' · ' + esc(c.area) : ''}</option>`).join('')}</select>
+  <div class="grid2"><div><label class="lbl">Service</label><select class="inp" id="foSvc">${opts(ROLES, o.service)}</select></div><div><label class="lbl">Shift</label><select class="inp" id="foShift">${opts(['Day', 'Night', '24-hr', 'Visit'], o.shift)}</select></div><div><label class="lbl">Start date</label><input class="inp" id="foStart" type="date" value="${esc(o.start_date || '')}"></div><div><label class="lbl">End date (blank = ongoing)</label><input class="inp" id="foEnd" type="date" value="${esc(o.end_date || '')}"></div><div><label class="lbl">Bill rate to customer (₹/day)</label><input class="inp" id="foRate" type="number" min="0" value="${esc(o.bill_rate ?? '')}"></div><div><label class="lbl">Status</label><select class="inp" id="foStatus">${opts(['Open', 'Assigned', 'Ongoing', 'Completed', 'Cancelled'], o.status)}</select></div></div>
+  <label class="lbl">Assign caregiver / staff</label><select class="inp" id="foStaff">${staffOpts(o.service)}</select><div class="note" style="margin-top:4px">Matching role and free staff are listed first.</div>
+  <label class="lbl">Notes</label><textarea class="inp" id="foNotes" rows="2">${esc(o.notes || '')}</textarea>
+  <div class="err" id="foErr"></div><button class="btn" id="foSave" style="margin-top:16px">${e ? 'Save order' : 'Create order'}</button>${e ? '<button class="btn danger" id="foDel" style="margin-top:8px">Delete order</button>' : ''}<button class="btn ghost" id="closeSheet" style="margin-top:8px">Cancel</button>`);
+  $('closeSheet').onclick = closeSheet;
+  $('foSvc').onchange = () => { const cur = $('foStaff').value; $('foStaff').innerHTML = staffOpts($('foSvc').value); $('foStaff').value = cur; };
+  $('foStaff').onchange = () => { if ($('foStaff').value && $('foStatus').value === 'Open') $('foStatus').value = 'Assigned'; if (!$('foStaff').value && ['Assigned', 'Ongoing'].includes($('foStatus').value)) $('foStatus').value = 'Open'; };
+  $('foSave').onclick = async () => {
+    if (!val('foCust')) return ($('foErr').textContent = 'Select a customer'); if (val('foEnd') && val('foEnd') < val('foStart')) return ($('foErr').textContent = 'End date is before start date');
+    let status = val('foStatus'); if (status === 'Open' && val('foStaff')) status = 'Assigned';
+    const row = { agency_id: A(), customer_id: val('foCust'), service: val('foSvc'), shift: val('foShift'), start_date: val('foStart') || today(), end_date: val('foEnd') || null, bill_rate: Number(val('foRate') || 0), staff_id: val('foStaff') || null, status, notes: val('foNotes') || null };
+    if (e) await must(db.from('ag_orders').update(row).eq('id', o.id)); else await must(db.from('ag_orders').insert(row));
+    closeSheet(); toast(row.staff_id ? 'Saved · staff assigned' : 'Saved'); route();
+  };
+  if (e) $('foDel').onclick = async () => { if (!confirm('Delete this order?')) return; await must(db.from('ag_orders').delete().eq('id', o.id)); closeSheet(); toast('Deleted'); route(); };
+}
+
+// ---------- attendance ----------
+let attDay = null, attView = 'day', attMonth = null;
+async function attendance() {
+  attDay = attDay || today(); attMonth = attMonth || today().slice(0, 7);
+  const head = `<div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px"><h1 style="margin:0">Attendance</h1><div class="chips"><button class="chip ${attView === 'day' ? 'on' : ''}" data-av="day">Daily marking</button><button class="chip ${attView === 'month' ? 'on' : ''}" data-av="month">Monthly summary &amp; salary</button></div></div>`;
+  if (attView === 'day') {
+    const [list, ords, marks] = await Promise.all([loadStaff(false), loadOrders(), db.from('ag_attendance').select('*').eq('agency_id', A()).eq('day', attDay).then((r) => r.data || [])]);
+    const mk = Object.fromEntries(marks.map((m) => [m.staff_id, m]));
+    const onOrder = {}; ords.filter((o) => ACTIVE.includes(o.status) && o.staff_id && o.start_date <= attDay && (!o.end_date || o.end_date >= attDay)).forEach((o) => (onOrder[o.staff_id] = o));
+    const counts = ['Present', 'Half-day', 'Absent', 'Leave'].map((s) => `${s}: <b>${marks.filter((m) => m.status === s).length}</b>`).join(' · ');
+    M.innerHTML = head + `<div class="filters"><button class="btn sm ghost" id="dPrev">‹</button><input class="inp" type="date" id="dDay" value="${attDay}" max="${today()}"><button class="btn sm ghost" id="dNext">›</button><button class="btn sm" id="dAll">✓ Mark everyone not marked as Present</button></div><div class="note" style="margin-bottom:10px">${counts} · Not marked: <b>${list.length - marks.filter((m) => list.some((s) => s.id === m.staff_id)).length}</b></div>
+    <div class="tbl"><table><thead><tr><th>Staff</th><th>Role</th><th>Duty (order)</th><th>Daily rate</th><th>P = Present · H = Half-day · A = Absent · L = Leave</th></tr></thead><tbody>${list.map((s) => { const cur = mk[s.id]?.status; return `<tr><td><b>${esc(s.name)}</b></td><td>${esc(s.role)}</td><td>${onOrder[s.id] ? esc(onOrder[s.id].ag_customers?.name || '#' + onOrder[s.id].id) : '<span class="note">—</span>'}</td><td>${rupee(s.daily_rate)}</td><td><div class="att" data-st="${s.id}">${[['P', 'Present'], ['H', 'Half-day'], ['A', 'Absent'], ['L', 'Leave']].map(([k, v]) => `<button class="${k} ${cur === v ? 'on' : ''}" data-mark="${v}" title="${v}">${k}</button>`).join('')}${cur ? `<button data-mark="" title="Clear" style="min-width:30px;color:#5B6565">✕</button>` : ''}</div></td></tr>`; }).join('') || '<tr><td colspan="5" class="note" style="text-align:center;padding:28px">No active staff. Add staff first.</td></tr>'}</tbody></table></div>`;
+    const go = (d) => { attDay = d; attendance(); };
+    $('dDay').onchange = (e) => go(e.target.value);
+    $('dPrev').onclick = () => { const d = new Date(attDay + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() - 1); go(d.toISOString().slice(0, 10)); };
+    $('dNext').onclick = () => { const d = new Date(attDay + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); const n = d.toISOString().slice(0, 10); if (n <= today()) go(n); };
+    const mark = async (sid, status) => { if (!status) await must(db.from('ag_attendance').delete().eq('staff_id', sid).eq('day', attDay)); else await must(db.from('ag_attendance').upsert({ agency_id: A(), staff_id: sid, day: attDay, status, order_id: onOrder[sid]?.id || null, marked_by: ME.name }, { onConflict: 'staff_id,day' })); };
+    M.querySelectorAll('[data-st] [data-mark]').forEach((b) => (b.onclick = async () => { const sid = b.closest('[data-st]').dataset.st; b.disabled = true; await mark(sid, b.dataset.mark); attendance(); }));
+    $('dAll').onclick = async () => { const todo = list.filter((s) => !mk[s.id]); if (!todo.length) return toast('Everyone is already marked'); if (!confirm(`Mark ${todo.length} staff as Present for ${fmtD(attDay)}?`)) return; await must(db.from('ag_attendance').upsert(todo.map((s) => ({ agency_id: A(), staff_id: s.id, day: attDay, status: 'Present', order_id: onOrder[s.id]?.id || null, marked_by: ME.name })), { onConflict: 'staff_id,day' })); toast(`${todo.length} marked present`); attendance(); };
+  } else {
+    const [ms, me, nd] = monthRange(attMonth);
+    const [list, marks] = await Promise.all([loadStaff(true), db.from('ag_attendance').select('staff_id,day,status').eq('agency_id', A()).gte('day', ms).lte('day', me).then((r) => r.data || [])]);
+    const by = {}; marks.forEach((m) => { (by[m.staff_id] = by[m.staff_id] || { Present: 0, 'Half-day': 0, Absent: 0, Leave: 0, days: {} }); by[m.staff_id][m.status]++; by[m.staff_id].days[Number(m.day.slice(8))] = m.status[0]; });
+    const rows = list.filter((s) => s.active || by[s.id]).map((s) => { const b = by[s.id] || { Present: 0, 'Half-day': 0, Absent: 0, Leave: 0, days: {} }; const paid = b.Present + b['Half-day'] / 2; return { s, b, paid, pay: paid * Number(s.daily_rate || 0) }; });
+    const total = rows.reduce((t, r) => t + r.pay, 0);
+    const color = { P: '#15803D', H: '#B45309', A: '#B91C1C', L: '#475569' };
+    M.innerHTML = head + `<div class="filters"><input class="inp" type="month" id="mMonth" value="${attMonth}"><button class="btn sm ghost" id="mCsv">⬇ Salary sheet CSV</button><span class="note">Salary = (Present + ½ × Half-day) × daily rate</span></div>
+    <div class="stats"><div class="stat"><b>TOTAL SALARY ${attMonth}</b><span>${rupee(total)}</span></div><div class="stat"><b>STAFF PAID</b><span>${rows.filter((r) => r.paid).length}</span></div><div class="stat"><b>PRESENT-DAYS</b><span>${rows.reduce((t, r) => t + r.paid, 0)}</span></div></div>
+    <div class="tbl"><table><thead><tr><th>Staff</th><th>Rate/day</th><th>P</th><th>H</th><th>A</th><th>L</th><th>Paid days</th><th>Salary</th><th>Day by day</th></tr></thead><tbody>${rows.map((r) => `<tr><td><b>${esc(r.s.name)}</b><div class="note">${esc(r.s.role)}${r.s.active ? '' : ' · inactive'}</div></td><td>${rupee(r.s.daily_rate)}</td><td>${r.b.Present}</td><td>${r.b['Half-day']}</td><td>${r.b.Absent}</td><td>${r.b.Leave}</td><td><b>${r.paid}</b></td><td><b>${rupee(r.pay)}</b></td><td style="font-family:monospace;font-size:11px;white-space:nowrap">${Array.from({ length: nd }, (_, i) => { const c = r.b.days[i + 1]; return `<span title="${i + 1}" style="display:inline-block;width:12px;text-align:center;color:${c ? color[c] : '#CFD8D6'};font-weight:700">${c || '·'}</span>`; }).join('')}</td></tr>`).join('') || '<tr><td colspan="9" class="note" style="text-align:center;padding:28px">No attendance this month.</td></tr>'}</tbody></table></div>`;
+    $('mMonth').onchange = (e) => { attMonth = e.target.value; attendance(); };
+    $('mCsv').onclick = () => { const L = ['Name,Role,Phone,Daily rate,Present,Half-day,Absent,Leave,Paid days,Salary'].concat(rows.map((r) => [r.s.name, r.s.role, r.s.phone || '', r.s.daily_rate, r.b.Present, r.b['Half-day'], r.b.Absent, r.b.Leave, r.paid, Math.round(r.pay)].map((v) => `"${String(v).replace(/"/g, '""')}"`).join(','))); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([L.join('\n')], { type: 'text/csv' })); a.download = `${AG.name}-salary-${attMonth}.csv`; a.click(); };
+  }
+  M.querySelectorAll('[data-av]').forEach((b) => (b.onclick = () => { attView = b.dataset.av; attendance(); }));
+}
+
+// ---------- settings ----------
+async function settings() {
+  const { data: admins } = await db.from('agency_admins').select('*').eq('agency_id', A()).order('role', { ascending: false });
+  const g = AG;
+  M.innerHTML = `<h1>Settings</h1><div class="grid2" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start">
+  <section class="card" style="margin:0"><b>Agency details</b><label class="lbl">Agency name</label><input class="inp" id="gName" value="${esc(g.name)}"><div class="grid2"><div><label class="lbl">City</label><input class="inp" id="gCity" value="${esc(g.city || '')}"></div><div><label class="lbl">Office phone</label><input class="inp" id="gPhone" value="${esc(g.phone || '')}"></div></div><label class="lbl">Email</label><input class="inp" id="gEmail" value="${esc(g.email || '')}"><label class="lbl">Address</label><textarea class="inp" id="gAddr" rows="2">${esc(g.address || '')}</textarea><button class="btn sm" id="gSave" style="margin-top:12px">Save details</button></section>
+  <section class="card" style="margin:0"><b>Admins (${(admins || []).length} of 3)</b><div style="margin-top:8px">${(admins || []).map((a) => `<div class="row" style="padding:8px 0;border-bottom:1px solid #EEF2F1"><div class="grow"><b>${esc(a.name)}</b> <span class="tag ${a.role === 'owner' ? 't-new' : 't-mute'}">${esc(a.role)}</span><div class="note">+91 ${esc(a.phone)}${ME.phone === a.phone ? ' · you' : ''}</div></div><button class="btn sm ghost" data-rp="${esc(a.phone)}">Reset PIN</button>${a.role === 'owner' ? '' : `<button class="btn sm danger" data-rm="${esc(a.phone)}">Remove</button>`}</div>`).join('')}</div>
+  ${(admins || []).length < 3 ? '<button class="btn sm" id="addAdm" style="margin-top:12px">+ Add admin</button>' : ''}
+  ${ME.phone ? '<button class="btn sm ghost" id="myPin" style="margin-top:12px">🔑 Change my PIN</button>' : ''}
+  <div class="note" style="margin-top:12px">🔒 Your agency's data is visible only to these admins. Other agencies can't see it.</div></section></div>`;
+  $('gSave').onclick = async () => { const row = { name: val('gName') || g.name, city: val('gCity') || null, phone: digits(val('gPhone')) || null, email: val('gEmail') || null, address: val('gAddr') || null }; await must(db.from('agencies').update(row).eq('id', g.id)); Object.assign(AG, row); $('agName').textContent = AG.name; toast('Saved'); };
+  const call = async (body) => { const { data, error } = await db.functions.invoke('agency-auth', { body: { ...body, agency_id: A() } }); if (error || data?.error) { toast(data?.error || error.message, 5000); return false; } return true; };
+  const pinPrompt = (title, withPerson, onSave) => { openSheet(`<h2>${title}</h2>${withPerson ? '<label class="lbl">Name</label><input class="inp" id="pName"><label class="lbl">Mobile</label><input class="inp" id="pPhone" inputmode="numeric" maxlength="10">' : ''}<label class="lbl">New 4-digit PIN</label><input class="inp" id="p1" type="password" inputmode="numeric" maxlength="4" style="letter-spacing:6px;text-align:center"><label class="lbl">PIN again</label><input class="inp" id="p2" type="password" inputmode="numeric" maxlength="4" style="letter-spacing:6px;text-align:center"><div class="err" id="pErr"></div><button class="btn" id="pSave" style="margin-top:16px">Save</button><button class="btn ghost" id="closeSheet" style="margin-top:8px">Cancel</button>`); $('closeSheet').onclick = closeSheet; $('pSave').onclick = async () => { const a = $('p1').value.replace(/\D/g, ''), b = $('p2').value.replace(/\D/g, ''); if (a.length !== 4) return ($('pErr').textContent = 'PIN must be 4 digits'); if (a !== b) return ($('pErr').textContent = 'PINs do not match'); if (WEAK.includes(a)) return ($('pErr').textContent = 'Choose a less common PIN'); if (withPerson && (!val('pName') || digits(val('pPhone')).length !== 10)) return ($('pErr').textContent = 'Name and 10-digit mobile needed'); $('pSave').disabled = true; const ok = await onSave(a); $('pSave').disabled = false; if (ok) { closeSheet(); settings(); } }; };
+  const add = $('addAdm'); if (add) add.onclick = () => pinPrompt('Add admin', true, async (pin) => { const ok = await call({ action: 'add_admin', name: val('pName'), phone: val('pPhone'), pin }); if (ok) toast('Admin added — they log in with their mobile + this PIN'); return ok; });
+  M.querySelectorAll('[data-rp]').forEach((b) => (b.onclick = () => pinPrompt(`Reset PIN · +91 ${b.dataset.rp}`, false, async (pin) => { const ok = await call({ action: 'reset_pin', phone: b.dataset.rp, pin }); if (ok) toast('PIN reset'); return ok; })));
+  M.querySelectorAll('[data-rm]').forEach((b) => (b.onclick = async () => { if (!confirm(`Remove admin +91 ${b.dataset.rm}? They will no longer be able to log in.`)) return; if (await call({ action: 'remove_admin', phone: b.dataset.rm })) { toast('Removed'); settings(); } }));
+  const mp = $('myPin'); if (mp) mp.onclick = () => pinPrompt('Change my PIN', false, async (pin) => { const { error } = await agencyDb.auth.updateUser({ password: pwFor(pin, ME.phone) }); if (error) { toast(error.message); return false; } toast('PIN changed'); return true; });
+}
+
+// ---------- super: all agencies (Sahil only) ----------
+async function allAgencies() {
+  const { data } = await db.rpc('agency_overview'); AGENCIES = data || [];
+  document.querySelectorAll('.top a').forEach((a) => a.classList.remove('on'));
+  M.innerHTML = `<h1 style="margin:0 0 4px">All agencies</h1><div class="note" style="margin-bottom:14px">Visible only to you. Agencies can't see each other or Yoro Jobs data.</div>
+  <div class="stats"><div class="stat"><b>AGENCIES</b><span>${AGENCIES.length}</span></div><div class="stat"><b>STAFF (ALL)</b><span>${AGENCIES.reduce((t, g) => t + Number(g.staff), 0)}</span></div><div class="stat"><b>CUSTOMERS (ALL)</b><span>${AGENCIES.reduce((t, g) => t + Number(g.customers), 0)}</span></div><div class="stat"><b>ACTIVE ORDERS</b><span>${AGENCIES.reduce((t, g) => t + Number(g.open_orders), 0)}</span></div></div>
+  <div class="tbl"><table><thead><tr><th>Agency</th><th>City</th><th>Phone</th><th>Admins</th><th>Staff</th><th>Customers</th><th>Active / all orders</th><th>Joined</th><th></th></tr></thead><tbody>${AGENCIES.map((g) => `<tr><td><b>${esc(g.name)}</b> ${g.active ? '' : '<span class="tag t-bad">Suspended</span>'}</td><td>${esc(g.city || '')}</td><td>${esc(g.phone || '')}</td><td>${g.admins}</td><td>${g.staff}</td><td>${g.customers}</td><td>${g.open_orders} / ${g.total_orders}</td><td class="note">${fmtD(String(g.created_at).slice(0, 10))}</td><td style="white-space:nowrap"><button class="btn sm" data-open="${g.id}">Open</button> <button class="btn sm ${g.active ? 'danger' : 'ghost'}" data-act="${g.id}" data-v="${g.active ? 0 : 1}">${g.active ? 'Suspend' : 'Reactivate'}</button></td></tr>`).join('') || '<tr><td colspan="9" class="note" style="text-align:center;padding:28px">No agencies yet. Share <b>yorojobs.netlify.app/agency.html</b> with agencies to register.</td></tr>'}</tbody></table></div>`;
+  M.querySelectorAll('[data-open]').forEach((b) => (b.onclick = async () => { const { data: g } = await db.from('agencies').select('*').eq('id', b.dataset.open).single(); AG = g; try { localStorage.setItem('yj-agency-pick', g.id); } catch (e) { } $('agName').textContent = g.name; if ($('agPick')) $('agPick').value = g.id; location.hash = '#dash'; }));
+  M.querySelectorAll('[data-act]').forEach((b) => (b.onclick = async () => { const { data: r, error } = await db.functions.invoke('agency-auth', { body: { action: 'set_active', agency_id: b.dataset.act, active: b.dataset.v === '1' } }); if (error || r?.error) return toast(r?.error || error.message); toast('Updated'); allAgencies(); }));
+}
+</script>
+</body>
+</html>

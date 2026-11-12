@@ -28,7 +28,7 @@
 </section>
 
 <section class="screen" id="s-admin">
-  <div class="top"><b style="margin-right:8px">Yoro Jobs Admin</b><a href="#dash" data-a="dash">Dashboard</a><a href="#cands" data-a="cands">Candidates</a><a href="#nearby" data-a="nearby">Nearby search</a><a href="#jobs" data-a="jobs">Jobs</a><a href="#queue" data-a="queue">Verification queue</a><a href="#bulk" data-a="bulk">📣 WhatsApp</a><a href="#team" data-a="team">👥 Team</a><a href="./index.html" id="toCand" style="margin-left:auto;background:rgba(255,255,255,.12)">📱 Candidate view</a><span class="note" style="color:#fff;opacity:.75" id="who"></span><button class="btn sm ghost" id="myPin" style="height:30px;font-size:12px">🔑 Change my PIN</button><button class="btn sm ghost" id="logout" style="height:30px;font-size:12px">Log out</button></div>
+  <div class="top"><b style="margin-right:8px">Yoro Jobs Admin</b><a href="#dash" data-a="dash">Dashboard</a><a href="#cands" data-a="cands">Candidates</a><a href="#nearby" data-a="nearby">Nearby search</a><a href="#jobs" data-a="jobs">Jobs</a><a href="#queue" data-a="queue">Verification queue</a><a href="#bulk" data-a="bulk">📣 WhatsApp</a><a href="#team" data-a="team">👥 Team</a><a href="./agency.html#all" id="toAg" style="display:none;background:#FEF3C7;color:#78350F">🏢 Agencies</a><a href="./index.html" id="toCand" style="margin-left:auto;background:rgba(255,255,255,.12)">📱 Candidate view</a><span class="note" style="color:#fff;opacity:.75" id="who"></span><button class="btn sm ghost" id="myPin" style="height:30px;font-size:12px">🔑 Change my PIN</button><button class="btn sm ghost" id="logout" style="height:30px;font-size:12px">Log out</button></div>
   <div class="main" id="main"></div>
 </section>
 </div>
@@ -78,7 +78,7 @@ async function boot() {
   if (!user) { $('s-login').classList.add('on'); $('s-admin').classList.remove('on'); return; }
   const { data: isAdmin } = await sb.rpc('is_admin');
   if (!isAdmin) { $('loginErr').textContent = 'This account is not on the staff list. Ask an admin to add you under Team.'; await sb.auth.signOut(); return; }
-  const em = (user.email || '').toLowerCase(); const pm = /^(\d{10})@candidates\.yorojobs\.local$/.exec(em); const { data: meRow } = await sb.from('admins').select('email,name,phone').eq(pm ? 'phone' : 'email', pm ? pm[1] : em).maybeSingle(); ME = meRow?.email || em; ME_PHONE = meRow?.phone || ''; ME_NAME = meRow?.name || '';
+  const em = (user.email || '').toLowerCase(); const pm = /^(\d{10})@candidates\.yorojobs\.local$/.exec(em); const { data: meRow } = await sb.from('admins').select('email,name,phone').eq(pm ? 'phone' : 'email', pm ? pm[1] : em).maybeSingle(); ME = meRow?.email || em; sb.rpc('is_agency_super').then(({ data }) => { if (data === true) document.getElementById('toAg').style.display = ''; }); ME_PHONE = meRow?.phone || ''; ME_NAME = meRow?.name || '';
   setMode('admin'); [AREAS, CITIES] = await Promise.all([areas(), cities()]); $('who').textContent = meRow ? `${meRow.name || ME}${pm ? ' · +91 ' + pm[1] : ''}` : ME; $('s-login').classList.remove('on'); $('s-admin').classList.add('on'); route();
 }
 window.addEventListener('hashchange', () => { closeSheet(); route(); });
