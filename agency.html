@@ -66,7 +66,7 @@
 <!-- ===== app ===== -->
 <section class="screen" id="s-app">
   <div class="super" id="superBar" style="display:none"></div>
-  <div class="top"><b style="margin-right:8px" id="agName">Agency</b><a href="#dash" data-a="dash">Dashboard</a><a href="#staff" data-a="staff">Staff</a><a href="#customers" data-a="customers">Customers</a><a href="#orders" data-a="orders">Orders</a><a href="#attendance" data-a="attendance">Attendance</a><a href="#settings" data-a="settings">Settings</a><span class="note" style="color:#fff;opacity:.8;margin-left:auto" id="who"></span><button class="btn sm ghost" id="logout" style="height:30px;font-size:12px">Log out</button></div>
+  <div class="top"><b style="margin-right:8px" id="agName">Agency</b><a href="#dash" data-a="dash">Dashboard</a><a href="#staff" data-a="staff">Staff</a><a href="#customers" data-a="customers">Customers</a><a href="#orders" data-a="orders">Orders</a><a href="#attendance" data-a="attendance">Attendance</a><a href="#invoices" data-a="invoices">Invoices</a><a href="#pnl" data-a="pnl">P&amp;L</a><a href="#settings" data-a="settings">Settings</a><span class="note" style="color:#fff;opacity:.8;margin-left:auto" id="who"></span><button class="btn sm ghost" id="logout" style="height:30px;font-size:12px">Log out</button></div>
   <div class="main" id="main"></div>
 </section>
 </div>
@@ -89,7 +89,7 @@ let tt; const toast = (t, ms = 2400) => { const e = $('toast'); e.textContent = 
 const openSheet = (h) => { $('sheet').innerHTML = h; $('modal').classList.add('on'); };
 const closeSheet = () => $('modal').classList.remove('on');
 $('modal').onclick = (e) => { if (e.target === $('modal')) closeSheet(); };
-const rupee = (n) => '₹' + Math.round(Number(n || 0)).toLocaleString('en-IN');
+const rupee = (n) => { const v = Math.round(Number(n || 0)); return (v < 0 ? '−₹' : '₹') + Math.abs(v).toLocaleString('en-IN'); };
 const today = () => new Date(Date.now() + 5.5 * 3600e3).toISOString().slice(0, 10); // IST date
 const fmtD = (d) => (d ? new Date(d + (d.length === 10 ? 'T00:00:00' : '')).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '—');
 const digits = (x) => String(x || '').replace(/\D/g, '').slice(-10);
@@ -153,7 +153,7 @@ function route() {
   const tab = h || 'dash'; document.querySelectorAll('.top a').forEach((a) => a.classList.toggle('on', a.dataset.a === tab));
   if (tab === 'all' && SUPER) return allAgencies();
   if (!AG) { M.innerHTML = '<div class="card note" style="text-align:center;padding:30px">No agency selected.</div>'; return; }
-  ({ dash, staff, customers, orders, attendance, settings }[tab] || dash)();
+  ({ dash, staff, customers, orders, attendance, invoices, pnl, settings }[tab] || dash)();
 }
 boot();
 
@@ -210,7 +210,7 @@ function monthRange(ym) { const [y, m] = ym.split('-').map(Number); const s = `$
 async function dash() {
   M.innerHTML = '<div class="note">Loading…</div>';
   const t = today(), ym = t.slice(0, 7), [ms, me] = monthRange(ym);
-  const [staffAll, custs, ords, attToday, attMonth] = await Promise.all([loadStaff(true), loadCustomers(), loadOrders(),
+  const [P, sumr, staffAll, custs, ords, attToday, attMonth] = await Promise.all([db.rpc('ag_pnl', { p_agency: A(), p_from: ms, p_to: t }).then((r) => r.data || {}), db.rpc('ag_customer_summary', { p_agency: A() }).then((r) => r.data || []),loadStaff(true), loadCustomers(), loadOrders(),
     db.from('ag_attendance').select('status,staff_id').eq('agency_id', A()).eq('day', t).then((r) => r.data || []),
     db.from('ag_attendance').select('status,staff_id').eq('agency_id', A()).gte('day', ms).lte('day', me).then((r) => r.data || [])]);
   const active = staffAll.filter((s) => s.active), rate = Object.fromEntries(staffAll.map((s) => [s.id, Number(s.daily_rate || 0)]));
@@ -236,6 +236,7 @@ async function dash() {
     <div class="stat"><b>TODAY NOT MARKED</b><span>${Math.max(0, unmarked)}</span>${unmarked > 0 ? '<a href="#attendance" class="note">Mark now →</a>' : ''}</div>
     <div class="stat"><b>SALARY THIS MONTH (SO FAR)</b><span>${rupee(salary)}</span><div class="note">present days × daily rate</div></div>
   </div>
+  <div class="stats"><a class="stat" href="#pnl" style="text-decoration:none;color:inherit;border-color:#1E3A5F"><b>REVENUE THIS MONTH</b><span>${rupee(P.revenue)}</span><div class="note">cost ${rupee(Number(P.staff_cost || 0) + Number(P.other_cost || 0))} · P&amp;L →</div></a><div class="stat"><b>NET PROFIT THIS MONTH</b><span>${rupee(Number(P.revenue || 0) - Number(P.staff_cost || 0) - Number(P.other_cost || 0))}</span></div><a class="stat" href="#invoices" style="text-decoration:none;color:inherit;border-color:#B91C1C"><b style="color:#B91C1C">NOT PAID BY CUSTOMERS</b><span>${rupee(sumr.reduce((s, x) => s + Number(x.outstanding), 0))}</span><div class="note">collect →</div></a></div>
   <h2>Open orders needing staff</h2>${ords.filter((o) => o.status === 'Open').slice(0, 8).map((o) => `<div class="card row" style="padding:10px 14px"><div class="grow"><b>${esc(o.ag_customers?.name || '')}</b> <span class="note">· ${esc(o.service)} · ${esc(o.shift)}${o.start_time ? ' ' + t12(o.start_time) + '–' + t12(o.end_time) : ''} · from ${fmtD(o.start_date)}</span></div><button class="btn sm" data-oedit="${o.id}">Assign</button></div>`).join('') || '<div class="note">None — all orders have staff.</div>'}`;
   M.querySelectorAll('[data-oedit]').forEach((b) => (b.onclick = () => orderForm(Number(b.dataset.oedit))));
 }
@@ -270,16 +271,18 @@ function staffForm(s) {
 // ---------- customers ----------
 let custQ = '';
 async function customers() {
-  const [list, ords] = await Promise.all([loadCustomers(), loadOrders()]);
+  const [list, ords, sumr] = await Promise.all([loadCustomers(), loadOrders(), db.rpc('ag_customer_summary', { p_agency: A() }).then((r) => r.data || [])]);
+  const SM = Object.fromEntries(sumr.map((x) => [x.customer_id, x])); const z = { earned: 0, invoiced: 0, collected: 0, outstanding: 0 };
   const act = {}; ords.filter((o) => ACTIVE.includes(o.status)).forEach((o) => (act[o.customer_id] = (act[o.customer_id] || 0) + 1));
   const rows = list.filter((c) => !custQ || (c.name + ' ' + (c.phone || '') + ' ' + (c.area || '') + ' ' + (c.patient_name || '')).toLowerCase().includes(custQ));
-  M.innerHTML = `<div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px"><div><h1 style="margin:0">Customers</h1><div class="note">${list.length} customers</div></div><button class="btn sm" id="addCust">+ Add customer</button></div>
+  M.innerHTML = `<div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px"><div><h1 style="margin:0">Customers</h1><div class="note">${list.length} customers · revenue earned till date <b>${rupee(sumr.reduce((t, x) => t + Number(x.earned), 0))}</b> · not paid <b style="color:#B91C1C">${rupee(sumr.reduce((t, x) => t + Number(x.outstanding), 0))}</b></div></div><button class="btn sm" id="addCust">+ Add customer</button></div>
   <div class="filters"><input class="inp" id="cq" placeholder="Search customer / patient / phone / area" value="${esc(custQ)}"></div>
-  <div class="tbl"><table><thead><tr><th>Customer</th><th>Phone</th><th>Patient</th><th>Area</th><th>Active orders</th><th></th></tr></thead><tbody>${rows.map((c) => `<tr><td><b>${esc(c.name)}</b></td><td>${c.phone ? `<a href="tel:+91${esc(c.phone)}">${esc(c.phone)}</a>` : '—'}</td><td>${esc(c.patient_name || '—')}${c.patient_age ? `, ${c.patient_age}` : ''}${c.condition ? `<div class="note">${esc(c.condition)}</div>` : ''}</td><td>${esc(c.area || '—')}</td><td>${act[c.id] || 0}</td><td style="white-space:nowrap"><button class="btn sm" data-cnew="${c.id}">+ Order</button> <button class="btn sm ghost" data-cedit="${c.id}">Edit</button></td></tr>`).join('') || `<tr><td colspan="6" class="note" style="text-align:center;padding:28px">No customers yet. Tap <b>+ Add customer</b>.</td></tr>`}</tbody></table></div>`;
+  <div class="tbl"><table><thead><tr><th>Customer</th><th>Phone</th><th>Patient</th><th>Area</th><th>Active orders</th><th>Revenue earned</th><th>Invoiced</th><th>Collected</th><th>Not paid</th><th></th></tr></thead><tbody>${rows.map((c) => `<tr><td><b>${esc(c.name)}</b></td><td>${c.phone ? `<a href="tel:+91${esc(c.phone)}">${esc(c.phone)}</a>` : '—'}</td><td>${esc(c.patient_name || '—')}${c.patient_age ? `, ${c.patient_age}` : ''}${c.condition ? `<div class="note">${esc(c.condition)}</div>` : ''}</td><td>${esc(c.area || '—')}</td><td>${act[c.id] || 0}</td><td><b>${rupee((SM[c.id] || z).earned)}</b></td><td>${rupee((SM[c.id] || z).invoiced)}</td><td>${rupee((SM[c.id] || z).collected)}</td><td>${Number((SM[c.id] || z).outstanding) ? `<b style="color:#B91C1C">${rupee(SM[c.id].outstanding)}</b>` : '—'}</td><td style="white-space:nowrap"><button class="btn sm ghost" data-cinv="${c.id}">Invoice</button> <button class="btn sm" data-cnew="${c.id}">+ Order</button> <button class="btn sm ghost" data-cedit="${c.id}">Edit</button></td></tr>`).join('') || `<tr><td colspan="10" class="note" style="text-align:center;padding:28px">No customers yet. Tap <b>+ Add customer</b>.</td></tr>`}</tbody></table></div>`;
   $('cq').oninput = (e) => { custQ = e.target.value.toLowerCase(); clearTimeout(window._cq); window._cq = setTimeout(customers, 250); };
   $('addCust').onclick = () => custForm(null);
   M.querySelectorAll('[data-cedit]').forEach((b) => (b.onclick = () => custForm(list.find((c) => c.id === b.dataset.cedit))));
   M.querySelectorAll('[data-cnew]').forEach((b) => (b.onclick = () => orderForm(null, b.dataset.cnew)));
+  M.querySelectorAll('[data-cinv]').forEach((b) => (b.onclick = () => invoiceForm(b.dataset.cinv)));
 }
 function custForm(c) {
   const e = !!c; c = c || {};
@@ -389,6 +392,125 @@ async function attendance() {
     $('mCsv').onclick = () => { const L = ['Name,Role,Phone,Daily rate,Present,Half-day,Absent,Leave,Paid days,Salary'].concat(rows.map((r) => [r.s.name, r.s.role, r.s.phone || '', r.s.daily_rate, r.b.Present, r.b['Half-day'], r.b.Absent, r.b.Leave, r.paid, Math.round(r.pay)].map((v) => `"${String(v).replace(/"/g, '""')}"`).join(','))); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([L.join('\n')], { type: 'text/csv' })); a.download = `${AG.name}-salary-${attMonth}.csv`; a.click(); };
   }
   M.querySelectorAll('[data-av]').forEach((b) => (b.onclick = () => { attView = b.dataset.av; attendance(); }));
+}
+
+
+// ---------- invoices & collections ----------
+let invF = { status: 'open', cust: '', month: '' };
+const invStatusTag = (s, due) => { const over = (s === 'Unpaid' || s === 'Partly paid') && due && due < today(); return `<span class="tag ${{ Paid: 't-ok', Unpaid: 't-bad', 'Partly paid': 't-warn', Cancelled: 't-mute' }[s]}">${esc(s === 'Unpaid' ? 'Not paid' : s)}</span>${over ? ' <span class="tag t-bad" style="background:#7F1D1D;color:#fff">Overdue</span>' : ''}`; };
+const loadInvoices = async () => (await db.from('ag_invoices').select('*, ag_customers(name,phone,patient_name,address)').eq('agency_id', A()).order('issue_date', { ascending: false }).limit(1000)).data || [];
+async function invoices() {
+  const [all, custs] = await Promise.all([loadInvoices(), loadCustomers()]);
+  const live = all.filter((i) => i.status !== 'Cancelled');
+  const rows = all.filter((i) => (invF.status === 'all' || (invF.status === 'open' ? ['Unpaid', 'Partly paid'].includes(i.status) : i.status === invF.status)) && (!invF.cust || i.customer_id === invF.cust) && (!invF.month || i.issue_date.slice(0, 7) === invF.month));
+  const bal = (i) => Number(i.total) - Number(i.paid_amount || 0);
+  const out = live.filter((i) => i.status !== 'Paid'), overdue = out.filter((i) => i.due_date && i.due_date < today());
+  M.innerHTML = `<div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px"><div><h1 style="margin:0">Invoices &amp; collections</h1><div class="note">${all.length} invoices</div></div><button class="btn sm" id="newInv">+ Create invoice</button></div>
+  <div class="stats"><div class="stat"><b>TOTAL INVOICED</b><span>${rupee(live.reduce((t, i) => t + Number(i.total), 0))}</span></div><div class="stat" style="border-color:#15803D"><b style="color:#15803D">COLLECTED (PAID)</b><span>${rupee(live.reduce((t, i) => t + Number(i.paid_amount || 0), 0))}</span></div><div class="stat" style="border-color:#B91C1C"><b style="color:#B91C1C">NOT PAID YET</b><span>${rupee(out.reduce((t, i) => t + bal(i), 0))}</span><div class="note">${out.length} invoice${out.length === 1 ? '' : 's'}</div></div><div class="stat"><b>OVERDUE</b><span>${rupee(overdue.reduce((t, i) => t + bal(i), 0))}</span><div class="note">${overdue.length} past due date</div></div></div>
+  <div class="filters"><select class="inp" id="ifS" style="max-width:220px">${[['open', 'Not paid / partly paid'], ['Paid', 'Paid'], ['Unpaid', 'Not paid only'], ['Partly paid', 'Partly paid only'], ['Cancelled', 'Cancelled'], ['all', 'All invoices']].map(([k, l]) => `<option value="${k}" ${invF.status === k ? 'selected' : ''}>${l}</option>`).join('')}</select><select class="inp" id="ifC" style="max-width:240px"><option value="">All customers</option>${custs.map((c) => `<option value="${c.id}" ${invF.cust === c.id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select><input class="inp" type="month" id="ifM" value="${invF.month}" style="max-width:170px" title="Invoice month"></div>
+  <div class="tbl"><table><thead><tr><th>Invoice</th><th>Customer</th><th>Period</th><th>Issued / due</th><th>Amount</th><th>Paid</th><th>Balance</th><th>Status</th><th></th></tr></thead><tbody>${rows.map((i) => `<tr><td><b>${esc(i.invoice_no)}</b></td><td>${esc(i.ag_customers?.name || '')}</td><td class="note">${fmtD(i.period_from)} – ${fmtD(i.period_to)}</td><td>${fmtD(i.issue_date)}<div class="note">due ${fmtD(i.due_date)}</div></td><td><b>${rupee(i.total)}</b></td><td>${rupee(i.paid_amount)}${i.paid_on ? `<div class="note">${fmtD(i.paid_on)} · ${esc(i.pay_mode || '')}</div>` : ''}</td><td>${i.status === 'Cancelled' ? '—' : rupee(bal(i))}</td><td>${invStatusTag(i.status, i.due_date)}</td><td style="white-space:nowrap"><button class="btn sm ghost" data-iv="${i.id}">View</button> ${['Unpaid', 'Partly paid'].includes(i.status) ? `<button class="btn sm" data-ip="${i.id}">Mark paid</button>` : `<button class="btn sm ghost" data-ip="${i.id}">Payment</button>`}</td></tr>`).join('') || '<tr><td colspan="9" class="note" style="text-align:center;padding:28px">No invoices here. Tap <b>+ Create invoice</b>.</td></tr>'}</tbody></table></div>`;
+  $('newInv').onclick = () => invoiceForm(invF.cust || null);
+  $('ifS').onchange = (e) => { invF.status = e.target.value; invoices(); }; $('ifC').onchange = (e) => { invF.cust = e.target.value; invoices(); }; $('ifM').onchange = (e) => { invF.month = e.target.value; invoices(); };
+  M.querySelectorAll('[data-iv]').forEach((b) => (b.onclick = () => viewInvoice(all.find((i) => i.id === Number(b.dataset.iv)))));
+  M.querySelectorAll('[data-ip]').forEach((b) => (b.onclick = () => paymentForm(all.find((i) => i.id === Number(b.dataset.ip)))));
+}
+const lastMonth = () => { const d = new Date(today().slice(0, 8) + '01T00:00:00Z'); d.setUTCDate(0); const ym = d.toISOString().slice(0, 7); return [ym + '-01', monthRange(ym)[1]]; };
+async function invoiceForm(custId) {
+  const custs = await loadCustomers(); if (!custs.length) return toast('Add a customer first');
+  const [lf, lt] = lastMonth(); let lines = [];
+  openSheet(`<h2>Create invoice</h2><label class="lbl">Customer *</label><select class="inp" id="nvC"><option value="">Select customer</option>${custs.map((c) => `<option value="${c.id}" ${c.id === custId ? 'selected' : ''}>${esc(c.name)}${c.patient_name ? ' — ' + esc(c.patient_name) : ''}</option>`).join('')}</select>
+  <div class="grid2"><div><label class="lbl">Billing period from</label><input class="inp" type="date" id="nvF" value="${lf}"></div><div><label class="lbl">to</label><input class="inp" type="date" id="nvT" value="${lt}"></div></div>
+  <div class="row" style="gap:6px;margin-top:8px;flex-wrap:wrap"><button class="chip" data-np="last">Last month</button><button class="chip" data-np="this">This month till today</button><button class="btn sm" id="nvLoad" style="margin-left:auto">Load services from orders</button></div>
+  <div class="note" style="margin-top:6px">Quantity = days/visits the staff was marked Present (half-day = ½) in this period. You can edit any line.</div><div class="warn note" id="nvWarn" style="color:#B45309;margin-top:6px"></div>
+  <div class="tbl" style="margin-top:10px"><table><thead><tr><th style="width:46%">Description</th><th>Qty</th><th>Rate ₹</th><th>Amount</th><th></th></tr></thead><tbody id="nvLines"></tbody></table></div><button class="btn sm ghost" id="nvAdd" style="margin-top:6px">+ Add line (e.g. medical supplies, travel)</button>
+  <div class="grid2" style="grid-template-columns:repeat(4,1fr);gap:8px"><div><label class="lbl">Discount ₹</label><input class="inp" id="nvDisc" type="number" value="0"></div><div><label class="lbl">GST %</label><input class="inp" id="nvGst" type="number" value="0" title="Most home nursing services are GST-exempt; check with your CA"></div><div><label class="lbl">Invoice date</label><input class="inp" type="date" id="nvI" value="${today()}"></div><div><label class="lbl">Due date</label><input class="inp" type="date" id="nvD" value="${addDays(today(), 7)}"></div></div>
+  <label class="lbl">Notes on invoice</label><input class="inp" id="nvN" placeholder="e.g. Pay by UPI to agency@upi">
+  <div style="text-align:right;margin-top:12px;font-size:15px">Subtotal <b id="nvSub">₹0</b> · Total <b id="nvTot" style="font-size:20px">₹0</b></div>
+  <div class="err" id="nvErr"></div><button class="btn" id="nvSave" style="margin-top:12px">Save invoice</button><button class="btn ghost" id="closeSheet" style="margin-top:8px">Cancel</button>`);
+  $('closeSheet').onclick = closeSheet;
+  const calc = () => { const sub = lines.reduce((t, l) => t + Number(l.qty || 0) * Number(l.rate || 0), 0); const disc = Number(val('nvDisc') || 0), g = Number(val('nvGst') || 0); const tot = Math.round((sub - disc) * (1 + g / 100)); $('nvSub').textContent = rupee(sub); $('nvTot').textContent = rupee(tot); return { sub, disc, g, tot }; };
+  const draw = () => { $('nvLines').innerHTML = lines.map((l, k) => `<tr><td><input class="inp" style="height:36px" data-l="${k}" data-k="desc" value="${esc(l.desc)}"></td><td><input class="inp" style="height:36px;width:70px" type="number" step="0.5" data-l="${k}" data-k="qty" value="${l.qty}"><div class="note">${esc(l.unit || '')}${l.calendar_days != null && Number(l.calendar_days) !== Number(l.qty) ? ` · ${l.calendar_days} cal. days` : ''}</div></td><td><input class="inp" style="height:36px;width:90px" type="number" data-l="${k}" data-k="rate" value="${l.rate}"></td><td><b>${rupee(Number(l.qty) * Number(l.rate))}</b></td><td><button class="btn sm ghost" data-rm="${k}">✕</button></td></tr>`).join('') || '<tr><td colspan="5" class="note" style="text-align:center">Pick a customer and tap "Load services from orders"</td></tr>';
+    $('nvLines').querySelectorAll('[data-l]').forEach((i) => (i.oninput = () => { lines[i.dataset.l][i.dataset.k] = i.dataset.k === 'desc' ? i.value : Number(i.value); if (i.dataset.k !== 'desc') { const tr = i.closest('tr'); tr.children[3].innerHTML = `<b>${rupee(Number(lines[i.dataset.l].qty) * Number(lines[i.dataset.l].rate))}</b>`; } calc(); }));
+    $('nvLines').querySelectorAll('[data-rm]').forEach((b) => (b.onclick = () => { lines.splice(Number(b.dataset.rm), 1); draw(); })); calc(); };
+  const load = async () => {
+    if (!val('nvC')) return ($('nvErr').textContent = 'Select a customer'); $('nvErr').textContent = '';
+    const { data, error } = await db.rpc('ag_invoice_lines', { p_customer: val('nvC'), p_from: val('nvF'), p_to: val('nvT') }); if (error) return toast(error.message);
+    lines = (data || []).filter((l) => Number(l.rate) > 0).map((l) => ({ order_id: l.order_id, desc: `${l.service} · ${l.shift}${l.start_time ? ` (${t12(l.start_time)}–${t12(l.end_time)})` : ''}${l.staff_name ? ' · ' + l.staff_name : ''}`, qty: Number(l.days), calendar_days: l.calendar_days, unit: l.shift === 'Visit' ? 'visits' : 'days', rate: Number(l.rate) }));
+    if (!lines.length) toast('No billable orders in this period — add a line manually');
+    const { data: ex } = await db.from('ag_invoices').select('invoice_no,period_from,period_to').eq('agency_id', A()).eq('customer_id', val('nvC')).neq('status', 'Cancelled').lte('period_from', val('nvT')).gte('period_to', val('nvF'));
+    $('nvWarn').textContent = ex && ex.length ? `⚠ Already invoiced for an overlapping period: ${ex.map((x) => x.invoice_no).join(', ')}` : '';
+    draw();
+  };
+  M.ownerDocument.querySelectorAll('[data-np]').forEach((b) => (b.onclick = () => { if (b.dataset.np === 'last') { const [f, t] = lastMonth(); $('nvF').value = f; $('nvT').value = t; } else { $('nvF').value = today().slice(0, 8) + '01'; $('nvT').value = today(); } load(); }));
+  $('nvLoad').onclick = load; $('nvC').onchange = load; ['nvDisc', 'nvGst'].forEach((k) => ($(k).oninput = calc));
+  $('nvAdd').onclick = () => { lines.push({ desc: '', qty: 1, unit: '', rate: 0 }); draw(); };
+  draw(); if (custId) load();
+  $('nvSave').onclick = async () => {
+    const { sub, disc, g, tot } = calc(); if (!val('nvC')) return ($('nvErr').textContent = 'Select a customer'); if (!lines.length || tot <= 0) return ($('nvErr').textContent = 'Invoice total must be more than ₹0');
+    const ini = (AG.name.match(/\b[A-Za-z]/g) || ['A']).slice(0, 3).join('').toUpperCase(), pre = `${ini}-${val('nvI').slice(2, 4)}${val('nvI').slice(5, 7)}-`;
+    const { data: ex } = await db.from('ag_invoices').select('invoice_no').eq('agency_id', A()).like('invoice_no', pre + '%');
+    const nextNo = pre + String(((ex || []).map((x) => Number(x.invoice_no.slice(pre.length)) || 0).reduce((a, b) => Math.max(a, b), 0)) + 1).padStart(3, '0');
+    const row = { agency_id: A(), customer_id: val('nvC'), invoice_no: nextNo, issue_date: val('nvI'), due_date: val('nvD') || null, period_from: val('nvF'), period_to: val('nvT'), lines: lines.map((l) => ({ ...l, amount: Number(l.qty) * Number(l.rate) })), subtotal: sub, discount: disc, gst_pct: g, total: tot, notes: val('nvN') || null, status: 'Unpaid' };
+    $('nvSave').disabled = true; const r = await db.from('ag_invoices').insert(row).select('*, ag_customers(name,phone,patient_name,address)').single(); $('nvSave').disabled = false;
+    if (r.error) return ($('nvErr').textContent = r.error.message);
+    const full = (await db.from('ag_invoices').select('*, ag_customers(name,phone,patient_name,address)').eq('id', r.data.id).single()).data || r.data; if (!full.ag_customers) full.ag_customers = custs.find((c) => c.id === full.customer_id);
+    closeSheet(); toast(`Invoice ${nextNo} created`); if (location.hash === '#invoices') invoices(); viewInvoice(full);
+  };
+}
+function viewInvoice(i) {
+  const c = i.ag_customers || {}, bal = Number(i.total) - Number(i.paid_amount || 0);
+  const msg = `Namaste ${c.name || ''},\nInvoice ${i.invoice_no} from ${AG.name}\nPeriod: ${fmtD(i.period_from)} – ${fmtD(i.period_to)}\nAmount: ${rupee(i.total)}${Number(i.paid_amount || 0) ? `\nPaid: ${rupee(i.paid_amount)}\nBalance due: ${rupee(bal)}` : ''}\nDue by: ${fmtD(i.due_date)}\n${i.notes || ''}\nThank you.`;
+  openSheet(`<div id="invDoc" style="font-size:13px"><div class="row" style="justify-content:space-between;align-items:flex-start"><div><b style="font-size:18px">${esc(AG.name)}</b><div class="note">${esc(AG.address || '')}${AG.phone ? '<br>📞 ' + esc(AG.phone) : ''}${AG.email ? ' · ' + esc(AG.email) : ''}</div></div><div style="text-align:right"><b style="font-size:16px;letter-spacing:1px">INVOICE</b><div>${esc(i.invoice_no)}</div><div class="note">Date ${fmtD(i.issue_date)} · Due ${fmtD(i.due_date)}</div></div></div>
+  <div style="margin:14px 0;padding:10px 12px;background:#F7F9F8;border-radius:8px"><span class="note">Bill to</span><br><b>${esc(c.name || '')}</b>${c.patient_name ? `<br>Patient: ${esc(c.patient_name)}` : ''}${c.address ? `<br><span class="note">${esc(c.address)}</span>` : ''}<br><span class="note">Service period: ${fmtD(i.period_from)} – ${fmtD(i.period_to)}</span></div>
+  <table style="width:100%;border-collapse:collapse"><thead><tr style="text-align:left;border-bottom:1px solid #CFD8D6"><th style="padding:6px 4px">Service</th><th>Qty</th><th>Rate</th><th style="text-align:right">Amount</th></tr></thead><tbody>${(i.lines || []).map((l) => `<tr style="border-bottom:1px solid #EEF2F1"><td style="padding:6px 4px">${esc(l.desc)}</td><td>${l.qty} ${esc(l.unit || '')}</td><td>${rupee(l.rate)}</td><td style="text-align:right">${rupee(l.amount ?? l.qty * l.rate)}</td></tr>`).join('')}</tbody></table>
+  <div style="text-align:right;margin-top:10px;line-height:1.8">Subtotal ${rupee(i.subtotal)}${Number(i.discount) ? `<br>Discount −${rupee(i.discount)}` : ''}${Number(i.gst_pct) ? `<br>GST ${i.gst_pct}%` : ''}<br><b style="font-size:17px">Total ${rupee(i.total)}</b>${Number(i.paid_amount || 0) ? `<br>Paid ${rupee(i.paid_amount)}${i.paid_on ? ' on ' + fmtD(i.paid_on) : ''}<br><b>Balance ${rupee(bal)}</b>` : ''}</div>
+  <div style="margin-top:8px">${invStatusTag(i.status, i.due_date)}</div>${i.notes ? `<p class="note">${esc(i.notes)}</p>` : ''}</div>
+  <div class="row" style="flex-wrap:wrap;gap:8px;margin-top:18px"><button class="btn sm" id="ivPrint">🖨 Print / Save PDF</button>${c.phone ? `<a class="btn sm" style="background:#25D366" target="_blank" rel="noopener" href="https://wa.me/91${esc(c.phone)}?text=${encodeURIComponent(msg)}">💬 Send on WhatsApp</a>` : ''}<button class="btn sm ghost" id="ivPay">${i.status === 'Paid' ? 'Payment details' : 'Mark paid'}</button>${i.status !== 'Cancelled' ? '<button class="btn sm danger" id="ivCancel">Cancel invoice</button>' : ''}<button class="btn sm ghost" id="closeSheet">Close</button></div>`);
+  $('closeSheet').onclick = closeSheet; $('ivPay').onclick = () => paymentForm(i);
+  $('ivPrint').onclick = () => { const w = window.open('', '_blank'); if (!w) return toast('Allow pop-ups to print'); w.document.write(`<html><head><title>${esc(i.invoice_no)}</title><link rel="stylesheet" href="${location.origin}/app.css"><style>body{padding:28px;font-family:Inter,system-ui,sans-serif;max-width:760px;margin:auto}</style></head><body>${$('invDoc').outerHTML}<script>setTimeout(()=>print(),400)<\/script></body></html>`); w.document.close(); };
+  const cb = $('ivCancel'); if (cb) cb.onclick = async () => { if (!confirm(`Cancel invoice ${i.invoice_no}? It stays in the list as Cancelled and is excluded from totals.`)) return; await must(db.from('ag_invoices').update({ status: 'Cancelled' }).eq('id', i.id)); closeSheet(); toast('Invoice cancelled'); route(); };
+}
+function paymentForm(i) {
+  const bal = Number(i.total) - Number(i.paid_amount || 0);
+  openSheet(`<h2>Payment · ${esc(i.invoice_no)}</h2><p class="sub">${esc(i.ag_customers?.name || '')} · Total ${rupee(i.total)} · Paid so far ${rupee(i.paid_amount)}</p>
+  <div class="grid2"><div><label class="lbl">Amount received now (₹)</label><input class="inp" id="pyA" type="number" value="${bal > 0 ? bal : 0}"></div><div><label class="lbl">Received on</label><input class="inp" id="pyD" type="date" value="${today()}"></div><div><label class="lbl">Mode</label><select class="inp" id="pyM">${opts(['UPI', 'Cash', 'Bank transfer', 'Cheque', 'Card'], i.pay_mode || 'UPI')}</select></div></div>
+  <div class="err" id="pyErr"></div><button class="btn" id="pySave" style="margin-top:16px">${bal > 0 ? 'Save payment' : 'Update'}</button>${Number(i.paid_amount || 0) ? '<button class="btn ghost" id="pyReset" style="margin-top:8px">Mark as NOT paid (undo payments)</button>' : ''}<button class="btn ghost" id="closeSheet" style="margin-top:8px">Cancel</button>`);
+  $('closeSheet').onclick = closeSheet;
+  $('pySave').onclick = async () => { const a = Number(val('pyA') || 0); if (a < 0) return ($('pyErr').textContent = 'Enter a valid amount'); const paid = Math.min(Number(i.total), Number(i.paid_amount || 0) + a); const status = i.status === 'Cancelled' ? 'Cancelled' : paid >= Number(i.total) ? 'Paid' : paid > 0 ? 'Partly paid' : 'Unpaid'; await must(db.from('ag_invoices').update({ paid_amount: paid, paid_on: a ? val('pyD') : i.paid_on, pay_mode: val('pyM'), status }).eq('id', i.id)); closeSheet(); toast(status === 'Paid' ? '✓ Marked paid' : 'Payment saved'); route(); };
+  const rs = $('pyReset'); if (rs) rs.onclick = async () => { if (!confirm('Reset this invoice to Not paid?')) return; await must(db.from('ag_invoices').update({ paid_amount: 0, paid_on: null, pay_mode: null, status: 'Unpaid' }).eq('id', i.id)); closeSheet(); toast('Marked not paid'); route(); };
+}
+
+// ---------- P&L ----------
+let plP = 'month', plF = '', plT = '';
+const EXP_CATS = ['Office rent', 'Office staff salary', 'Staff travel', 'Marketing', 'Training', 'Medical supplies', 'Phone & internet', 'Staff incentives / bonus', 'Other'];
+async function pnl() {
+  const t = today();
+  if (plP === 'month') { plF = t.slice(0, 8) + '01'; plT = t; } else if (plP === 'last') { [plF, plT] = lastMonth(); } else if (plP === 'all') { plF = '2000-01-01'; plT = t; } else if (plP === 'fy') { const y = Number(t.slice(0, 4)) - (Number(t.slice(5, 7)) < 4 ? 1 : 0); plF = `${y}-04-01`; plT = t; }
+  M.innerHTML = '<div class="note">Calculating…</div>';
+  const [{ data: P, error }, exp, cs] = await Promise.all([db.rpc('ag_pnl', { p_agency: A(), p_from: plF, p_to: plT }), db.from('ag_expenses').select('*').eq('agency_id', A()).gte('day', plF).lte('day', plT).order('day', { ascending: false }).then((r) => r.data || []), db.rpc('ag_customer_summary', { p_agency: A() }).then((r) => r.data || [])]);
+  if (error) { M.innerHTML = `<div class="err">${esc(error.message)}</div>`; return; }
+  const rev = Number(P.revenue), sc = Number(P.staff_cost), oc = Number(P.other_cost), gp = rev - sc, np = gp - oc, pct = (x) => (rev ? Math.round((x / rev) * 100) + '%' : '—');
+  const outstanding = cs.reduce((s, c) => s + Number(c.outstanding), 0);
+  const label = plP === 'all' ? 'Till date' : `${fmtD(plF)} – ${fmtD(plT)}`;
+  M.innerHTML = `<div class="row" style="justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px"><div><h1 style="margin:0">Profit &amp; Loss</h1><div class="note">${label}</div></div><button class="btn sm" id="addExp">+ Add expense</button></div>
+  <div class="filters">${[['month', 'This month'], ['last', 'Last month'], ['fy', 'This financial year'], ['all', 'Till date'], ['custom', 'Custom dates']].map(([k, l]) => `<button class="chip ${plP === k ? 'on' : ''}" data-pl="${k}">${l}</button>`).join('')}${plP === 'custom' ? `<input class="inp" type="date" id="plF" value="${plF}" style="max-width:160px"><span class="note">to</span><input class="inp" type="date" id="plT" value="${plT}" style="max-width:160px">` : ''}</div>
+  <div class="stats"><div class="stat" style="border-color:#1E3A5F"><b>TOTAL REVENUE</b><span>${rupee(rev)}</span><div class="note">${P.duty_days} duty-days delivered</div></div><div class="stat"><b>TOTAL COST</b><span>${rupee(sc + oc)}</span><div class="note">staff ${rupee(sc)} + other ${rupee(oc)}</div></div><div class="stat"><b>GROSS PROFIT</b><span>${rupee(gp)}</span><div class="note">${pct(gp)} margin after staff pay</div></div><div class="stat" style="border-color:${np >= 0 ? '#15803D' : '#B91C1C'}"><b style="color:${np >= 0 ? '#15803D' : '#B91C1C'}">NET PROFIT</b><span>${rupee(np)}</span><div class="note">${pct(np)} net margin</div></div></div>
+  <div class="stats"><div class="stat"><b>INVOICED IN PERIOD</b><span>${rupee(P.invoiced)}</span></div><div class="stat"><b>COLLECTED IN PERIOD</b><span>${rupee(P.collected)}</span></div><div class="stat"><b>NOT PAID YET (ALL INVOICES)</b><span>${rupee(outstanding)}</span><a href="#invoices" class="note">See unpaid →</a></div></div>
+  <div class="grid2" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start">
+  <section class="card" style="margin:0"><b>P&amp;L statement</b><table style="width:100%;margin-top:8px;border-collapse:collapse;font-size:14px">
+   <tr><td style="padding:6px 0">Revenue (services delivered)</td><td style="text-align:right"><b>${rupee(rev)}</b></td></tr>
+   <tr><td style="padding:6px 0">Less: staff salaries (attendance × daily rate)</td><td style="text-align:right">−${rupee(sc)}</td></tr>
+   <tr style="border-top:1px solid #CFD8D6"><td style="padding:6px 0"><b>Gross profit</b> <span class="note">${pct(gp)}</span></td><td style="text-align:right"><b>${rupee(gp)}</b></td></tr>
+   ${(P.expenses_by_cat || []).map((e) => `<tr><td style="padding:4px 0 4px 12px" class="note">Less: ${esc(e.category)}</td><td style="text-align:right" class="note">−${rupee(e.amount)}</td></tr>`).join('') || '<tr><td class="note" style="padding:4px 0 4px 12px">No other expenses recorded</td><td></td></tr>'}
+   <tr style="border-top:2px solid #1E3A5F"><td style="padding:8px 0"><b>Net profit</b> <span class="note">${pct(np)}</span></td><td style="text-align:right;color:${np >= 0 ? '#15803D' : '#B91C1C'}"><b style="font-size:17px">${rupee(np)}</b></td></tr></table>
+   <div class="note" style="margin-top:8px">Revenue = each Present day × the order's bill rate (half-day = ½). Staff cost = the same days × staff daily rate.</div></section>
+  <section class="card" style="margin:0"><b>By service</b><table style="width:100%;margin-top:8px;font-size:13px"><tr class="note"><td>Service</td><td>Days</td><td style="text-align:right">Revenue</td><td style="text-align:right">Staff cost</td><td style="text-align:right">Margin</td></tr>${(P.by_service || []).map((s) => `<tr><td style="padding:4px 0">${esc(s.service)}</td><td>${s.days}</td><td style="text-align:right">${rupee(s.revenue)}</td><td style="text-align:right">${rupee(s.cost)}</td><td style="text-align:right">${s.revenue ? Math.round(((s.revenue - s.cost) / s.revenue) * 100) + '%' : '—'}</td></tr>`).join('')}</table></section></div>
+  <h2>Revenue &amp; margin by customer</h2><div class="tbl"><table><thead><tr><th>Customer</th><th>Duty-days</th><th>Revenue</th><th>Staff cost</th><th>Gross profit</th><th>Margin</th></tr></thead><tbody>${(P.by_customer || []).map((c) => `<tr><td><b>${esc(c.name)}</b></td><td>${c.days}</td><td>${rupee(c.revenue)}</td><td>${rupee(c.cost)}</td><td>${rupee(c.revenue - c.cost)}</td><td>${c.revenue ? Math.round(((c.revenue - c.cost) / c.revenue) * 100) + '%' : '—'}</td></tr>`).join('') || '<tr><td colspan="6" class="note" style="text-align:center;padding:20px">No services delivered in this period.</td></tr>'}</tbody></table></div>
+  <h2>Other expenses in this period</h2><div class="tbl"><table><thead><tr><th>Date</th><th>Category</th><th>Notes</th><th>Amount</th><th></th></tr></thead><tbody>${exp.map((e) => `<tr><td>${fmtD(e.day)}</td><td>${esc(e.category)}</td><td class="note">${esc(e.notes || '')}</td><td><b>${rupee(e.amount)}</b></td><td><button class="btn sm ghost" data-ed="${e.id}">✕</button></td></tr>`).join('') || '<tr><td colspan="5" class="note" style="text-align:center;padding:20px">No expenses. Add rent, travel, marketing etc. with <b>+ Add expense</b>.</td></tr>'}</tbody></table></div>`;
+  M.querySelectorAll('[data-pl]').forEach((b) => (b.onclick = () => { plP = b.dataset.pl; if (plP === 'custom' && !plF) { plF = t.slice(0, 8) + '01'; plT = t; } pnl(); }));
+  if (plP === 'custom') { $('plF').onchange = (e) => { plF = e.target.value; pnl(); }; $('plT').onchange = (e) => { plT = e.target.value; pnl(); }; }
+  M.querySelectorAll('[data-ed]').forEach((b) => (b.onclick = async () => { if (!confirm('Delete this expense?')) return; await must(db.from('ag_expenses').delete().eq('id', Number(b.dataset.ed))); pnl(); }));
+  $('addExp').onclick = () => { openSheet(`<h2>Add expense</h2><div class="grid2"><div><label class="lbl">Date</label><input class="inp" type="date" id="exD" value="${today()}"></div><div><label class="lbl">Amount (₹) *</label><input class="inp" type="number" id="exA"></div></div><label class="lbl">Category</label><select class="inp" id="exC">${opts(EXP_CATS, 'Office rent')}</select><label class="lbl">Notes</label><input class="inp" id="exN"><div class="note" style="margin-top:6px">Caregiver/nurse salaries come automatically from attendance — don't add them here.</div><div class="err" id="exErr"></div><button class="btn" id="exSave" style="margin-top:16px">Save expense</button><button class="btn ghost" id="closeSheet" style="margin-top:8px">Cancel</button>`); $('closeSheet').onclick = closeSheet; $('exSave').onclick = async () => { if (!(Number(val('exA')) > 0)) return ($('exErr').textContent = 'Enter the amount'); await must(db.from('ag_expenses').insert({ agency_id: A(), day: val('exD'), category: val('exC'), amount: Number(val('exA')), notes: val('exN') || null })); closeSheet(); toast('Expense added'); pnl(); }; };
 }
 
 // ---------- settings ----------
