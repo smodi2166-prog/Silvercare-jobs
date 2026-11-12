@@ -28,7 +28,7 @@
 </section>
 
 <section class="screen" id="s-admin">
-  <div class="top"><b style="margin-right:8px">Yoro Jobs Admin</b><a href="#dash" data-a="dash">Dashboard</a><a href="#cands" data-a="cands">Candidates</a><a href="#nearby" data-a="nearby">Nearby search</a><a href="#jobs" data-a="jobs">Jobs</a><a href="#queue" data-a="queue">Verification queue</a><a href="#bulk" data-a="bulk">📣 WhatsApp</a><a href="#team" data-a="team">👥 Team</a><a href="./index.html" id="toCand" style="margin-left:auto;background:rgba(255,255,255,.12)">📱 Candidate view</a><span class="note" style="color:#fff;opacity:.75" id="who"></span><button class="btn sm ghost" id="logout" style="height:30px;font-size:12px">Log out</button></div>
+  <div class="top"><b style="margin-right:8px">Yoro Jobs Admin</b><a href="#dash" data-a="dash">Dashboard</a><a href="#cands" data-a="cands">Candidates</a><a href="#nearby" data-a="nearby">Nearby search</a><a href="#jobs" data-a="jobs">Jobs</a><a href="#queue" data-a="queue">Verification queue</a><a href="#bulk" data-a="bulk">📣 WhatsApp</a><a href="#team" data-a="team">👥 Team</a><a href="./index.html" id="toCand" style="margin-left:auto;background:rgba(255,255,255,.12)">📱 Candidate view</a><span class="note" style="color:#fff;opacity:.75" id="who"></span><button class="btn sm ghost" id="myPin" style="height:30px;font-size:12px">🔑 Change my PIN</button><button class="btn sm ghost" id="logout" style="height:30px;font-size:12px">Log out</button></div>
   <div class="main" id="main"></div>
 </section>
 </div>
@@ -41,7 +41,7 @@ import { SKILLS } from './config.js';
 initModal();
 if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
 $('toCand').onclick = () => setMode('candidate');
-let ME = '', user = null, AREAS = [], CITIES = [], tab = 'dash', st = { q: '', stage: '', role: '', city: '', verified: false, ncity: 'Pune', nearArea: 'Magarpatta', radius: 5, nrole: '', nver: false, navail: true, jcity: '', staff: '' };
+let ME = '', ME_PHONE = '', ME_NAME = '', user = null, AREAS = [], CITIES = [], tab = 'dash', st = { q: '', stage: '', role: '', city: '', verified: false, ncity: 'Pune', nearArea: 'Magarpatta', radius: 5, nrole: '', nver: false, navail: true, jcity: '', staff: '' };
 const waBtn = (c, txt) => `<a class="btn sm" href="https://wa.me/91${c.phone}${txt ? '?text=' + encodeURIComponent(txt) : ''}" target="_blank" rel="noopener" style="background:#25D366;padding:0 10px" title="WhatsApp ${esc(c.name)}">💬 WhatsApp</a>`;
 const staffTag = (c) => (c.is_yoro_staff ? ' <span class="tag" style="background:#E0E7FF;color:#3730A3">YORO staff</span>' : '');
 const cityOpts = (sel, allLabel) => (allLabel ? `<option value="">${allLabel}</option>` : '') + CITIES.map((c) => `<option value="${esc(c.name)}" ${c.name === sel ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
@@ -53,13 +53,32 @@ $('loginBtn').onclick = async () => { $('loginErr').textContent = ''; const id =
 try { const cs = JSON.parse(localStorage.getItem('yj-candidate-auth') || 'null'); const m = /^(\d{10})@candidates/.exec(cs?.user?.email || ''); if (m) { $('email').value = m[1]; setTimeout(() => $('pw').focus(), 300); } } catch (e) { }
 $('pw').onkeydown = (e) => { if (e.key === 'Enter') $('loginBtn').click(); };
 $('logout').onclick = () => sb.auth.signOut();
+$('myPin').onclick = () => {
+  openSheet(`<h2>🔑 Change my PIN</h2><p class="sub">${ME_PHONE ? `Your mobile login: <b>+91 ${esc(ME_PHONE)}</b>. The new PIN works on the admin page${''} and in the candidate app if you have a candidate account on this number.` : 'Set your mobile number and a PIN to log in without your email.'}</p>
+  ${ME_PHONE ? '' : '<label class="lbl">Mobile number</label><input class="inp" id="mph" maxlength="10" inputmode="numeric">'}
+  <label class="lbl">New 4-digit PIN</label><input class="inp" id="mp1" type="password" maxlength="4" inputmode="numeric" style="letter-spacing:6px;text-align:center">
+  <label class="lbl">New PIN again</label><input class="inp" id="mp2" type="password" maxlength="4" inputmode="numeric" style="letter-spacing:6px;text-align:center">
+  <div class="err" id="merr"></div><button class="btn" id="msave" style="margin-top:18px">Save new PIN</button><button class="btn ghost" id="closeSheet" style="margin-top:8px">Cancel</button>`);
+  $('closeSheet').onclick = closeSheet;
+  $('msave').onclick = async () => {
+    const p1 = $('mp1').value.replace(/\D/g, ''), p2 = $('mp2').value.replace(/\D/g, ''); const ph = ME_PHONE || ($('mph')?.value || '').replace(/\D/g, '');
+    if (ph.length !== 10) return ($('merr').textContent = 'Enter your 10-digit mobile number');
+    if (p1.length !== 4) return ($('merr').textContent = 'PIN must be 4 digits'); if (p1 !== p2) return ($('merr').textContent = 'The two PINs do not match');
+    if (['1234', '0000', '2026', '1111'].includes(p1)) return ($('merr').textContent = 'Please choose a less common PIN');
+    $('msave').disabled = true;
+    const { data, error } = await sb.functions.invoke('candidate-auth', { body: { action: 'staff_set_phone', email: ME, phone: ph, pin: p1 } });
+    $('msave').disabled = false;
+    if (error || data?.error) return ($('merr').textContent = data?.error || error.message);
+    ME_PHONE = ph; closeSheet(); toast('PIN changed. Use it next time you log in.');
+  };
+};
 sb.auth.onAuthStateChange((ev, s) => { user = s?.user || null; boot(); });
 async function boot() {
   const { data: { session } } = await sb.auth.getSession(); user = session?.user || null;
   if (!user) { $('s-login').classList.add('on'); $('s-admin').classList.remove('on'); return; }
   const { data: isAdmin } = await sb.rpc('is_admin');
   if (!isAdmin) { $('loginErr').textContent = 'This account is not on the staff list. Ask an admin to add you under Team.'; await sb.auth.signOut(); return; }
-  const em = (user.email || '').toLowerCase(); const pm = /^(\d{10})@candidates\.yorojobs\.local$/.exec(em); const { data: meRow } = await sb.from('admins').select('email,name,phone').eq(pm ? 'phone' : 'email', pm ? pm[1] : em).maybeSingle(); ME = meRow?.email || em;
+  const em = (user.email || '').toLowerCase(); const pm = /^(\d{10})@candidates\.yorojobs\.local$/.exec(em); const { data: meRow } = await sb.from('admins').select('email,name,phone').eq(pm ? 'phone' : 'email', pm ? pm[1] : em).maybeSingle(); ME = meRow?.email || em; ME_PHONE = meRow?.phone || ''; ME_NAME = meRow?.name || '';
   setMode('admin'); [AREAS, CITIES] = await Promise.all([areas(), cities()]); $('who').textContent = meRow ? `${meRow.name || ME}${pm ? ' · +91 ' + pm[1] : ''}` : ME; $('s-login').classList.remove('on'); $('s-admin').classList.add('on'); route();
 }
 window.addEventListener('hashchange', () => { closeSheet(); route(); });

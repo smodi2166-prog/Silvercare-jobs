@@ -138,7 +138,7 @@
     <button class="card row" style="width:100%;text-align:left" data-open="exp"><div class="grow"><b data-t="exp">Experience &amp; skills</b><div class="note" id="cExp" data-t="expSub">Years, skills, previous employer · +15%</div></div><span id="okExp"></span>›</button>
     <button class="card row" style="width:100%;text-align:left" data-open="docs"><div class="grow"><b data-t="docs">Documents</b><div class="note" id="cDocs" data-t="docsSub">Aadhaar / PAN, certificate · gets you verified</div></div><span id="okDocs"></span>›</button>
     <button class="card row" style="width:100%;text-align:left" data-open="personal"><div class="grow"><b data-t="personal">Personal details</b><div class="note" id="cPersonal" data-t="personalSub">Gender, languages, address · +10%</div></div><span id="okPersonal"></span>›</button>
-    <div class="card" style="margin-top:6px"><b style="font-size:14px" data-t="account">Account</b><div class="note" id="pAccount">—</div></div>
+    <div class="card" style="margin-top:6px"><div class="row" style="justify-content:space-between"><b style="font-size:14px" data-t="account">Account</b><button class="btn sm ghost" id="chgPin" data-t="changePin">Change PIN</button></div><div class="note" id="pAccount">—</div></div>
   </div>
 </section>
 
@@ -310,6 +310,11 @@ async function renderProfile() {
   $('pAccount').innerHTML = `${esc(c.name)} · +91 ${esc(c.phone)} · ${esc(t('roles.' + c.role))} · ${esc(c.area)}, ${esc(c.city)}<br>${fmtDate(c.created_at)} · ${c.verified ? '<span class="ok">' + t('verified') + '</span>' : esc(c.stage)}`;
 }
 async function saveMe(patch) { const { error } = await sb.from('candidates').update(patch).eq('id', me.id); if (error) { toast('Could not save: ' + error.message); return false; } Object.assign(me, patch); return true; }
+$('chgPin').onclick = () => {
+  openSheet(`<h2>🔑 ${t('changePin')}</h2><label class="lbl">${t('newPin')}</label><input class="inp" id="np1" type="password" maxlength="4" inputmode="numeric" style="letter-spacing:6px;text-align:center"><label class="lbl">${t('newPinAgain')}</label><input class="inp" id="np2" type="password" maxlength="4" inputmode="numeric" style="letter-spacing:6px;text-align:center"><div class="err" id="nperr"></div><button class="btn" id="npsave" style="margin-top:18px">${t('save')}</button><button class="btn ghost" id="closeSheet" style="margin-top:8px">✕</button>`);
+  $('closeSheet').onclick = closeSheet;
+  $('npsave').onclick = async () => { const a = $('np1').value.replace(/\D/g, ''), b = $('np2').value.replace(/\D/g, ''); if (a.length !== 4) return ($('nperr').textContent = t('errPin4')); if (a !== b) return ($('nperr').textContent = t('errPinMatch')); if (['1234', '0000', '1111', '2026'].includes(a)) return ($('nperr').textContent = t('pinWeak')); $('npsave').disabled = true; const { error } = await sb.auth.updateUser({ password: pwFor(a, me.phone) }); $('npsave').disabled = false; if (error) return ($('nperr').textContent = error.message); closeSheet(); toast(t('pinChanged')); };
+};
 $('availToggle').onclick = async () => { if (await saveMe({ available: !me.available })) renderHome(); };
 $('logout').onclick = async (e) => { e.preventDefault(); await sb.auth.signOut(); };
 $('hAvatar').onclick = () => { location.hash = '#profile'; };

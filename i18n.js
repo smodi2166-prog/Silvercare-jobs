@@ -36,7 +36,7 @@ export const T = {
     nav: { home: 'होम', jobs: 'नौकरियाँ', profile: 'प्रोफ़ाइल' },
     roles: { Caregiver: 'केयरगिवर', Nurse: 'नर्स', Physio: 'फिज़ियो' },
     genderOnly: { Female: 'सिर्फ महिला', Male: 'सिर्फ पुरुष' },
-    locTitle: 'मेरी लोकेशन', locSub: 'शहर और इलाका — पास की नौकरियाँ इसी से मिलती हैं', save: 'सेव करें', locSaved: 'लोकेशन अपडेट हो गई', locPick: 'सूची से इलाका चुनें या लोकेशन लें',
+    changePin: 'PIN बदलें', newPin: 'नया 4 अंकों का PIN', newPinAgain: 'नया PIN फिर से', pinChanged: 'PIN बदल गया', pinWeak: 'कोई और PIN चुनें (1234, 0000 जैसे नहीं)', locTitle: 'मेरी लोकेशन', locSub: 'शहर और इलाका — पास की नौकरियाँ इसी से मिलती हैं', save: 'सेव करें', locSaved: 'लोकेशन अपडेट हो गई', locPick: 'सूची से इलाका चुनें या लोकेशन लें',
     installTitle: 'Yoro Jobs ऐप इंस्टॉल करें', installSub: 'होम स्क्रीन पर आइकन — एक टैप में खोलें', installBtn: 'इंस्टॉल', installed: 'ऐप इंस्टॉल हो गया! होम स्क्रीन पर Yoro Jobs आइकन देखें।', installMenu: 'Chrome में ⋮ मेनू दबाएँ → "होम स्क्रीन में जोड़ें" / "ऐप इंस्टॉल करें"', iosHint: 'Safari में नीचे Share (⬆️) बटन दबाएँ → "Add to Home Screen" चुनें।',
   },
   hn: {
@@ -67,7 +67,7 @@ export const T = {
     nav: { home: 'Home', jobs: 'Naukriyan', profile: 'Profile' },
     roles: { Caregiver: 'Caregiver', Nurse: 'Nurse', Physio: 'Physio' },
     genderOnly: { Female: 'Sirf mahila', Male: 'Sirf purush' },
-    locTitle: 'Meri location', locSub: 'Shehar aur ilaaka — paas ki naukriyan isi se milti hain', save: 'Save karein', locSaved: 'Location update ho gayi', locPick: 'List se ilaaka chunein ya location lein',
+    changePin: 'PIN badlein', newPin: 'Naya 4 digit ka PIN', newPinAgain: 'Naya PIN dobara', pinChanged: 'PIN badal gaya', pinWeak: 'Koi aur PIN chunein (1234, 0000 jaise nahi)', locTitle: 'Meri location', locSub: 'Shehar aur ilaaka — paas ki naukriyan isi se milti hain', save: 'Save karein', locSaved: 'Location update ho gayi', locPick: 'List se ilaaka chunein ya location lein',
     installTitle: 'Yoro Jobs app install karein', installSub: 'Home screen par icon — ek tap mein kholein', installBtn: 'Install', installed: 'App install ho gaya! Home screen par Yoro Jobs icon dekhein.', installMenu: 'Chrome mein ⋮ menu dabayein → "Add to Home screen" / "Install app"', iosHint: 'Safari mein neeche Share (⬆️) button dabayein → "Add to Home Screen" chunein.',
   },
   mr: {
@@ -98,7 +98,7 @@ export const T = {
     nav: { home: 'होम', jobs: 'नोकऱ्या', profile: 'प्रोफाइल' },
     roles: { Caregiver: 'केअरगिव्हर', Nurse: 'नर्स', Physio: 'फिजिओ' },
     genderOnly: { Female: 'फक्त महिला', Male: 'फक्त पुरुष' },
-    locTitle: 'माझे लोकेशन', locSub: 'शहर आणि भाग — जवळच्या नोकऱ्या यावरून मिळतात', save: 'सेव्ह करा', locSaved: 'लोकेशन अपडेट झाले', locPick: 'यादीतून भाग निवडा किंवा लोकेशन घ्या',
+    changePin: 'PIN बदला', newPin: 'नवीन 4 अंकी PIN', newPinAgain: 'नवीन PIN पुन्हा', pinChanged: 'PIN बदलला', pinWeak: 'दुसरा PIN निवडा (1234, 0000 नको)', locTitle: 'माझे लोकेशन', locSub: 'शहर आणि भाग — जवळच्या नोकऱ्या यावरून मिळतात', save: 'सेव्ह करा', locSaved: 'लोकेशन अपडेट झाले', locPick: 'यादीतून भाग निवडा किंवा लोकेशन घ्या',
     installTitle: 'Yoro Jobs ॲप इन्स्टॉल करा', installSub: 'होम स्क्रीनवर आयकॉन — एका टॅपमध्ये उघडा', installBtn: 'इन्स्टॉल', installed: 'ॲप इन्स्टॉल झाले! होम स्क्रीनवर Yoro Jobs आयकॉन पहा.', installMenu: 'Chrome मध्ये ⋮ मेनू दाबा → "होम स्क्रीनवर जोडा" / "ॲप इन्स्टॉल करा"', iosHint: 'Safari मध्ये खाली Share (⬆️) बटण दाबा → "Add to Home Screen" निवडा.',
   },
   en: {
@@ -129,7 +129,7 @@ export const T = {
     nav: { home: 'Home', jobs: 'Jobs', profile: 'Profile' },
     roles: { Caregiver: 'Caregiver', Nurse: 'Nurse', Physio: 'Physio' },
     genderOnly: { Female: 'Female only', Male: 'Male only' },
-    locTitle: 'My location', locSub: 'City and area — jobs near you are matched from this', save: 'Save', locSaved: 'Location updated', locPick: 'Pick an area from the list or use your location',
+    changePin: 'Change PIN', newPin: 'New 4-digit PIN', newPinAgain: 'New PIN again', pinChanged: 'PIN changed', pinWeak: 'Choose a less common PIN (not 1234, 0000)', locTitle: 'My location', locSub: 'City and area — jobs near you are matched from this', save: 'Save', locSaved: 'Location updated', locPick: 'Pick an area from the list or use your location',
     installTitle: 'Install the Yoro Jobs app', installSub: 'Icon on your home screen — open in one tap', installBtn: 'Install', installed: 'App installed! Look for the Yoro Jobs icon on your home screen.', installMenu: 'In Chrome, tap the ⋮ menu → "Add to Home screen" / "Install app"', iosHint: 'In Safari, tap the Share (⬆️) button at the bottom → "Add to Home Screen".',
   },
 };
