@@ -127,7 +127,7 @@ async function boot() {
     const c = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storageKey: key } });
     const { data: { session: s } } = await c.auth.getSession(); if (!s) continue;
     const { data: sup } = await c.rpc('is_agency_super');
-    if (sup === true) { db = c; SUPER = true; const em = (s.user.email || '').toLowerCase(); const who = [[/abhishek|9193435605/, 'Abhishek'], [/sahil|9100642824/, 'Sahil'], [/tamal|8884198719/, 'Tamal'], [/deepak|9820779419/, 'Deepak']].find(([r]) => r.test(em)); ME = { name: (who ? who[1] : 'YORO') + ' (YORO)', role: 'super', phone: '' }; const { data } = await db.rpc('agency_overview'); AGENCIES = data || []; let pick = null; try { pick = localStorage.getItem('yj-agency-pick'); } catch (e) { } const g = AGENCIES.find((x) => x.id === pick) || AGENCIES[0]; if (g) { const { data: full } = await db.from('agencies').select('*').eq('id', g.id).single(); AG = full; } return enterApp(); }
+    if (sup === true) { db = c; SUPER = true; const em = (s.user.email || '').toLowerCase(); const who = [[/abhishek|9193435605/, 'Abhishek'], [/sahil|9100642824/, 'Sahil'], [/tamal|8884198719/, 'Tamal'], [/deepak|9820779419/, 'Deepak'], [/akshay|8600893718/, 'Akshay']].find(([r]) => r.test(em)); ME = { name: (who ? who[1] : 'YORO') + ' (YORO)', role: 'super', phone: '' }; const { data } = await db.rpc('agency_overview'); AGENCIES = data || []; let pick = null; try { pick = localStorage.getItem('yj-agency-pick'); } catch (e) { } const g = AGENCIES.find((x) => x.id === pick) || AGENCIES[0]; if (g) { const { data: full } = await db.from('agencies').select('*').eq('id', g.id).single(); AG = full; } return enterApp(); }
   }
   route();
 }
